@@ -49,7 +49,6 @@ var createScene = function (engine: BABYLON.Engine, canvas: HTMLCanvasElement) {
     const sun_direction = new BABYLON.Vector3(0, 0, 0)
     var sun2 = new BABYLON.PointLight("dir01", sun_direction, scene);
     sun2.position = new BABYLON.Vector3(500, 200, 0);
-    sun2.intensity = 0.05;
 
     var shadowGenerator = new BABYLON.ShadowGenerator(1024, sun2);
 
@@ -58,12 +57,21 @@ var createScene = function (engine: BABYLON.Engine, canvas: HTMLCanvasElement) {
 
     camera.setTarget(earth);
     shadowGenerator.addShadowCaster(earth)
+
+    let earthMaterial = new BABYLON.StandardMaterial("earthMaterial", scene);
+    earthMaterial.diffuseTexture = new BABYLON.Texture("./public/textures/earth.jpg", scene);
+    earthMaterial.emissiveTexture = new BABYLON.Texture("./public/textures/night2.jpg", scene);
+    earthMaterial.specularTexture = new BABYLON.Texture("./public/textures/specular2.jpg", scene);
+
+    earth.material = earthMaterial;
+    earth.rotation.x = Math.PI; // textures are always upside down on sphere for some reason...
+    earth.rotation.y = Math.PI / 2;
     
     // Move the sphere upward 1/2 its height
     earth.position.y = 1;
 
     // add atmosphere
-    const atmosphereRadius = planetRadius * 1.1;
+    const atmosphereRadius = planetRadius * 1.15;
     let atmosphere = new AtmosphericScatteringPostProcess("atmosphere", earth, planetRadius, atmosphereRadius, sun2, camera, scene);
 
     
