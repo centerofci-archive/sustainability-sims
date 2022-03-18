@@ -3,7 +3,7 @@ import { AtmosphericScatteringPostProcess } from "../shaders/atmosphericScatteri
 
 
 
-export function render_earth (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCamera, sun: BABYLON.PointLight)
+export function create_earth (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCamera, sun: BABYLON.PointLight)
 {
     const planetRadius = 100
     var earth: BABYLON.Mesh = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: planetRadius * 2, segments: 75 }, scene)
