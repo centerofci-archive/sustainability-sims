@@ -54,7 +54,8 @@ var createScene = function (engine: BABYLON.Engine, canvas: HTMLCanvasElement) {
     var shadowGenerator = new BABYLON.ShadowGenerator(1024, sun2);
 
     const planetRadius = 100;
-    var earth: BABYLON.Mesh = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: planetRadius * 2, segments: 32 }, scene);
+    var earth: BABYLON.Mesh = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: planetRadius * 2, segments: 75 }, scene);
+
     camera.setTarget(earth);
     shadowGenerator.addShadowCaster(earth)
     

@@ -54,7 +54,7 @@ export class AtmosphericScatteringPostProcess extends BABYLON.PostProcess {
             atmosphereRadius: atmosphereRadius,
             falloffFactor: 15,
             intensity: 15,
-            scatteringStrength: 1,
+            scatteringStrength: 0.1,
             densityModifier: 1,
             redWaveLength: 700,
             greenWaveLength: 530,
