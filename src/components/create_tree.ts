@@ -10,6 +10,7 @@ export function create_tree (scene: BABYLON.Scene, engine: BABYLON.Engine)
         // result.meshes[1].position.x = 20  // result.meshes[1] is undefined
         const myMesh1 = scene.getMeshByName("tree1")!  // is undefined
         // myMesh1.rotation.y = Math.PI / 2
+        debugger
     })
     .catch(e =>
     {
