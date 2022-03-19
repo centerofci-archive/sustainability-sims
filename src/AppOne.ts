@@ -8,6 +8,7 @@ import { create_ground } from "./components/create_ground"
 import { create_sun } from "./components/create_sun"
 import { create_earth } from "./components/create_earth"
 import { create_tree } from "./components/create_tree"
+import { Vector3 } from "@babylonjs/core"
 
 
 export class AppOne {
@@ -57,10 +58,11 @@ var createScene = function (engine: BABYLON.Engine, canvas: HTMLCanvasElement) {
     // camera.speed = 0.25
 
     const sun = create_sun(scene)
+    sun.set_intensity(3)
     // create_earth(scene, camera, sun)
-    camera.position = new BABYLON.Vector3(10, 10, 10);
+    camera.position = new Vector3(10, 10, 10)
     create_ground(scene)
-    create_tree(scene, engine)
+    create_tree(scene, new Vector3(10, 0, 0))
     
 
     return scene
