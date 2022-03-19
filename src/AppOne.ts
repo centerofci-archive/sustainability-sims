@@ -91,6 +91,6 @@ function load_assets (assets_manager: BABYLON.AssetsManager)
 
 function create_content (scene: BABYLON.Scene)
 {
-    create_tree(scene, new Vector3(0, 0, 0))
-    create_forest(scene, new Vector3(0, 0, 0), 10)
+    // create_tree(scene, new Vector3(0, 0, 0))
+    create_forest(scene, new Vector3(-15, 0, -15), 10)
 }

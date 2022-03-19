@@ -1,0 +1,39 @@
+import * as BABYLON from "@babylonjs/core"
+import { Vector3 } from "@babylonjs/core"
+import { create_tree, Tree } from "./create_tree"
+
+
+
+export async function create_forest (scene: BABYLON.Scene, position: Vector3, size: number)
+{
+    const trees: { tree: Tree, delay: number }[] = []
+
+    let i = 0
+    while (i < size)
+    {
+        let j = 0
+        while (j < size)
+        {
+            const x = (i * 3) + (Math.random() * 2)
+            const z = (j * 3) + (Math.random() * 2)
+            const pos = position.add(new Vector3(x, 0, z))
+            const tree = create_tree(scene, pos, `${i}_${j}`)
+            const delay = ((i + j) + Math.random() * 3) * 300
+            trees.push({ tree, delay })
+            ++j
+        }
+        ++i
+    }
+    
+    
+    let animated_once = false
+    scene.onPointerDown = function (evt, pickResult)
+    {
+        if (animated_once) return
+        animated_once = true
+        trees.forEach(({ tree, delay }) =>
+        {
+            setTimeout(() => tree.play(), delay)
+        })
+    }
+}

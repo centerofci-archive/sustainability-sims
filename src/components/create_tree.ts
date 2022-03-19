@@ -53,8 +53,8 @@ export function create_tree (scene: BABYLON.Scene, position: Vector3, name: stri
     
     const grow_tree_anim_group = new BABYLON.AnimationGroup("grow_tree_anim_group")
     grow_tree_anim_group.addTargetedAnimation(grow_tree_y, tree)
-    // grow_tree_anim_group.addTargetedAnimation(grow_tree_visibility, tree_green)
-    // grow_tree_anim_group.addTargetedAnimation(grow_tree_visibility, tree_trunk)
+    grow_tree_anim_group.addTargetedAnimation(grow_tree_visibility, tree_green)
+    grow_tree_anim_group.addTargetedAnimation(grow_tree_visibility, tree_trunk)
 
 
     return {
