@@ -1,35 +1,74 @@
 lockfileVersion: 5.3
 
 specifiers:
-  babylonjs: 4.2.2
-  babylonjs-loaders: 4.2.2
+  '@babylonjs/core': 4.2.2
+  '@babylonjs/inspector': ^4.2.2
+  '@babylonjs/loaders': 4.2.2
   typescript: 4.6.2
   vite: 2.8.6
 
 dependencies:
-  babylonjs: 4.2.2
-  babylonjs-loaders: 4.2.2
+  '@babylonjs/core': 4.2.2
+  '@babylonjs/loaders': 4.2.2
 
 devDependencies:
+  '@babylonjs/inspector': 4.2.2
   typescript: 4.6.2
   vite: 2.8.6
 
 packages:
 
+  /@babylonjs/core/4.2.2:
+    resolution: {integrity: sha512-gAgetSyoxFZ/xzMVVnGPKaP941NHA59Ho8GGKFW98OTEp8yZcnzJjNOD2zfF1eKmlvR/6WwSmcrKWTJtPF1pyA==}
+    dependencies:
+      tslib: 2.3.1
+
+  /@babylonjs/gui/4.2.2:
+    resolution: {integrity: sha512-iFKnSb0m9Zz7oeD1LTZWE9Hxcp0QMytXZenLNgrbHOm8mo2V+Y6OiVEP9SpvZRqks6bTDTFrpfjMTy1DrZyTGQ==}
+    dependencies:
+      '@babylonjs/core': 4.2.2
+      tslib: 2.3.1
+    dev: true
+
+  /@babylonjs/inspector/4.2.2:
+    resolution: {integrity: sha512-aTK9u+wKv9pvL+/ftRMQxIiwyvxUs4AF0RaN/WQgDRqLKdYf+NGCjc2NX5P4Krcs5hU6CD7CjyOIhhtJXGRk7g==}
+    peerDependencies:
+      '@types/react': '>=16.7.3'
+      '@types/react-dom': '>=16.0.9'
+    dependencies:
+      '@babylonjs/core': 4.2.2
+      '@babylonjs/gui': 4.2.2
+      '@babylonjs/loaders': 4.2.2
+      '@babylonjs/materials': 4.2.2
+      '@babylonjs/serializers': 4.2.2
+      babylonjs-gltf2interface: 4.2.2
+      tslib: 2.3.1
+    dev: true
+
+  /@babylonjs/loaders/4.2.2:
+    resolution: {integrity: sha512-Qk8r4xp4eOznbX3AsNYv8HgwS+tzGu6TwSpDX4il3g0B+k1N5k6KE5ghrnwDytoxUDVjGZ/VKk2cQqiHsg/NLg==}
+    dependencies:
+      '@babylonjs/core': 4.2.2
+      babylonjs-gltf2interface: 4.2.2
+      tslib: 2.3.1
+
+  /@babylonjs/materials/4.2.2:
+    resolution: {integrity: sha512-Y7umjVEYV5ZsLYVxgrkb5+4lPsz35acgOEqiZErFBdGXJw3AHJLJmalcmL5WXqUBR2SzyShFLCJOdbFQbkmaxg==}
+    dependencies:
+      '@babylonjs/core': 4.2.2
+      tslib: 2.3.1
+    dev: true
+
+  /@babylonjs/serializers/4.2.2:
+    resolution: {integrity: sha512-PEW09qqScaWV5c9UA44uY2YuF9aQJ6gYTMvjopul9YsiPoJolL4QrHO9OxikaYWQb7rgll3XukoRejhZ+HanTQ==}
+    dependencies:
+      '@babylonjs/core': 4.2.2
+      babylonjs-gltf2interface: 4.2.2
+      tslib: 2.3.1
+    dev: true
+
   /babylonjs-gltf2interface/4.2.2:
     resolution: {integrity: sha512-LCQgW1lM+EpKK4yWMiPEgi6ONwJ7W4JrSu3t9JixNRgvnic72OnN2f0bt91rE30EJr1ZaokvkXD/aEiBp/Juyg==}
-    dev: false
-
-  /babylonjs-loaders/4.2.2:
-    resolution: {integrity: sha512-IuShR5N4zkDMzKEGsCZ0uZDCn07BLLj8LlKwyiSwFR1V9KxAALkt2INTMCdXjuWELTcZEALZlyO85mKJ2pDPHw==}
-    dependencies:
-      babylonjs: 4.2.2
-      babylonjs-gltf2interface: 4.2.2
-    dev: false
-
-  /babylonjs/4.2.2:
-    resolution: {integrity: sha512-p7mTi6+nLuWJTLbwxEJxLOh/QMHMV2KA0bviEoQSK5VtsAq1F0JghoOZYRs4aEqAZF/deFPWvMQk1vbXJ+4eEA==}
-    dev: false
 
   /esbuild-android-64/0.14.27:
     resolution: {integrity: sha512-LuEd4uPuj/16Y8j6kqy3Z2E9vNY9logfq8Tq+oTE2PZVuNs3M1kj5Qd4O95ee66yDGb3isaOCV7sOLDwtMfGaQ==}
@@ -313,6 +352,9 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /tslib/2.3.1:
+    resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
 
   /typescript/4.6.2:
     resolution: {integrity: sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==}

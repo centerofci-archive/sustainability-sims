@@ -1,5 +1,8 @@
-import * as BABYLON from "babylonjs"
-import "babylonjs-loaders"
+import * as BABYLON from "@babylonjs/core"
+import "@babylonjs/loaders"
+// As per instructions here: https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking#almighty-inspector
+import "@babylonjs/core/Debug/debugLayer" // Augments the scene with the debug methods
+import "@babylonjs/inspector" // Injects a local ES6 version of the inspector to prevent automatically relying on the none compatible version
 
 import { create_ground } from "./components/create_ground"
 import { create_sun } from "./components/create_sun"
