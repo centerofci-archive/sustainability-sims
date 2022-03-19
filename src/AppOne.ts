@@ -9,19 +9,22 @@ import { create_sun } from "./components/create_sun"
 import { create_earth } from "./components/create_earth"
 import { create_tree } from "./components/create_tree"
 import { Vector3 } from "@babylonjs/core"
+import { create_forest } from "./components/create_forest"
 
 
 export class AppOne {
     engine: BABYLON.Engine
     scene: BABYLON.Scene
+    assets_manager: BABYLON.AssetsManager
 
     constructor(readonly canvas: HTMLCanvasElement) {
         this.engine = new BABYLON.Engine(canvas)
         window.addEventListener("resize", () => {
             this.engine.resize()
         })
-        this.scene = createScene(this.engine, this.canvas)
-
+        this.scene = create_scene(this.engine, this.canvas)
+        this.assets_manager = new BABYLON.AssetsManager(this.scene)
+        load_assets(this.assets_manager)
     }
 
     debug(debugOn: boolean = true) {
@@ -34,15 +37,26 @@ export class AppOne {
 
     run() {
         this.debug(true)
-        this.engine.runRenderLoop(() => {
-            this.scene.render()
-        })
+        
+        this.assets_manager.load()
+
+        this.assets_manager.onFinish = tasks =>
+        {
+            create_content(this.scene)
+
+            this.engine.runRenderLoop(() =>
+            {
+                this.scene.render()
+            })
+        }
     }
 
 }
 
 
-var createScene = function (engine: BABYLON.Engine, canvas: HTMLCanvasElement) {
+
+function create_scene (engine: BABYLON.Engine, canvas: HTMLCanvasElement)
+{
     // this is the default code from the playground:
 
     // This creates a basic Babylon Scene object (non-mesh)
@@ -62,8 +76,21 @@ var createScene = function (engine: BABYLON.Engine, canvas: HTMLCanvasElement) {
     // create_earth(scene, camera, sun)
     camera.position = new Vector3(10, 10, 10)
     create_ground(scene)
-    create_tree(scene, new Vector3(10, 0, 0))
-    
 
     return scene
+}
+
+
+
+function load_assets (assets_manager: BABYLON.AssetsManager)
+{
+    assets_manager.addMeshTask("load low_poly_tree", null, "public/models/low_poly_tree/", "lowpolytree.obj")
+}
+
+
+
+function create_content (scene: BABYLON.Scene)
+{
+    create_tree(scene, new Vector3(0, 0, 0))
+    create_forest(scene, new Vector3(0, 0, 0), 10)
 }
