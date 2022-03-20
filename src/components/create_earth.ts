@@ -1,21 +1,29 @@
-import * as BABYLON from "@babylonjs/core"
+import {
+    Scene,
+    ArcRotateCamera,
+    PointLight,
+    Mesh,
+    MeshBuilder,
+    StandardMaterial,
+    Texture,
+} from "@babylonjs/core"
 import { AtmosphericScatteringPostProcess } from "../shaders/atmosphericScattering"
 
 
 
-export function create_earth (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCamera, sun: BABYLON.PointLight)
+export function create_earth (scene: Scene, camera: ArcRotateCamera, sun: PointLight)
 {
-    const planetRadius = 100
-    var earth: BABYLON.Mesh = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: planetRadius * 2, segments: 75 }, scene)
+    const planet_radius = 100
+    var earth: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: planet_radius * 2, segments: 75 }, scene)
 
     camera.setTarget(earth)
 
-    const earthMaterial = new BABYLON.StandardMaterial("earthMaterial", scene)
-    earthMaterial.diffuseTexture = new BABYLON.Texture("./public/textures/earth.jpg", scene)
-    earthMaterial.emissiveTexture = new BABYLON.Texture("./public/textures/night2.jpg", scene)
-    earthMaterial.specularTexture = new BABYLON.Texture("./public/textures/specular2.jpg", scene)
+    const earth_material = new StandardMaterial("earth_material", scene)
+    earth_material.diffuseTexture = new Texture("./public/textures/earth.jpg", scene)
+    earth_material.emissiveTexture = new Texture("./public/textures/night2.jpg", scene)
+    earth_material.specularTexture = new Texture("./public/textures/specular2.jpg", scene)
 
-    earth.material = earthMaterial
+    earth.material = earth_material
     earth.rotation.x = Math.PI // textures are always upside down on sphere for some reason...
     earth.rotation.y = Math.PI / 2
 
@@ -23,6 +31,7 @@ export function create_earth (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCam
     earth.position.y = 1
 
     // add atmosphere
-    const atmosphereRadius = planetRadius * 1.15
-    let atmosphere = new AtmosphericScatteringPostProcess("atmosphere", earth, planetRadius, atmosphereRadius, sun, camera, scene)
+    const atmosphere_radius = planet_radius * 1.15
+    let atmosphere = new AtmosphericScatteringPostProcess("atmosphere", earth, planet_radius, atmosphere_radius, sun, camera, scene)
+
 }

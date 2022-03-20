@@ -1,10 +1,10 @@
 import * as BABYLON from "@babylonjs/core"
-import { Vector3 } from "@babylonjs/core"
+import { ShadowGenerator, Vector3 } from "@babylonjs/core"
 import { create_tree, Tree } from "./create_tree"
 
 
 
-export function create_forest (scene: BABYLON.Scene, position: Vector3, size: number)
+export function create_forest (scene: BABYLON.Scene, shadow_generator: ShadowGenerator, position: Vector3, size: number)
 {
     const tree_nodes: BABYLON.Node[] = []
     const trees_with_delays: { tree: Tree, delay: number }[] = []
@@ -39,6 +39,17 @@ export function create_forest (scene: BABYLON.Scene, position: Vector3, size: nu
             setTimeout(() => tree.play(), delay)
         })
     }
+
+
+    // Add shadows for trees
+    tree_nodes.forEach(tree =>
+    {
+        tree.getChildMeshes().forEach(child_mesh =>
+        {
+            shadow_generator.addShadowCaster(child_mesh)
+        })
+    })
+
 
     return tree_nodes
 }
