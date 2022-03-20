@@ -3,3 +3,4 @@ node_modules
 dist
 *.local
 .pnpm-debug.log
+*.blend1

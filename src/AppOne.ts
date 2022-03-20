@@ -5,11 +5,12 @@ import "@babylonjs/core/Debug/debugLayer" // Augments the scene with the debug m
 import "@babylonjs/inspector" // Injects a local ES6 version of the inspector to prevent automatically relying on the none compatible version
 
 import { create_ground } from "./components/create_ground"
-import { create_sun } from "./components/create_sun"
+import { create_sun, SUN_NAME } from "./components/create_sun"
 import { create_earth } from "./components/create_earth"
-import { create_tree } from "./components/create_tree"
-import { Vector3 } from "@babylonjs/core"
+import { create_tree, mesh_name_low_poly_tree_1_green, mesh_name_low_poly_tree_1_trunk } from "./components/create_tree"
+import { DirectionalLight, StandardMaterial, Vector3 } from "@babylonjs/core"
 import { create_forest } from "./components/create_forest"
+import { get_mesh } from "./components/get_mesh"
 
 
 export class AppOne {
@@ -42,6 +43,7 @@ export class AppOne {
 
         this.assets_manager.onFinish = tasks =>
         {
+            hide_loaded_assets(this.scene)
             create_content(this.scene)
 
             this.engine.runRenderLoop(() =>
@@ -84,7 +86,18 @@ function create_scene (engine: BABYLON.Engine, canvas: HTMLCanvasElement)
 
 function load_assets (assets_manager: BABYLON.AssetsManager)
 {
-    assets_manager.addMeshTask("load low_poly_tree", null, "public/models/low_poly_tree/", "lowpolytree.obj")
+    // assets_manager.addMeshTask("load low_poly_tree", null, "public/models/low_poly_tree/", "lowpolytree.obj")
+    assets_manager.addMeshTask("load low_poly_tree2", null, "public/models/low_poly_tree/", "low_poly_trees2.obj")
+}
+
+
+
+function hide_loaded_assets (scene: BABYLON.Scene)
+{
+    const tree_green = scene.getMeshByName(mesh_name_low_poly_tree_1_green)
+    const tree_trunk = scene.getMeshByName(mesh_name_low_poly_tree_1_trunk)
+    if (tree_green) tree_green.visibility = 0
+    if (tree_trunk) tree_trunk.visibility = 0
 }
 
 
@@ -92,5 +105,20 @@ function load_assets (assets_manager: BABYLON.AssetsManager)
 function create_content (scene: BABYLON.Scene)
 {
     // create_tree(scene, new Vector3(0, 0, 0))
-    create_forest(scene, new Vector3(-15, 0, -15), 10)
+    // const trees = create_forest(scene, new Vector3(-15, 0, -15), 10)
+    
+    // Add shadows for trees
+    const sun = scene.getLightByName(SUN_NAME)! as DirectionalLight
+    const shadow_generator = new BABYLON.ShadowGenerator(1024, sun)
+    shadow_generator.usePoissonSampling = true // soft shadows
+    shadow_generator.useExponentialShadowMap = false // faster
+    // trees.forEach(tree => tree.getChildMeshes().forEach(child_mesh => shadow_generator.addShadowCaster(child_mesh)))
+
+
+    const low_poly_tree_2_evergreen_tree = scene.getMeshByName("low_poly_tree_2_evergreen_tree")!
+    shadow_generator.addShadowCaster(low_poly_tree_2_evergreen_tree)
+    low_poly_tree_2_evergreen_tree.getChildMeshes().forEach(child => shadow_generator.addShadowCaster(child))
+
+    const low_poly_tree_2_bare_tree = scene.getMeshByName("low_poly_tree_2_bare_tree")!
+    shadow_generator.addShadowCaster(low_poly_tree_2_bare_tree)
 }

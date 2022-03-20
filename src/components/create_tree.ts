@@ -4,6 +4,12 @@ import { get_mesh } from "./get_mesh"
 
 
 
+// TODO: rename this mesh from 'low_poly_tree_1' to 'low_poly_tree_1_green'
+export const mesh_name_low_poly_tree_1_green = "low_poly_tree_1"
+// TODO: rename this mesh from 'mesh_mm1' to 'low_poly_tree_1_trunk'
+export const mesh_name_low_poly_tree_1_trunk = "mesh_mm1"
+
+
 const frame_rate = 10
 
 
@@ -35,15 +41,15 @@ grow_tree_visibility.setKeys([
 export interface Tree
 {
     play: () => void
+    node: BABYLON.Node
 }
 
 export function create_tree (scene: BABYLON.Scene, position: Vector3, name: string = ""): Tree
 {
-    const tree = new BABYLON.Mesh("tree_parent_" + name, scene)
+    const tree = new BABYLON.TransformNode("tree_parent_" + name)
 
-    const tree_green = get_mesh(scene, "low_poly_tree_1", "tree_green_" + name, tree)
-    // TODO: rename this mesh from 'mesh_mm1' to 'low_poly_tree_trunk_1'
-    const tree_trunk = get_mesh(scene, "mesh_mm1", "tree_trunk_" + name, tree)
+    const tree_green = get_mesh(scene, mesh_name_low_poly_tree_1_green, "tree_green_" + name, tree)
+    const tree_trunk = get_mesh(scene, mesh_name_low_poly_tree_1_trunk, "tree_trunk_" + name, tree)
 
     tree_green.visibility = 0
     tree_trunk.visibility = 0
@@ -58,6 +64,7 @@ export function create_tree (scene: BABYLON.Scene, position: Vector3, name: stri
 
 
     return {
-        play: () => grow_tree_anim_group.play()
+        play: () => grow_tree_anim_group.play(),
+        node: tree,
     }
 }
