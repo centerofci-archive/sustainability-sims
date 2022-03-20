@@ -10,7 +10,7 @@ export function create_earth (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCam
 
     camera.setTarget(earth)
     
-    let earthMaterial = new BABYLON.StandardMaterial("earthMaterial", scene)
+    const earthMaterial = new BABYLON.StandardMaterial("earthMaterial", scene)
     earthMaterial.diffuseTexture = new BABYLON.Texture("./public/textures/earth.jpg", scene)
     earthMaterial.emissiveTexture = new BABYLON.Texture("./public/textures/night2.jpg", scene)
     earthMaterial.specularTexture = new BABYLON.Texture("./public/textures/specular2.jpg", scene)

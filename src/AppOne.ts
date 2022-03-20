@@ -11,6 +11,7 @@ import { create_tree, mesh_name_low_poly_tree_1_green, mesh_name_low_poly_tree_1
 import { DirectionalLight, StandardMaterial, Vector3 } from "@babylonjs/core"
 import { create_forest } from "./components/create_forest"
 import { get_mesh } from "./components/get_mesh"
+import { create_sky } from "./components/create_sky"
 
 
 export class AppOne {
@@ -39,7 +40,7 @@ export class AppOne {
 
     run() {
         this.debug(true)
-        
+
         this.assets_manager.load()
 
         this.assets_manager.onFinish = tasks =>
@@ -75,6 +76,8 @@ function create_scene (engine: BABYLON.Engine, canvas: HTMLCanvasElement)
 
     const sun = create_sun(scene)
     sun.set_intensity(2)
+    create_sky(scene)
+
     // create_earth(scene, camera, sun)
     camera.position = new Vector3(10, 10, 10)
     create_ground(scene)
@@ -109,7 +112,7 @@ function is_MeshAssetTask (task: BABYLON.AbstractAssetTask): task is BABYLON.Mes
 function create_content (scene: BABYLON.Scene)
 {
     const trees = create_forest(scene, new Vector3(-15, 0, -15), 10)
-    
+
     // Add shadows for trees
     const sun = scene.getLightByName(SUN_NAME)! as DirectionalLight
     const shadow_generator = new BABYLON.ShadowGenerator(1024, sun)
