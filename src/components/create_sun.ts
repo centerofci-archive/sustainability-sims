@@ -16,7 +16,7 @@ export function create_sun (scene: BABYLON.Scene)
     const sky = new BABYLON.HemisphericLight("sun_indirect", sun_direction, scene)
 
     make_sun_globe(scene, position)
-    
+
     // sky.position = new BABYLON.Vector3(500, 200, 0)
 
     return {
@@ -34,7 +34,7 @@ function make_sun_globe (scene: BABYLON.Scene, position: BABYLON.Vector3)
 {
     const sun_globe = BABYLON.MeshBuilder.CreateSphere("sun_sphere", { diameter: 1 }, scene)
     sun_globe.position = position
-    
+
     const sun_glow_material = new BABYLON.StandardMaterial("sun_glow_material", scene)
     sun_glow_material.emissiveColor = new Color3(1, 1, 0.5)
 

@@ -9,7 +9,7 @@ export function create_earth (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCam
     var earth: BABYLON.Mesh = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: planetRadius * 2, segments: 75 }, scene)
 
     camera.setTarget(earth)
-    
+
     const earthMaterial = new BABYLON.StandardMaterial("earthMaterial", scene)
     earthMaterial.diffuseTexture = new BABYLON.Texture("./public/textures/earth.jpg", scene)
     earthMaterial.emissiveTexture = new BABYLON.Texture("./public/textures/night2.jpg", scene)
@@ -18,11 +18,11 @@ export function create_earth (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCam
     earth.material = earthMaterial
     earth.rotation.x = Math.PI // textures are always upside down on sphere for some reason...
     earth.rotation.y = Math.PI / 2
-    
+
     // Move the sphere upward 1/2 its height
     earth.position.y = 1
 
     // add atmosphere
     const atmosphereRadius = planetRadius * 1.15
-    let atmosphere = new AtmosphericScatteringPostProcess("atmosphere", earth, planetRadius, atmosphereRadius, sun, camera, scene)    
+    let atmosphere = new AtmosphericScatteringPostProcess("atmosphere", earth, planetRadius, atmosphereRadius, sun, camera, scene)
 }
