@@ -9,6 +9,8 @@ export function create_forest (scene: BABYLON.Scene, shadow_generator: ShadowGen
     const tree_nodes: BABYLON.Node[] = []
     const trees_with_delays: { tree: Tree, delay: number }[] = []
 
+    const total_animation_time = 10
+
     let i = 0
     while (i < size)
     {
@@ -21,7 +23,9 @@ export function create_forest (scene: BABYLON.Scene, shadow_generator: ShadowGen
             const tree = create_tree(scene, pos, `${i}_${j}`)
             tree_nodes.push(tree.node)
 
-            const delay = ((i + j) + Math.random() * 3) * 300
+            const progress = 1 - ((i + j) / (size * 2))
+            const d = Math.sin(progress * (Math.PI / 2)) * total_animation_time
+            const delay = (d + Math.random() * 3) * 300
             trees_with_delays.push({ tree, delay })
             ++j
         }

@@ -113,7 +113,7 @@ enum Content
     forest,
     earth
 }
-let content = Content.earth
+let content = Content.forest
 
 
 function create_content (scene: BABYLON.Scene, camera: ArcRotateCamera, sun: WrappedSun, shadow_generator: ShadowGenerator)

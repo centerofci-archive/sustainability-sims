@@ -19,6 +19,12 @@ const grow_tree_y = new BABYLON.Animation("grow_tree_y", "position.y",
     BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
 )
 
+// Creating an easing function
+const easing_function = new BABYLON.ExponentialEase()
+easing_function.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT)
+grow_tree_y.setEasingFunction(easing_function)
+
+
 grow_tree_y.setKeys([
     { frame: 0, value: -5, },
     { frame: frame_rate, value: 0, },
