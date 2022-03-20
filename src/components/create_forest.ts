@@ -29,7 +29,7 @@ export function create_forest (scene: BABYLON.Scene, position: Vector3, size: nu
     }
     
     
-    let animated_once = true
+    let animated_once = false
     scene.onPointerDown = function (evt, pickResult)
     {
         if (animated_once) return

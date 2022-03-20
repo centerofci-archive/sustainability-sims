@@ -20,8 +20,8 @@ const grow_tree_y = new BABYLON.Animation("grow_tree_y", "position.y",
 )
 
 grow_tree_y.setKeys([
-    { frame: 0, value: -3.3, },
-    { frame: frame_rate, value: 2, },
+    { frame: 0, value: -5, },
+    { frame: frame_rate, value: 0, },
 ])
 
 
@@ -53,6 +53,10 @@ export function create_tree (scene: BABYLON.Scene, position: Vector3, name: stri
 
     tree_green.visibility = 0
     tree_trunk.visibility = 0
+
+    // Allow trees to be shadowed
+    tree_green.receiveShadows = true
+    tree_trunk.receiveShadows = true
 
     tree.position = position
 

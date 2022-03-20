@@ -11,6 +11,7 @@ export function create_ground (scene: BABYLON.Scene)
 
     const material = new StandardMaterial("ground_green_brown", scene)
     material.diffuseColor = new BABYLON.Color3(0.2, 0.3, 0)
+    material.specularColor = new BABYLON.Color3(0.05, 0.05, 0.05)
     ground.material = material
 
     return ground
