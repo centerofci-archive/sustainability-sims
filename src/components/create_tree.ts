@@ -50,15 +50,12 @@ export interface Tree
     node: BABYLON.Node
 }
 
-export function create_tree (scene: BABYLON.Scene, position: Vector3, name: string = ""): Tree
+export function create_tree (scene: BABYLON.Scene, position: Vector3, name: string): Tree
 {
     const tree = new BABYLON.TransformNode("tree_parent_" + name)
 
     const tree_green = get_mesh(scene, mesh_name_low_poly_tree_1_green, "tree_green_" + name, tree)
     const tree_trunk = get_mesh(scene, mesh_name_low_poly_tree_1_trunk, "tree_trunk_" + name, tree)
-
-    tree_green.visibility = 0
-    tree_trunk.visibility = 0
 
     // Allow trees to be shadowed
     tree_green.receiveShadows = true
