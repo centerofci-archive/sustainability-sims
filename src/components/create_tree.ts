@@ -49,7 +49,12 @@ export interface Tree
 
 export function create_tree (scene: BABYLON.Scene, shadow_generator: ShadowGenerator, position: Vector3, name: string): Tree
 {
-    const tree = get_mesh(scene, mesh_name_low_poly_tree_1, "tree_green_" + name, { position, receive_shadows: true, shadow_generator })
+    const tree = get_mesh(scene, mesh_name_low_poly_tree_1, "tree_green_" + name, {
+        position,
+        receive_shadows: true,
+        shadow_generator,
+        // visibility // set by animation
+    })
 
 
     const grow_tree_anim_group = new BABYLON.AnimationGroup("grow_tree_anim_group")
