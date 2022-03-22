@@ -1,13 +1,10 @@
 import * as BABYLON from "@babylonjs/core"
-import { Vector3 } from "@babylonjs/core"
+import { ShadowGenerator, Vector3 } from "@babylonjs/core"
 import { get_mesh } from "../utils/get_mesh"
 
 
 
-// TODO: rename this mesh from 'low_poly_tree_1' to 'low_poly_tree_1_green'
-export const mesh_name_low_poly_tree_1_green = "low_poly_tree_1"
-// TODO: rename this mesh from 'mesh_mm1' to 'low_poly_tree_1_trunk'
-export const mesh_name_low_poly_tree_1_trunk = "mesh_mm1"
+export const mesh_name_low_poly_tree_1 = "low_poly_tree_1"
 
 
 const frame_rate = 10
@@ -50,24 +47,18 @@ export interface Tree
     node: BABYLON.Node
 }
 
-export function create_tree (scene: BABYLON.Scene, position: Vector3, name: string): Tree
+export function create_tree (scene: BABYLON.Scene, shadow_generator: ShadowGenerator, position: Vector3, name: string): Tree
 {
-    const tree = new BABYLON.TransformNode("tree_parent_" + name)
-
-    const tree_green = get_mesh(scene, mesh_name_low_poly_tree_1_green, "tree_green_" + name, tree)
-    const tree_trunk = get_mesh(scene, mesh_name_low_poly_tree_1_trunk, "tree_trunk_" + name, tree)
-
-    // Allow trees to be shadowed
-    tree_green.receiveShadows = true
-    tree_trunk.receiveShadows = true
-
-    tree.position = position
+    const tree = get_mesh(scene, mesh_name_low_poly_tree_1, "tree_green_" + name, { position, receive_shadows: true, shadow_generator })
 
 
     const grow_tree_anim_group = new BABYLON.AnimationGroup("grow_tree_anim_group")
     grow_tree_anim_group.addTargetedAnimation(grow_tree_y, tree)
-    grow_tree_anim_group.addTargetedAnimation(grow_tree_visibility, tree_green)
-    grow_tree_anim_group.addTargetedAnimation(grow_tree_visibility, tree_trunk)
+
+    tree.getChildMeshes().forEach(mesh =>
+    {
+        grow_tree_anim_group.addTargetedAnimation(grow_tree_visibility, mesh)
+    })
 
 
     return {

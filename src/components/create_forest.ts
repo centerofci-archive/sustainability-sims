@@ -9,8 +9,6 @@ export function create_forest (scene: BABYLON.Scene, shadow_generator: ShadowGen
     const tree_nodes: BABYLON.Node[] = []
     const trees_with_delays: { tree: Tree, delay: number }[] = []
 
-    const total_animation_time = 10
-
     let i = 0
     while (i < size)
     {
@@ -20,12 +18,13 @@ export function create_forest (scene: BABYLON.Scene, shadow_generator: ShadowGen
             const x = (i * 3) + (Math.random() * 2)
             const z = (j * 3) + (Math.random() * 2)
             const pos = position.add(new Vector3(x, 0, z))
-            const tree = create_tree(scene, pos, `${i}_${j}`)
+            const tree = create_tree(scene, shadow_generator, pos, `${i}_${j}`)
             tree_nodes.push(tree.node)
 
-            const progress = 1 - ((i + j) / (size * 2))
-            const d = Math.sin(progress * (Math.PI / 2)) * total_animation_time
-            const delay = (d + Math.random() * 3) * 300
+            const progress = (i + j) / ((size - 1) * 2)
+            const inv_progress = 1 - progress
+            const d = Math.sin(inv_progress * (Math.PI / 2))
+            const delay = (d * 10 + Math.random() * inv_progress) * 200
             trees_with_delays.push({ tree, delay })
             ++j
         }
@@ -43,16 +42,6 @@ export function create_forest (scene: BABYLON.Scene, shadow_generator: ShadowGen
             setTimeout(() => tree.play(), delay)
         })
     }
-
-
-    // Add shadows for trees
-    tree_nodes.forEach(tree =>
-    {
-        tree.getChildMeshes().forEach(child_mesh =>
-        {
-            shadow_generator.addShadowCaster(child_mesh)
-        })
-    })
 
 
     return tree_nodes
