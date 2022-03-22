@@ -1,5 +1,4 @@
-import * as BABYLON from "@babylonjs/core"
-import { ShadowGenerator, Vector3 } from "@babylonjs/core"
+import { AbstractMesh, Animation, AnimationGroup, EasingFunction, ExponentialEase, Scene, ShadowGenerator, Vector3 } from "@babylonjs/core"
 import { get_mesh } from "../utils/get_mesh"
 
 
@@ -10,15 +9,15 @@ export const mesh_name_low_poly_tree_1 = "low_poly_tree_1"
 const frame_rate = 10
 
 
-const grow_tree_y = new BABYLON.Animation("grow_tree_y", "position.y",
+const grow_tree_y = new Animation("grow_tree_y", "position.y",
     frame_rate,
-    BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+    Animation.ANIMATIONTYPE_FLOAT,
+    Animation.ANIMATIONLOOPMODE_CONSTANT
 )
 
 // Creating an easing function
-const easing_function = new BABYLON.ExponentialEase()
-easing_function.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT)
+const easing_function = new ExponentialEase()
+easing_function.setEasingMode(EasingFunction.EASINGMODE_EASEOUT)
 grow_tree_y.setEasingFunction(easing_function)
 
 
@@ -28,10 +27,10 @@ grow_tree_y.setKeys([
 ])
 
 
-const grow_tree_visibility = new BABYLON.Animation("grow_tree_visibility", "visibility",
+const grow_tree_visibility = new Animation("grow_tree_visibility", "visibility",
     frame_rate,
-    BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+    Animation.ANIMATIONTYPE_FLOAT,
+    Animation.ANIMATIONLOOPMODE_CONSTANT
 )
 
 grow_tree_visibility.setKeys([
@@ -44,10 +43,10 @@ grow_tree_visibility.setKeys([
 export interface Tree
 {
     play: () => void
-    node: BABYLON.Node
+    node: AbstractMesh
 }
 
-export function create_tree (scene: BABYLON.Scene, shadow_generator: ShadowGenerator, position: Vector3, name: string): Tree
+export function create_tree (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3, name: string): Tree
 {
     const tree = get_mesh(scene, mesh_name_low_poly_tree_1, "tree_green_" + name, {
         position,
@@ -57,7 +56,7 @@ export function create_tree (scene: BABYLON.Scene, shadow_generator: ShadowGener
     })
 
 
-    const grow_tree_anim_group = new BABYLON.AnimationGroup("grow_tree_anim_group")
+    const grow_tree_anim_group = new AnimationGroup("grow_tree_anim_group")
     grow_tree_anim_group.addTargetedAnimation(grow_tree_y, tree)
 
     tree.getChildMeshes().forEach(mesh =>

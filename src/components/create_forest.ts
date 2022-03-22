@@ -1,12 +1,11 @@
-import * as BABYLON from "@babylonjs/core"
-import { ShadowGenerator, Vector3 } from "@babylonjs/core"
+import { AbstractMesh, Scene, ShadowGenerator, Vector3 } from "@babylonjs/core"
 import { create_tree, Tree } from "./create_tree"
 
 
 
-export function create_forest (scene: BABYLON.Scene, shadow_generator: ShadowGenerator, position: Vector3, size: number)
+export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3, size: number)
 {
-    const tree_nodes: BABYLON.Node[] = []
+    const tree_nodes: AbstractMesh[] = []
     const trees_with_delays: { tree: Tree, delay: number }[] = []
 
     let i = 0
@@ -19,6 +18,10 @@ export function create_forest (scene: BABYLON.Scene, shadow_generator: ShadowGen
             const z = (j * 3) + (Math.random() * 2)
             const pos = position.add(new Vector3(x, 0, z))
             const tree = create_tree(scene, shadow_generator, pos, `${i}_${j}`)
+
+            const s = 0.5 + (Math.sin(Math.random() * Math.PI) * 0.7)
+            const scale = Vector3.One().scale(s)
+            tree.node.getChildMeshes().forEach(mesh => mesh.scaling = scale)
             tree_nodes.push(tree.node)
 
             const progress = (i + j) / ((size - 1) * 2)

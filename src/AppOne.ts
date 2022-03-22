@@ -154,6 +154,16 @@ function create_content (scene: BABYLON.Scene, camera: ArcRotateCamera, sun: Wra
         create_sky(scene)
         create_ground(scene)
         create_house(scene, shadow_generator, new Vector3(0, 0, 0), "house_one")
-        create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
+        const trees = create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
+
+        // remove trees near house
+        const near = 4
+        trees.filter(tree =>
+        {
+            if (tree.position.x > -near && tree.position.x < near && tree.position.z > -near && tree.position.z < near)
+            {
+                tree.dispose()
+            }
+        })
     }
 }
