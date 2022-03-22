@@ -11,6 +11,7 @@ import { ArcRotateCamera, Camera, PointLight, ShadowGenerator, Vector3 } from "@
 import { create_forest } from "./components/create_forest"
 import { create_sky } from "./components/create_sky"
 import { create_shadow_generator } from "./utils/create_shadow_generator"
+import { create_house } from "./components/create_house"
 
 
 export class AppOne {
@@ -90,11 +91,13 @@ function load_assets (assets_manager: BABYLON.AssetsManager)
 {
     assets_manager.addMeshTask("load low_poly_tree_1", null, "public/models/low_poly_tree/", "low_poly_tree_1.obj")
     assets_manager.addMeshTask("load low_poly_tree2", null, "public/models/low_poly_tree/", "low_poly_trees2.obj")
+    assets_manager.addMeshTask("load low_poly_house_2", null, "public/models/low_poly_house/", "low_poly_house_2.obj")
 
     assets_manager.onTaskSuccess = task =>
     {
         if (is_MeshAssetTask(task))
         {
+            debugger
             task.loadedMeshes.forEach(mesh => mesh.visibility = 0)
         }
     }
@@ -110,10 +113,11 @@ function is_MeshAssetTask (task: BABYLON.AbstractAssetTask): task is BABYLON.Mes
 
 enum Content
 {
+    earth,
     forest,
-    earth
+    house,
 }
-let content = Content.forest
+let content = Content.house
 
 
 function create_content (scene: BABYLON.Scene, camera: ArcRotateCamera, sun: WrappedSun, shadow_generator: ShadowGenerator)
@@ -128,6 +132,13 @@ function create_content (scene: BABYLON.Scene, camera: ArcRotateCamera, sun: Wra
     {
         create_sky(scene)
         create_ground(scene)
+        create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
+    }
+    else if (content === Content.house)
+    {
+        create_sky(scene)
+        create_ground(scene)
+        create_house(scene, shadow_generator, new Vector3(-15, 0, -15), "house_one")
         create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
     }
 }

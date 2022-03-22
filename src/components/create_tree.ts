@@ -1,6 +1,6 @@
 import * as BABYLON from "@babylonjs/core"
 import { Vector3 } from "@babylonjs/core"
-import { get_mesh } from "./get_mesh"
+import { get_mesh } from "../utils/get_mesh"
 
 
 
