@@ -13,11 +13,12 @@ export function create_ground (scene: Scene, size: number)
     // Our built-in "ground" shape.
     const ground = MeshBuilder.CreateBox("ground", { width: size, depth: size, height, faceColors }, scene)
     ground.position.set(0, -height/2, 0)
-    ground.receiveShadows = true
 
     const semimatt_material = new StandardMaterial("semimatt_material", scene)
     semimatt_material.specularColor = new Color3(0.05, 0.05, 0.05)
     ground.material = semimatt_material
+
+    ground.receiveShadows = true
 
 
     return ground

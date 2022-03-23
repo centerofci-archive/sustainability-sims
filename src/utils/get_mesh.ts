@@ -26,8 +26,8 @@ export function get_mesh (scene: Scene, mesh_name: string, new_mesh_name: string
     if (position) mesh.position = position
 
 
-    if (receive_shadows) mesh.receiveShadows = true
-    if (shadow_generator) shadow_generator.addShadowCaster(mesh)
+    // if (receive_shadows) mesh.receiveShadows = true
+    // if (shadow_generator) shadow_generator.addShadowCaster(mesh)
     mesh.getChildMeshes().forEach(mesh =>
     {
         if (receive_shadows) mesh.receiveShadows = true

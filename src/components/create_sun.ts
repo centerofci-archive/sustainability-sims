@@ -33,12 +33,18 @@ export function create_sun (scene: Scene): WrappedSun
 
     // sky.position = new Vector3(500, 200, 0)
 
+
+    const set_intensity = (intensity: number, bias_direct: number = 1) =>
+    {
+        sun.intensity = intensity * bias_direct
+        sky.intensity = intensity / bias_direct
+    }
+
+    set_intensity(1.5, 10.5)
+
+
     return {
-        set_intensity: (intensity: number) =>
-        {
-            sun.intensity = intensity
-            sky.intensity = intensity
-        },
+        set_intensity,
         configure_for_earth_globe: () =>
         {
             sky.dispose()
