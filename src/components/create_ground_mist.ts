@@ -1,3 +1,4 @@
+import * as BABYLON from "@babylonjs/core"
 import { Animation, Color4, EasingFunction, ExponentialEase, GPUParticleSystem, Mesh, ParticleSystem, Scene, Texture, Vector3 } from "@babylonjs/core"
 
 
@@ -18,37 +19,19 @@ export function create_ground_mist (scene: Scene, size: number, density: Density
 }
 
 
-
-const frame_rate = 10
-
-
-const grow_fog_y = new Animation("grow_fog_y", "position.y",
-    frame_rate,
-    Animation.ANIMATIONTYPE_FLOAT,
-    Animation.ANIMATIONLOOPMODE_CONSTANT
-)
-
 // Creating an easing function
 const easing_function = new ExponentialEase()
-easing_function.setEasingMode(EasingFunction.EASINGMODE_EASEOUT)
-grow_fog_y.setEasingFunction(easing_function)
+const hide_y = -3.5
+const target_y = -0.5
 
 
-const hide_y = -0.5
-grow_fog_y.setKeys([
-    { frame: 0, value: hide_y, },
-    { frame: frame_rate, value: -0.5, },
-])
-
-
-const use_GPU_version = true
+// const use_GPU_version = false
 function create_new_system (scene: Scene, size: number, density: number, particle_system: GPUParticleSystem | ParticleSystem | undefined)
 {
     const fog_texture = new Texture("./public/textures/smoke.png", scene)
     const fountain = Mesh.CreateBox("fountain", 0.01, scene)
     fountain.visibility = 0
     fountain.position = new Vector3(0, hide_y, 0)
-    fountain.animations.push(grow_fog_y)
 
 
     if (particle_system) particle_system.dispose()
@@ -58,19 +41,20 @@ function create_new_system (scene: Scene, size: number, density: number, particl
     const partical_count = Math.round(size * size * density_power)
 
 
-    if (use_GPU_version && GPUParticleSystem.IsSupported) {
-        particle_system = new GPUParticleSystem("particles", { capacity: partical_count }, scene)
-        particle_system.activeParticleCount = partical_count
-        particle_system.manualEmitCount = particle_system.activeParticleCount
-        particle_system.minEmitBox = new Vector3(-size, 2, -size) // Starting all from
-        particle_system.maxEmitBox = new Vector3(size, 2, size) // To..
+    // Not possible to use GPU with custom updateFunction
+    // if (use_GPU_version && GPUParticleSystem.IsSupported) {
+    //     particle_system = new GPUParticleSystem("particles", { capacity: partical_count }, scene)
+    //     particle_system.activeParticleCount = partical_count
+    //     particle_system.manualEmitCount = particle_system.activeParticleCount
+    //     particle_system.minEmitBox = new Vector3(-size, 2, -size) // Starting all from
+    //     particle_system.maxEmitBox = new Vector3(size, 2, size) // To..
 
-    } else {
+    // } else {
         particle_system = new ParticleSystem("particles", partical_count, scene)
         particle_system.manualEmitCount = particle_system.getCapacity()
         particle_system.minEmitBox = new Vector3(-size, 2, -size) // Starting all from
         particle_system.maxEmitBox = new Vector3(size, 2, size) // To...
-    }
+    // }
 
 
     particle_system.particleTexture = fog_texture.clone()
@@ -94,15 +78,51 @@ function create_new_system (scene: Scene, size: number, density: number, particl
     particle_system.updateSpeed = density <= Density.verylight ? 0.002 : 0.005
 
 
+    type ExtendedParticles = { start_time?: number, last_time?: number, total_y?: number } & BABYLON.Particle[]
+
+    particle_system.updateFunction = function (_particles) {
+        const particles = _particles as ExtendedParticles
+        particles.start_time = particles.start_time || performance.now()
+        const total_age = performance.now() - particles.start_time
+
+        let y_inc = 0
+        if (particles.total_y === undefined || particles.total_y <= target_y)
+        {
+            y_inc = particles.last_time ? (performance.now() - particles.last_time) / 1000 : 0
+
+            particles.total_y = particles.total_y ?? hide_y
+            particles.total_y += y_inc
+
+            // todo could limit y_inc to not exceed target_y
+        }
+
+        particles.last_time = performance.now()
+
+        const max_time = 6000
+        // This logic is not 100% right
+        const needs_update = total_age <= max_time
+        const max_a = 0.15
+        let a = max_a
+        if (needs_update)
+        {
+            a = Math.min((total_age / max_time) * max_a, max_a)
+        }
+
+        for (var index = 0; index < particles.length; index++) {
+            var particle = particles[index];
+
+            if (needs_update)
+            {
+                particle.color.a = a
+                particle.position.addInPlaceFromFloats(0, y_inc, 0)
+            }
+
+            particle.angle += particle.angularSpeed * (this as any)._scaledUpdateSpeed;
+        }
+    }
+
+
     particle_system.start()
-    scene.beginAnimation(fountain, 0, frame_rate, false)
-
-    // scene.onPointerMove = (e, evt) =>
-    // {
-    //     const position = scene.pick(scene.pointerX, scene.pointerY, mesh => mesh.name !== fountain.name)?.pickedPoint
-    //     if (position) fountain.position = position
-    // }
-
 
 
     return particle_system
