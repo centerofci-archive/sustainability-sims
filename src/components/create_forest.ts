@@ -35,11 +35,8 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
     }
 
 
-    let animated_once = false
-    scene.onPointerDown = function (evt, pickResult)
+    function play ()
     {
-        if (animated_once) return
-        animated_once = true
         trees_with_delays.forEach(({ tree, delay }) =>
         {
             setTimeout(() => tree.play(), delay)
@@ -47,5 +44,8 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
     }
 
 
-    return tree_nodes
+    return {
+        tree_nodes,
+        play,
+    }
 }

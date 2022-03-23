@@ -13,6 +13,7 @@ import { create_sky } from "./components/create_sky"
 import { create_shadow_generator } from "./utils/create_shadow_generator"
 import { create_house, mesh_name_low_poly_house_2 } from "./components/create_house"
 import { mesh_name_low_poly_tree_1 } from "./components/create_tree"
+import { create_ground_mist, Density } from "./components/create_ground_mist"
 
 
 export class AppOne {
@@ -137,6 +138,8 @@ let content = Content.house
 
 function create_content (scene: BABYLON.Scene, camera: ArcRotateCamera, sun: WrappedSun, shadow_generator: ShadowGenerator)
 {
+    const ground_size = 40
+
     if (content === Content.earth)
     {
         sun.configure_for_earth_globe()
@@ -146,15 +149,16 @@ function create_content (scene: BABYLON.Scene, camera: ArcRotateCamera, sun: Wra
     else if (content === Content.forest)
     {
         create_sky(scene)
-        create_ground(scene)
-        create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
+        create_ground(scene, ground_size)
+        const { play } = create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
+        play()
     }
     else if (content === Content.house)
     {
         create_sky(scene)
-        create_ground(scene)
+        create_ground(scene, ground_size)
         create_house(scene, shadow_generator, new Vector3(0, 0, 0), "house_one")
-        const trees = create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
+        const { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
 
         // remove trees near house
         const near = 4
@@ -165,5 +169,16 @@ function create_content (scene: BABYLON.Scene, camera: ArcRotateCamera, sun: Wra
                 tree.dispose()
             }
         })
+
+        // animate
+        let animated_once = false
+        scene.onPointerDown = () =>
+        {
+            if (animated_once) return
+            animated_once = true
+
+            grow_forest()
+            create_ground_mist(scene, ground_size * 0.45, Density.medium)
+        }
     }
 }
