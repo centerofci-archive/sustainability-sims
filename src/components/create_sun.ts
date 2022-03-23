@@ -2,6 +2,7 @@ import {
     Color3,
     GlowLayer,
     HemisphericLight,
+    Light,
     MeshBuilder,
     PointLight,
     Scene,
@@ -29,6 +30,12 @@ export function create_sun (scene: Scene): WrappedSun
     sun.position = position
     const sky = new HemisphericLight("sun_indirect", sun_direction, scene)
 
+    // Using this type of lighting allows things like the low poly house, which has materials with
+    // "use physical light falloff" still turned on, to be illuminated sufficiently.  Without it
+    // these models are very dark (as they are relatively far from the light source)
+    sun.falloffType = Light.FALLOFF_STANDARD
+    sky.falloffType = Light.FALLOFF_STANDARD
+
     const sun_globe = make_sun_globe(scene, position)
 
     // sky.position = new Vector3(500, 200, 0)
@@ -40,7 +47,7 @@ export function create_sun (scene: Scene): WrappedSun
         sky.intensity = intensity / bias_direct
     }
 
-    set_intensity(1.5, 10.5)
+    set_intensity(1.5, 1.5)
 
 
     return {

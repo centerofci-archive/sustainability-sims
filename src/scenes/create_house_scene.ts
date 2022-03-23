@@ -16,7 +16,7 @@ export const create_house_scene: CreateContent = (scene, camera, sun, shadow_gen
     create_ground(scene, ground_size)
     create_house(scene, shadow_generator, new Vector3(0, 0, 0), "house_one")
 
-    return
+
     const { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
 
     // remove trees near house
