@@ -1,4 +1,4 @@
-import { Scene, Node, Vector3, ShadowGenerator } from "@babylonjs/core"
+import { Scene, Node, Vector3, ShadowGenerator, MeshBuilder } from "@babylonjs/core"
 import { set_mesh_visiblilty } from "./set_mesh_visiblilty"
 
 
@@ -15,12 +15,19 @@ interface GetMeshOptions
 export function get_mesh (scene: Scene, mesh_name: string, new_mesh_name: string, options: GetMeshOptions = {})
 {
     const mesh = scene.getMeshByName(mesh_name)?.clone(new_mesh_name, options.parent_node || null)!
+    if (!mesh)
+    {
+        console.error(`Missing mesh: ${mesh_name}`)
+        return MeshBuilder.CreateBox("missing " + mesh_name, {}, scene)
+    }
 
     const { position, receive_shadows, shadow_generator, visibility } = options
 
     if (position) mesh.position = position
 
 
+    if (receive_shadows) mesh.receiveShadows = true
+    if (shadow_generator) shadow_generator.addShadowCaster(mesh)
     mesh.getChildMeshes().forEach(mesh =>
     {
         if (receive_shadows) mesh.receiveShadows = true

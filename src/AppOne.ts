@@ -11,7 +11,7 @@ import { ArcRotateCamera, Camera, PointLight, ShadowGenerator, Vector3 } from "@
 import { create_forest } from "./components/create_forest"
 import { create_sky } from "./components/create_sky"
 import { create_shadow_generator } from "./utils/create_shadow_generator"
-import { create_house, mesh_name_low_poly_house_2 } from "./components/create_house"
+import { create_house, mesh_name_low_poly_house_2, mesh_name_low_poly_house_2_chimney } from "./components/create_house"
 import { mesh_name_low_poly_tree_1 } from "./components/create_tree"
 import { create_ground_mist, Density } from "./components/create_ground_mist"
 
@@ -92,29 +92,47 @@ function create_scene (engine: BABYLON.Engine, canvas: HTMLCanvasElement)
 const parent_mesh_names = new Set([
     mesh_name_low_poly_tree_1,
     mesh_name_low_poly_house_2,
+    mesh_name_low_poly_house_2_chimney,
 ])
 function load_assets (assets_manager: BABYLON.AssetsManager)
 {
     assets_manager.addMeshTask("load low_poly_tree_1", null, "public/models/low_poly_tree/", "low_poly_tree_1.obj")
     // assets_manager.addMeshTask("load low_poly_tree2", null, "public/models/low_poly_tree/", "low_poly_trees2.obj")
-    assets_manager.addMeshTask("load low_poly_house_2", null, "public/models/low_poly_house/", "low_poly_house_2.obj")
+    assets_manager.addMeshTask("load low_poly_house_2", null, "public/models/low_poly_house/", "low_poly_house_2.glb")
 
     assets_manager.onTaskSuccess = task =>
     {
         if (is_MeshAssetTask(task))
         {
-            const parent_mesh = task.loadedMeshes.find(mesh => parent_mesh_names.has(mesh.name))
-            if (!parent_mesh)
+            if (typeof task.sceneFilename === "string" && task.sceneFilename.endsWith(".glb"))
             {
-                console.error("No parent mesh found whilst loading ", task.name)
-                return
+                const roots = task.loadedMeshes.filter(mesh => mesh.name === "__root__")
+
+                roots.forEach(mesh =>
+                {
+                    mesh.getChildMeshes().forEach(child =>
+                    {
+                        if (child.parent === mesh) child.setParent(null)
+                    })
+                    mesh.dispose()
+                })
+            }
+            else
+            {
+                const parent_mesh = task.loadedMeshes.find(mesh => parent_mesh_names.has(mesh.name))
+                if (!parent_mesh)
+                {
+                    console.error("No parent mesh found whilst loading ", task.name)
+                    return
+                }
+
+                task.loadedMeshes.forEach(mesh =>
+                {
+                    if (mesh.name !== parent_mesh.name) parent_mesh.addChild(mesh)
+                })
             }
 
-            task.loadedMeshes.forEach(mesh =>
-            {
-                if (mesh.name !== parent_mesh.name) parent_mesh.addChild(mesh)
-                mesh.visibility = 0
-            })
+            task.loadedMeshes.forEach(mesh => mesh.visibility = 0)
         }
     }
 }
