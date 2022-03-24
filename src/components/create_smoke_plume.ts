@@ -15,7 +15,7 @@ interface EmitterOptions
 let smoke_material: StandardMaterial | undefined
 
 
-export function create_smoke_plume (scene: Scene, shadow_generator: ShadowGenerator, options: EmitterOptions)
+export function create_smoke_plume (scene: Scene, options: EmitterOptions, shadow_generator?: ShadowGenerator)
 {
     if (!smoke_material)
     {
@@ -39,6 +39,13 @@ export function create_smoke_plume (scene: Scene, shadow_generator: ShadowGenera
         const smoke_container = new AbstractMesh("smoke_container_" + i)
 
         const smoke_ball = MeshBuilder.CreateIcoSphere("smoke_" + i, { radius: 0.2, subdivisions: 2 }, scene)
+
+        if (shadow_generator)
+        {
+            smoke_ball.receiveShadows = true
+            shadow_generator.addShadowCaster(smoke_ball)
+        }
+
         smoke_container.addChild(smoke_ball)
         smoke_container.rotateAround(emit_position1, new Vector3(Math.random(), 0, Math.random()), (Math.random() - 0.5) * 0.4)
 

@@ -67,7 +67,7 @@ function create_scene (engine: BABYLON.Engine, canvas: HTMLCanvasElement)
     scene.clearColor = new BABYLON.Color4(0, 0, 0, 1)
 
     // This creates and positions a camera
-    const camera = new BABYLON.ArcRotateCamera("orbitalCamera", Math.PI / 2, Math.PI / 3, 30, new Vector3(0, 0, 0), scene)
+    const camera = new BABYLON.ArcRotateCamera("orbitalCamera", Math.PI / 3, Math.PI / 3, 30, new Vector3(0, 0, 0), scene)
 
     // This attaches the camera to the canvas
     camera.attachControl(canvas, true)
