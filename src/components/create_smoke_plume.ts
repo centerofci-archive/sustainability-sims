@@ -54,9 +54,11 @@ export function create_smoke_plume (scene: Scene, shadow_generator: ShadowGenera
 
 
         const animate_opacity = new Animation("smoke_animate_opacity_" + i, "visibility", frame_rate, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CYCLE)
+        const disappear = 0.9 + (Math.random() / 10)
         animate_opacity.setKeys([
             { frame: 0, value: 1 },
-            { frame: total_frames * 0.8, value: 1 },
+            { frame: total_frames * 0.8 * disappear, value: 1 },
+            { frame: total_frames * disappear, value: 0 },
             { frame: total_frames, value: 0 },
         ])
         smoke_ball.animations.push(animate_opacity)
