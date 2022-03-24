@@ -4,6 +4,7 @@ import { create_ground } from "../components/create_ground"
 import { create_ground_mist, Density } from "../components/create_ground_mist"
 import { create_house } from "../components/create_house"
 import { create_sky } from "../components/create_sky"
+import { create_smoke_plume } from "../components/create_smoke_plume"
 import { CreateContent } from "./content"
 
 
@@ -15,6 +16,10 @@ export const create_house_scene: CreateContent = (scene, camera, sun, shadow_gen
     create_sky(scene)
     create_ground(scene, ground_size)
     create_house(scene, shadow_generator, new Vector3(0, 0, 0), "house_one")
+
+
+    const { play } = create_smoke_plume(scene, shadow_generator, { emit_position1: new Vector3(-0.5, 4.2, -1.9) })
+    setTimeout(() => play(), 1000)
 
 
     const { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
