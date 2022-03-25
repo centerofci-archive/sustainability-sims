@@ -1,6 +1,7 @@
-import { Scene, ArcRotateCamera, ShadowGenerator, Vector3 } from "@babylonjs/core"
+import { Scene, ArcRotateCamera, ShadowGenerator, Vector3, Color4 } from "@babylonjs/core"
 import { create_earth } from "../components/create_earth"
 import { create_forest } from "../components/create_forest"
+import { create_gas_bubble } from "../components/create_gas_bubble"
 import { create_ground } from "../components/create_ground"
 import { create_sky } from "../components/create_sky"
 import { WrappedSun } from "../components/create_sun"
@@ -13,8 +14,9 @@ enum Content
     earth,
     forest,
     house,
+    gas_bubble,
 }
-export let content = Content.house
+export let content = Content.gas_bubble
 
 
 
@@ -43,5 +45,15 @@ export const create_content: CreateContent = (scene, camera, sun, shadow_generat
     else if (content === Content.house)
     {
         create_house_scene(scene, camera, sun, shadow_generator)
+    }
+    else if (content === Content.gas_bubble)
+    {
+        create_sky(scene)
+        create_ground(scene, ground_size)
+        const { play, hide, grow } = create_gas_bubble(scene, new Vector3(0, 5, 0), 100, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
+        play()
+
+        setTimeout(() => grow(30), 1000)
+        setTimeout(() => grow(3000, 6000), 5000)
     }
 }
