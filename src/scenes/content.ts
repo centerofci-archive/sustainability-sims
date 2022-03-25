@@ -50,10 +50,12 @@ export const create_content: CreateContent = (scene, camera, sun, shadow_generat
     {
         create_sky(scene)
         create_ground(scene, ground_size)
-        const { play, hide, grow } = create_gas_bubble(scene, new Vector3(0, 5, 0), 100, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
+        const { play, opacity, grow } = create_gas_bubble(scene, new Vector3(0, 5, 0), 100, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
         play()
 
         setTimeout(() => grow(30), 1000)
         setTimeout(() => grow(3000, 6000), 5000)
+        setTimeout(() => opacity(0.1), 1000)
+        setTimeout(() => opacity(1), 3000)
     }
 }

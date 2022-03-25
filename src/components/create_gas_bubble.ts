@@ -12,6 +12,7 @@ import {
     Effect,
     ShaderMaterial,
 } from "@babylonjs/core"
+import { bounded } from "../utils/bounded";
 
 
 Effect.ShadersStore["rippleVertexShader"] = "precision highp float;\r\n"+
@@ -130,7 +131,7 @@ export function create_gas_bubble (scene: Scene, position: Vector3, volume_m3: n
     ripple_shader_material.setColor4("color", color)
     // ripple_shader_material.setVector3("bubblePosition", position)
     // ripple_shader_material.setVector3("cameraPosition", Vector3.Zero())
-    ripple_shader_material.backFaceCulling = false
+    ripple_shader_material.backFaceCulling = true
 
 
     // const gas_material = new StandardMaterial("gas", scene)
@@ -198,16 +199,26 @@ export function create_gas_bubble (scene: Scene, position: Vector3, volume_m3: n
 
     return {
         play,
-        hide: () =>
+        opacity: (new_opacity = 0) =>
         {
-            function fade_opacity ()
+            new_opacity = bounded(new_opacity, 0, 1)
+
+            function change_opacity ()
             {
-                if (color.a <= 0) return
-                color.a -= 0.05
+                if (color.a === new_opacity) return
+                const diff = new_opacity - color.a
+                const change = Math.min(Math.abs(diff), 0.05)
+                if (change < 0.05) color.a = new_opacity
+                else
+                {
+                    color.a += (change * Math.sign(diff))
+                    color.a = bounded(color.a, 0, 1)
+                }
+
                 ripple_shader_material.setColor4("color", color)
-                setTimeout(fade_opacity, 50)
+                setTimeout(change_opacity, 50)
             }
-            fade_opacity()
+            change_opacity()
         },
         grow: (new_volume_m3: number, animation_speed = 3000) =>
         {
