@@ -35,9 +35,9 @@ Effect.ShadersStore["rippleVertexShader"] = "precision highp float;\r\n"+
 
 "    float inertia = 1. / pow(max(bubble_size, 1.), 0.5);\r\n"+
 
-"    float x = position.x + (sin((position.x + time) * 2.) - 0.5) * 0.1 * inertia;\r\n"+
+"    float x = position.x + (sin((position.x + time) * 2. * inertia) - 0.5) * 0.1 * inertia;\r\n"+
 "    float y = position.y;\r\n"+
-"    float z = position.z + (sin((position.z + time) * 5.) - 0.5) * 0.07 * inertia;\r\n"+
+"    float z = position.z + (sin((position.z + time) * 5. * inertia) - 0.5) * 0.07 * inertia;\r\n"+
 "    \r\n"+
 "    vec4 p = vec4( x, y, z, 1. );\r\n"+
 
