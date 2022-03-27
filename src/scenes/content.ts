@@ -3,6 +3,7 @@ import { create_earth } from "../components/create_earth"
 import { create_forest } from "../components/create_forest"
 import { create_gas_bubble } from "../components/create_gas_bubble"
 import { create_ground } from "../components/create_ground"
+import { create_person } from "../components/create_person"
 import { create_sky } from "../components/create_sky"
 import { WrappedSun } from "../components/create_sun"
 import { home1_2021_Q4_gas_usage__m3 } from "../data/home_energy/home1"
@@ -69,6 +70,8 @@ export const create_content: CreateContent = (scene, camera, sun, shadow_generat
         gas1.play()
         const gas2 = create_gas_bubble(scene, new Vector3(5, 5, 0), 1, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
         gas2.play()
+
+        create_person(scene, shadow_generator, new Vector3(0, 0, 0))
 
         setTimeout(() => gas1.grow(home1_2021_Q4_gas_usage__m3.value * 3), 1000)
         setTimeout(() => gas2.grow(home2_annual_2019_gas_usage__m3.value), 1000)

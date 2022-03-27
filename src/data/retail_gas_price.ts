@@ -56,6 +56,7 @@ const average_uk_gas_price_2021: [TemporalRangeValue, ...Partial<TemporalRangeVa
 ]
 
 
+
 export const gas_price = {
     average_annual: {
         uk: {
