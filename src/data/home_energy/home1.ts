@@ -47,3 +47,8 @@ export const home1_2021_Q4_gas_usage__cubic_feet: TemporalRangeValue = {
 export const home1_2021_Q4_gas_usage__m3: TemporalRangeValue = {
     ...convert_value(home1_2021_Q4_gas_usage__cubic_feet, UnitsID.volume_normal_m3),
 }
+
+export const home1_2021_approx_gas_usage__m3: TemporalRangeValue = {
+    ...home1_2021_Q4_gas_usage__m3,
+    value: home1_2021_Q4_gas_usage__m3.value * 3, // multiply by 3 as more gas used during Q4 (and Q1) than other times of the year
+}

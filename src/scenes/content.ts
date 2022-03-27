@@ -1,4 +1,5 @@
 import { Scene, ArcRotateCamera, ShadowGenerator, Vector3, Color4 } from "@babylonjs/core"
+
 import { create_earth } from "../components/create_earth"
 import { create_forest } from "../components/create_forest"
 import { create_gas_bubble } from "../components/create_gas_bubble"
@@ -6,7 +7,7 @@ import { create_ground } from "../components/create_ground"
 import { create_person } from "../components/create_person"
 import { create_sky } from "../components/create_sky"
 import { WrappedSun } from "../components/create_sun"
-import { home1_2021_Q4_gas_usage__m3 } from "../data/home_energy/home1"
+import { home1_2021_approx_gas_usage__m3 } from "../data/home_energy/home1"
 import { home2_annual_2019_gas_usage__m3 } from "../data/home_energy/home2"
 import { create_house_scene } from "./create_house_scene"
 
@@ -73,7 +74,7 @@ export const create_content: CreateContent = (scene, camera, sun, shadow_generat
 
         create_person(scene, shadow_generator, new Vector3(0, 0, 0))
 
-        setTimeout(() => gas1.grow(home1_2021_Q4_gas_usage__m3.value * 3), 1000)
+        setTimeout(() => gas1.grow(home1_2021_approx_gas_usage__m3.value), 1000)
         setTimeout(() => gas2.grow(home2_annual_2019_gas_usage__m3.value), 1000)
     }
 }

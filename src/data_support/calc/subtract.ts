@@ -15,6 +15,6 @@ export function subtract <T extends Value, T2 extends Value> (value1: T, value2:
 
     return {
         ...value1,
-        value: value1.value / value2.value,
+        value: value1.value - value2.value,
     }
 }
