@@ -19,8 +19,8 @@ export function create_person (scene: Scene, shadow_generator: ShadowGenerator, 
     const head_height_radius = 0.15
 
     const person = new Mesh("person", scene)
-    const person_body = MeshBuilder.CreateCylinder("person_body", { height: body_height, diameterBottom: 0.35, diameterTop: 0.55 }, scene)
-    const person_head = MeshBuilder.CreateIcoSphere("person_head", { radiusX: 0.10, radiusZ: 0.12, radiusY: head_height_radius, subdivisions: 1 }, scene)
+    const person_body = MeshBuilder.CreateCylinder("person_body", { height: body_height, diameterBottom: 0.35, diameterTop: 0.50 }, scene)
+    const person_head = MeshBuilder.CreateIcoSphere("person_head", { radiusX: 0.08, radiusZ: 0.12, radiusY: head_height_radius, subdivisions: 1 }, scene)
 
     person_body.position = new Vector3(0, body_height / 2, 0)
     person_head.position = new Vector3(0, body_height + head_height_radius, 0)
