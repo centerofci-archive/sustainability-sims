@@ -5,14 +5,12 @@ import { create_ground_mist, Density } from "../components/create_ground_mist"
 import { create_house } from "../components/create_house"
 import { create_sky } from "../components/create_sky"
 import { create_smoke_plume } from "../components/create_smoke_plume"
-import { CreateContent } from "./content"
+import { CreateContentCommonArgs } from "./content"
 
 
 
-export const create_house_scene: CreateContent = (scene, camera, sun, shadow_generator) =>
+export const create_house_scene = ({ scene, shadow_generator }: CreateContentCommonArgs, ground_size: number) =>
 {
-    const ground_size = 40
-
     create_sky(scene)
     create_ground(scene, ground_size)
     create_house(scene, shadow_generator, new Vector3(0, 0, 0), "house_one")

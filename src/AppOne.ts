@@ -47,7 +47,12 @@ export class AppOne {
         this.assets_manager.onFinish = tasks =>
         {
             const shadow_generator = create_shadow_generator(this.scene)
-            create_content(this.scene, this.camera, this.sun, shadow_generator)
+            create_content({
+                scene: this.scene,
+                camera: this.camera,
+                sun: this.sun,
+                shadow_generator,
+            })
 
             this.engine.runRenderLoop(() =>
             {

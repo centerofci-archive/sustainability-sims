@@ -4,12 +4,11 @@ import { create_earth } from "../components/create_earth"
 import { create_forest } from "../components/create_forest"
 import { create_gas_bubble } from "../components/create_gas_bubble"
 import { create_ground } from "../components/create_ground"
-import { create_person } from "../components/create_person"
 import { create_sky } from "../components/create_sky"
 import { WrappedSun } from "../components/create_sun"
-import { home1_2021_approx_gas_usage__m3 } from "../data/home_energy/home1"
-import { home2_annual_2019_gas_usage__m3 } from "../data/home_energy/home2"
+import { create_compare_home_gas_usage_scene } from "./create_compare_home_gas_usage_scene"
 import { create_house_scene } from "./create_house_scene"
+import { create_sustainable_home_scene } from "./create_sustainable_home_scene"
 
 
 
@@ -20,19 +19,23 @@ enum Content
     house,
     gas_bubble,
     compare_home_gas_usage,
+    sustainable_home,
 }
-export let content = Content.compare_home_gas_usage
+export let content = Content.sustainable_home
 
 
 
-export interface CreateContent
+export interface CreateContentCommonArgs
 {
-    (scene: Scene, camera: ArcRotateCamera, sun: WrappedSun, shadow_generator: ShadowGenerator): void
+    scene: Scene
+    camera: ArcRotateCamera
+    sun: WrappedSun
+    shadow_generator: ShadowGenerator
 }
 
-export const create_content: CreateContent = (scene, camera, sun, shadow_generator) =>
+export const create_content = ({ scene, camera, sun, shadow_generator }: CreateContentCommonArgs) =>
 {
-    const ground_size = 40
+    const small_ground_size = 40
 
     if (content === Content.earth)
     {
@@ -43,18 +46,18 @@ export const create_content: CreateContent = (scene, camera, sun, shadow_generat
     else if (content === Content.forest)
     {
         create_sky(scene)
-        create_ground(scene, ground_size)
+        create_ground(scene, small_ground_size)
         const { play } = create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
         play()
     }
     else if (content === Content.house)
     {
-        create_house_scene(scene, camera, sun, shadow_generator)
+        create_house_scene({ scene, camera, sun, shadow_generator }, small_ground_size)
     }
     else if (content === Content.gas_bubble)
     {
         create_sky(scene)
-        create_ground(scene, ground_size)
+        create_ground(scene, small_ground_size)
         const { play, opacity, grow } = create_gas_bubble(scene, new Vector3(0, 5, 0), 100, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
         play()
 
@@ -65,16 +68,10 @@ export const create_content: CreateContent = (scene, camera, sun, shadow_generat
     }
     else if (content === Content.compare_home_gas_usage)
     {
-        create_sky(scene)
-        create_ground(scene, ground_size)
-        const gas1 = create_gas_bubble(scene, new Vector3(-5, 5, 0), 1, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
-        gas1.play()
-        const gas2 = create_gas_bubble(scene, new Vector3(5, 5, 0), 1, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
-        gas2.play()
-
-        create_person(scene, shadow_generator, new Vector3(0, 0, 0))
-
-        setTimeout(() => gas1.grow(home1_2021_approx_gas_usage__m3.value), 1000)
-        setTimeout(() => gas2.grow(home2_annual_2019_gas_usage__m3.value), 1000)
+        create_compare_home_gas_usage_scene({ scene, camera, sun, shadow_generator }, small_ground_size)
+    }
+    else if (content === Content.sustainable_home)
+    {
+        create_sustainable_home_scene({ scene, camera, sun, shadow_generator }, small_ground_size)
     }
 }
