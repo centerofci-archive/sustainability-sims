@@ -56,6 +56,15 @@ const average_uk_gas_price_2021: [TemporalRangeValue, ...Partial<TemporalRangeVa
 ]
 
 
+const uk_gas_price_2022_02_supplier_eon : TemporalRangeValue = {
+    value: 0.03970,
+    units: { num: [UnitsID.currency_gbp], denom: [UnitsID.energy_kWh] },
+    date_from: DATES.date_2022_02_14,
+    date_to: DATES.date_2022_03_14,
+    description: "EON domestic gas price",
+}
+
+
 
 export const gas_price = {
     average_annual: {
@@ -63,6 +72,11 @@ export const gas_price = {
             average_uk_gas_price_2019,
             average_uk_gas_price_2020,
             average_uk_gas_price_2021,
+        }
+    },
+    supplier_eon: {
+        uk: {
+            uk_gas_price_2022_02_supplier_eon,
         }
     }
 }

@@ -1,12 +1,9 @@
 import { Color4, Vector3 } from "@babylonjs/core"
-import { create_gas_bubble } from "../components/create_gas_bubble"
 import { create_ground } from "../components/create_ground"
 import { create_house } from "../components/create_house"
 import { create_person } from "../components/create_person"
 import { create_sky } from "../components/create_sky"
 import { create_smoke_plume } from "../components/create_smoke_plume"
-import { home1_2021_approx_gas_usage__m3 } from "../data/home_energy/home1"
-import { home2_annual_2019_gas_usage__m3 } from "../data/home_energy/home2"
 import { CreateContentCommonArgs } from "./content"
 
 

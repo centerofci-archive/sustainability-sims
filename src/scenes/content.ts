@@ -24,7 +24,7 @@ enum Content
     compare_home_gas_usage,
     sustainable_home,
 }
-export let content = Content.arrow
+export let content = Content.compare_home_gas_usage
 
 
 
