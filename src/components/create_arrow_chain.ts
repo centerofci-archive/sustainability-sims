@@ -87,14 +87,26 @@ export function create_arrow_chain (scene: Scene, name: string, arrow_args: Crea
         play: () =>
         {
             const total_ms = (total_frames / frame_rate) * 1000
+            const delay_ms = total_ms / number_of_arrows
+            const start_time = performance.now()
 
-            arrows.forEach((arrow, i) =>
-            {
-                const delay = (i / number_of_arrows) * total_ms
-                setTimeout(() =>
+            const arrows_copy = [...arrows]
+
+            const observer = scene.onBeforeRenderObservable.add(function () {
+                if (arrows_copy.length === 0)
                 {
-                    scene.beginAnimation(arrow, 0, total_frames, true)
-                }, delay)
+                    scene.onBeforeRenderObservable.remove(observer)
+                    return
+                }
+
+                const current_time = performance.now()
+
+                const number_of_arrows_animated = arrows.length - arrows_copy.length
+                const min_target_time = start_time + (delay_ms * number_of_arrows_animated)
+                if (current_time <= min_target_time) return
+
+                const next_mesh_to_animate = arrows_copy.shift()
+                scene.beginAnimation(next_mesh_to_animate, 0, total_frames, true)
             })
         }
     }
