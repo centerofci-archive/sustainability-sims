@@ -15,6 +15,14 @@ export const home2_annual_gas_bill: TemporalRangeValue = {
 }
 
 
+export const home2_annual_gas_usage: TemporalRangeValue = {
+    value: 386,
+    units: UnitsID.volume_normal_m3,
+    date_from: DATES.date_2022_02_14,
+    date_to: DATES.date_2022_03_14,
+}
+
+
 export const home2_annual_2019_gas_usage__therm: TemporalRangeValue = {
     // todo get the bill which shows the actual price and volume of gas
     ...divide(home2_annual_gas_bill, get_latest_value(gas_price.average_annual.uk.average_uk_gas_price_2019)),

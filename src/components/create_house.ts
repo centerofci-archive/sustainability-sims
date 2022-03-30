@@ -3,8 +3,8 @@ import { get_mesh } from "../utils/get_mesh"
 
 
 
-export const mesh_name_low_poly_house_2 = "low_poly_house_2"
-export const mesh_name_low_poly_house_2_chimney = "low_poly_house_2_chimney"
+const mesh_name_low_poly_house_2 = "low_poly_house_2"
+const mesh_name_low_poly_house_2_chimney = "low_poly_house_2_chimney"
 
 
 export function create_house (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3, name: string)

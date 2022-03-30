@@ -1,18 +1,17 @@
 import {
     Animation,
     SineEase,
-    Color3,
     Color4,
     EasingFunction,
     MeshBuilder,
     Scene,
     ShadowGenerator,
-    StandardMaterial,
     Vector3,
     Effect,
     ShaderMaterial,
 } from "@babylonjs/core"
-import { bounded } from "../utils/bounded";
+import { bounded } from "../utils/bounded"
+
 
 
 Effect.ShadersStore["rippleVertexShader"] = "precision highp float;\r\n"+

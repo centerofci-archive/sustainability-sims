@@ -1,11 +1,13 @@
-import { Scene, ArcRotateCamera, ShadowGenerator, Vector3, Color4 } from "@babylonjs/core"
+import { Scene, ArcRotateCamera, ShadowGenerator, Vector3, Color4, StandardMaterial } from "@babylonjs/core"
 
+import { create_arrow } from "../components/create_arrow"
 import { create_earth } from "../components/create_earth"
 import { create_forest } from "../components/create_forest"
 import { create_gas_bubble } from "../components/create_gas_bubble"
 import { create_ground } from "../components/create_ground"
 import { create_sky } from "../components/create_sky"
 import { WrappedSun } from "../components/create_sun"
+import { create_arrow_scene } from "./create_arrow_scene"
 import { create_compare_home_gas_usage_scene } from "./create_compare_home_gas_usage_scene"
 import { create_house_scene } from "./create_house_scene"
 import { create_sustainable_home_scene } from "./create_sustainable_home_scene"
@@ -18,10 +20,11 @@ enum Content
     forest,
     house,
     gas_bubble,
+    arrow,
     compare_home_gas_usage,
     sustainable_home,
 }
-export let content = Content.sustainable_home
+export let content = Content.arrow
 
 
 
@@ -65,6 +68,10 @@ export const create_content = ({ scene, camera, sun, shadow_generator }: CreateC
         setTimeout(() => grow(3000, 6000), 5000)
         setTimeout(() => opacity(0.1), 1000)
         setTimeout(() => opacity(1), 3000)
+    }
+    else if (content === Content.arrow)
+    {
+        create_arrow_scene({ scene, camera, sun, shadow_generator }, small_ground_size)
     }
     else if (content === Content.compare_home_gas_usage)
     {
