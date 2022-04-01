@@ -1,4 +1,4 @@
-import { Color4, Vector3 } from "@babylonjs/core"
+import { Color3, Color4, HighlightLayer, PointerEventTypes, Vector3 } from "@babylonjs/core"
 import { create_gas_bubble } from "../components/create_gas_bubble"
 import { create_ground } from "../components/create_ground"
 import { create_person } from "../components/create_person"
@@ -13,13 +13,52 @@ export const create_compare_home_gas_usage_scene = ({ scene, shadow_generator }:
 {
     create_sky(scene)
     create_ground(scene, ground_size)
-    const gas1 = create_gas_bubble(scene, new Vector3(-5, 5, 0), 1, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
+    const gas1 = create_gas_bubble(scene, new Vector3(-7, 5, 0), 1, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
     gas1.play()
-    const gas2 = create_gas_bubble(scene, new Vector3(5, 5, 0), 1, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
+    const gas2 = create_gas_bubble(scene, new Vector3(7, 8, 0), 1, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
     gas2.play()
 
-    create_person(scene, shadow_generator, new Vector3(0, 0, 0))
 
+    gas1.gas_bubble_mesh.enablePointerMoveEvents = true
+    gas2.gas_bubble_mesh.enablePointerMoveEvents = true
+    const highlight = new HighlightLayer("hl1", scene)
+    highlight.outerGlow = false // prevents this problem: https://forum.babylonjs.com/t/large-highligh-of-mesh-behind-partly-visible-mesh/28913
+
+
+    create_person(scene, shadow_generator, new Vector3(0, 0, 6))
+
+    debugger
     setTimeout(() => gas1.grow(home1_2021_approx_gas_usage__m3.value), 1000)
     setTimeout(() => gas2.grow(home2_annual_gas_usage__m3.second_estimate_for_2022.value), 1000)
+
+
+
+    scene.onPointerObservable.add((pointerInfo) => {
+        if (pointerInfo.type === PointerEventTypes.POINTERDOWN)
+        {
+            // if (pointerInfo.pickInfo?.hit && pointerInfo.pickInfo.pickedMesh !== ground) {
+            //     pointerDown(pointerInfo.pickInfo.pickedMesh)
+            // }
+        }
+        else if (pointerInfo.type === PointerEventTypes.POINTERMOVE)
+        {
+            if (pointerInfo.pickInfo?.pickedMesh === gas1.gas_bubble_mesh)
+            {
+                highlight.addMesh(gas1.gas_bubble_mesh, Color3.Green())
+            }
+            else
+            {
+                highlight.removeMesh(gas1.gas_bubble_mesh)
+            }
+
+            if (pointerInfo.pickInfo?.pickedMesh === gas2.gas_bubble_mesh)
+            {
+                highlight.addMesh(gas2.gas_bubble_mesh, Color3.Green())
+            }
+            else
+            {
+                highlight.removeMesh(gas2.gas_bubble_mesh)
+            }
+        }
+    })
 }

@@ -38,6 +38,8 @@ export interface CreateContentCommonArgs
 
 export const create_content = ({ scene, camera, sun, shadow_generator }: CreateContentCommonArgs) =>
 {
+    camera.upperBetaLimit = (Math.PI / 2) * 0.99
+
     const small_ground_size = 40
 
     if (content === Content.earth)

@@ -18,7 +18,7 @@ export class AppOne {
     sun: WrappedSun
 
     constructor(readonly canvas: HTMLCanvasElement) {
-        this.engine = new BABYLON.Engine(canvas)
+        this.engine = new BABYLON.Engine(canvas, true, { stencil: true })
         window.addEventListener("resize", () => {
             this.engine.resize()
         })

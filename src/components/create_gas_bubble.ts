@@ -197,6 +197,7 @@ export function create_gas_bubble (scene: Scene, position: Vector3, volume_m3: n
     const new_radius = { start_value: 0, target_value: 0, animating: false, start_at: 0 }
 
     return {
+        gas_bubble_mesh: gas_bubble,
         play,
         opacity: (new_opacity = 0) =>
         {
