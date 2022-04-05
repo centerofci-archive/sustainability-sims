@@ -7,6 +7,7 @@ import { create_gas_bubble } from "../components/create_gas_bubble"
 import { create_ground } from "../components/create_ground"
 import { create_sky } from "../components/create_sky"
 import { WrappedSun } from "../components/create_sun"
+import { url_params_parser } from "../utils/url_params_parser"
 import { create_arrow_scene } from "./create_arrow_scene"
 import { create_compare_home_gas_usage_scene } from "./create_compare_home_gas_usage_scene"
 import { create_house_scene } from "./create_house_scene"
@@ -24,7 +25,9 @@ enum Content
     compare_home_gas_usage,
     sustainable_home,
 }
-export let content = Content.compare_home_gas_usage
+
+const url_params = url_params_parser()
+let content = Content.sustainable_home
 
 
 
@@ -84,6 +87,6 @@ export const create_content = ({ scene, camera, sun, shadow_generator }: CreateC
     }
     else if (content === Content.sustainable_home)
     {
-        create_sustainable_home_scene({ scene, camera, sun, shadow_generator }, small_ground_size)
+        create_sustainable_home_scene({ scene, camera, sun, shadow_generator }, small_ground_size, url_params)
     }
 }
