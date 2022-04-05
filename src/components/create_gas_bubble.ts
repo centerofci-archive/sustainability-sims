@@ -9,6 +9,9 @@ import {
     Vector3,
     Effect,
     ShaderMaterial,
+    Color3,
+    StandardMaterial,
+    AbstractMesh,
 } from "@babylonjs/core"
 import { bounded } from "../utils/bounded"
 
@@ -56,12 +59,11 @@ Effect.ShadersStore["rippleFragmentShader"] = "precision highp float;\r\n"+
 "varying vec3 vNormal;\r\n"+
 
 "uniform vec4 color;\r\n"+
-"uniform float bubble_size;\r\n"+
 
 "void main(void) {\r\n"+
 "    vec3 n = normalize( worldView * vec4(vNormal, 0.0) ).xyz;\r\n"+
 
-"    float y_ratio = vPosition.y / bubble_size;\r\n"+
+"    float y_ratio = vPosition.y / 1.;\r\n"+
 "    float brightness = (sin(abs(n.x)) + sin(y_ratio)) / 4.0;\r\n"+
 "    float r = clamp(color.x + brightness, 0.0, 1.0);\r\n"+
 "    float g = clamp(color.y + brightness, 0.0, 1.0);\r\n"+
@@ -112,42 +114,73 @@ Effect.ShadersStore["rippleFragmentShader"] = "precision highp float;\r\n"+
 // `
 
 
-export function create_gas_bubble (scene: Scene, position: Vector3, volume_m3: number, color: Color4, shadow_generator?: ShadowGenerator)
+
+interface CreateGasBubbleArgs
 {
+    position: Vector3
+    volume_m3: number
+    color: Color4
+    shadow_generator?: ShadowGenerator
+    animation?: "ripple" | "bounce"
+    bounce_animation_squidge?: number
+}
+
+export function create_gas_bubble (scene: Scene, args: CreateGasBubbleArgs)
+{
+    const {
+        position,
+        volume_m3,
+        shadow_generator,
+        animation,
+        bounce_animation_squidge = 0.05,
+    } = args
+    let { color } = args
+
     let radius = volume_to_radius(volume_m3)
     color = color.clone()
 
 
-    const ripple_shader_material = new ShaderMaterial("ripple_shader", scene,
-        { vertex: "ripple", fragment: "ripple" },
-        {
-            attributes: ["position", "normal", "uv"],
-            uniforms: ["world", "worldView", "worldViewProjection", "view", "projection"]
-        }
+
+    let gas_material: StandardMaterial = new StandardMaterial("material_gas", scene)
+    gas_material.specularColor = new Color3(
+        Math.min(color.r * 0.3, 0.2),
+        Math.min(color.g * 0.3, 0.2),
+        Math.min(color.b * 0.3, 0.2)
     )
-    ripple_shader_material.setFloat("time", 0)
-    ripple_shader_material.setFloat("bubble_size", radius)
-    ripple_shader_material.setColor4("color", color)
-    // ripple_shader_material.setVector3("bubblePosition", position)
-    // ripple_shader_material.setVector3("cameraPosition", Vector3.Zero())
-    ripple_shader_material.backFaceCulling = true
+    gas_material.diffuseColor = new Color3(color.r, color.g, color.b)
 
 
-    // const gas_material = new StandardMaterial("gas", scene)
-    // gas_material.specularColor = new Color3(
-    //     Math.min(color.r * 0.3, 0.2),
-    //     Math.min(color.g * 0.3, 0.2),
-    //     Math.min(color.b * 0.3, 0.2)
-    // )
-    // gas_material.diffuseColor = new Color3(color.r, color.g, color.b)
+    let ripple_shader_material: ShaderMaterial | undefined = undefined
+    if (animation === "ripple")
+    {
+        ripple_shader_material = new ShaderMaterial("material_ripple_shader", scene,
+            { vertex: "ripple", fragment: "ripple" },
+            {
+                attributes: ["position", "normal", "uv"],
+                uniforms: ["world", "worldView", "worldViewProjection", "view", "projection"]
+            }
+        )
+
+        ripple_shader_material.setFloat("time", 0)
+        ripple_shader_material.setFloat("bubble_size", radius)
+        ripple_shader_material.setColor4("color", color)
+        // ripple_shader_material.setVector3("bubblePosition", position)
+        // ripple_shader_material.setVector3("cameraPosition", Vector3.Zero())
+        ripple_shader_material.backFaceCulling = true
+    }
 
 
     const frame_rate = 10
     const total_frames = 40
 
+    const gas_bubble_container_position = new AbstractMesh("gas_bubble_container_position", scene)
+    const gas_bubble_container_scaling = new AbstractMesh("gas_bubble_container_scaling", scene)
+    gas_bubble_container_position.addChild(gas_bubble_container_scaling)
+
     const gas_bubble = MeshBuilder.CreateIcoSphere("gas_bubble", { radius: 1, subdivisions: 5 }, scene)
-    gas_bubble.scaling = Vector3.One().scale(radius)
     gas_bubble.visibility = color.a
+    gas_bubble_container_scaling.addChild(gas_bubble)
+    gas_bubble_container_scaling.scaling = Vector3.One().scale(radius)
 
 
     if (shadow_generator)
@@ -156,8 +189,8 @@ export function create_gas_bubble (scene: Scene, position: Vector3, volume_m3: n
         shadow_generator.addShadowCaster(gas_bubble)
     }
 
-    gas_bubble.material = ripple_shader_material // gas_material
-    gas_bubble.position = position.clone()
+    gas_bubble.material = ripple_shader_material || gas_material
+    gas_bubble_container_position.position = new Vector3(position.x, position.y + radius, position.z)
 
 
     const animate_pos_y = new Animation("gas_bubble_animate_pos_y", "position.y", frame_rate, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CYCLE)
@@ -166,95 +199,145 @@ export function create_gas_bubble (scene: Scene, position: Vector3, volume_m3: n
         { frame: total_frames / 2, value: position.y + (radius * 0.3) },
         { frame: total_frames, value: position.y },
     ])
-    gas_bubble.animations.push(animate_pos_y)
 
     const ease_position_y = new SineEase()
     ease_position_y.setEasingMode(EasingFunction.EASINGMODE_EASEINOUT)
     animate_pos_y.setEasingFunction(ease_position_y)
 
+    gas_bubble_container_scaling.animations.push(animate_pos_y)
 
-    function play ()
+
+
+    if (animation === "bounce")
     {
-        scene.beginAnimation(gas_bubble, 0, total_frames, true)
+        const animate_scale = new Animation("gas_bubble_animate_scale", "scaling", frame_rate, Animation.ANIMATIONTYPE_VECTOR3, Animation.ANIMATIONLOOPMODE_CYCLE)
 
-        let time = 0
-        const interval_timeout = setInterval(() =>
-        {
-            // const camera_position = scene.getCameraByName("orbitalCamera")?.position
-            // if (camera_position)
-            // {
-            //     ripple_shader_material.setVector3("cameraPosition", camera_position)
-            // }
+        const squidge = bounce_animation_squidge
+        const squi = squidge / 2
 
-            ripple_shader_material.setFloat("time", time)
-            time += 0.05
-        }, 50)
+        const flatter = new Vector3(1 + squidge, 1 - squidge, 1 + squidge)
+        const full = Vector3.One()
 
-        gas_bubble.onDispose = () => clearTimeout(interval_timeout)
+        animate_scale.setKeys([
+            { frame: 0, value: flatter.clone() },
+            { frame: total_frames * 0.25, value: new Vector3(1 - squi, 1 + squi, 1 - squi) },
+            { frame: total_frames * 0.5, value: full.clone() },
+            { frame: total_frames * 0.8, value: full.clone() },
+            { frame: total_frames, value: flatter.clone() },
+        ])
+
+        const ease_scale = new SineEase()
+        ease_scale.setEasingMode(EasingFunction.EASINGMODE_EASEINOUT)
+        animate_scale.setEasingFunction(ease_scale)
+
+        gas_bubble.animations.push(animate_scale)
     }
+
 
 
     const new_radius = { start_value: 0, target_value: 0, animating: false, start_at: 0 }
 
+
+
+    let play = () =>
+    {
+        scene.beginAnimation(gas_bubble_container_scaling, 0, total_frames, true)
+        scene.beginAnimation(gas_bubble, 0, total_frames, true)
+    }
+
+
+
+    let opacity = (new_opacity = 0) =>
+    {
+        new_opacity = bounded(new_opacity, 0, 1)
+
+        function change_opacity ()
+        {
+            if (color.a === new_opacity) return
+            const diff = new_opacity - color.a
+            const change = Math.min(Math.abs(diff), 0.05)
+            if (change < 0.05) color.a = new_opacity
+            else
+            {
+                color.a += (change * Math.sign(diff))
+                color.a = bounded(color.a, 0, 1)
+            }
+
+            gas_material.diffuseColor = new Color3(color.r, color.g, color.b)
+            gas_bubble.visibility = color.a
+
+            ripple_shader_material?.setColor4("color", color)
+
+            setTimeout(change_opacity, 50)
+        }
+        change_opacity()
+    }
+
+
+
+    let grow = (new_volume_m3: number, animation_speed = 3000) =>
+    {
+        new_radius.start_value = radius
+        new_radius.target_value = volume_to_radius(new_volume_m3)
+        new_radius.start_at = performance.now()
+
+        if (new_radius.animating) return
+        new_radius.animating = true
+
+        function change_size ()
+        {
+            const now = performance.now()
+            const end_at = new_radius.start_at + animation_speed
+            if (now >= end_at)
+            {
+                radius = new_radius.target_value
+                new_radius.animating = false
+            }
+            else
+            {
+                const progress_time = (now - new_radius.start_at) / animation_speed
+                const progress_rads = (progress_time * Math.PI)
+                const progress_ratio = (1 - Math.cos(progress_rads)) / 2
+
+
+                const diff = new_radius.target_value - new_radius.start_value
+                radius = (diff * progress_ratio) + new_radius.start_value
+                setTimeout(change_size, 50)
+            }
+
+            gas_bubble_container_position.position = new Vector3(position.x, position.y + radius, position.z)
+            gas_bubble_container_scaling.scaling = Vector3.One().scale(radius)
+        }
+        change_size()
+    }
+
+
+
+    if (ripple_shader_material)
+    {
+        play = () =>
+        {
+            scene.beginAnimation(gas_bubble_container_scaling, 0, total_frames, true)
+            scene.beginAnimation(gas_bubble, 0, total_frames, true)
+
+            let time = 0
+            const interval_timeout = setInterval(() =>
+            {
+                ripple_shader_material?.setFloat("time", time)
+                time += 0.05
+            }, 50)
+
+            gas_bubble.onDispose = () => clearTimeout(interval_timeout)
+        }
+    }
+
+
+
     return {
         gas_bubble_mesh: gas_bubble,
         play,
-        opacity: (new_opacity = 0) =>
-        {
-            new_opacity = bounded(new_opacity, 0, 1)
-
-            function change_opacity ()
-            {
-                if (color.a === new_opacity) return
-                const diff = new_opacity - color.a
-                const change = Math.min(Math.abs(diff), 0.05)
-                if (change < 0.05) color.a = new_opacity
-                else
-                {
-                    color.a += (change * Math.sign(diff))
-                    color.a = bounded(color.a, 0, 1)
-                }
-
-                ripple_shader_material.setColor4("color", color)
-                setTimeout(change_opacity, 50)
-            }
-            change_opacity()
-        },
-        grow: (new_volume_m3: number, animation_speed = 3000) =>
-        {
-            new_radius.start_value = radius
-            new_radius.target_value = volume_to_radius(new_volume_m3)
-            new_radius.start_at = performance.now()
-
-            if (new_radius.animating) return
-            new_radius.animating = true
-
-            function change_size ()
-            {
-                const now = performance.now()
-                const end_at = new_radius.start_at + animation_speed
-                if (now >= end_at)
-                {
-                    radius = new_radius.target_value
-                    new_radius.animating = false
-                }
-                else
-                {
-                    const progress_time = (now - new_radius.start_at) / animation_speed
-                    const progress_rads = (progress_time * Math.PI)
-                    const progress_ratio = (1 - Math.cos(progress_rads)) / 2
-
-
-                    const diff = new_radius.target_value - new_radius.start_value
-                    radius = (diff * progress_ratio) + new_radius.start_value
-                    setTimeout(change_size, 50)
-                }
-
-                ripple_shader_material.setFloat("bubble_size", radius)
-                gas_bubble.scaling = Vector3.One().scale(radius)
-            }
-            change_size()
-        },
+        opacity,
+        grow,
     }
 }
 

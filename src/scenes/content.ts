@@ -63,13 +63,16 @@ export const create_content = ({ scene, camera, sun, shadow_generator }: CreateC
     {
         create_sky(scene)
         create_ground(scene, small_ground_size)
-        const { play, opacity, grow } = create_gas_bubble(scene, new Vector3(0, 5, 0), 100, new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator)
+        const { play, opacity, grow } = create_gas_bubble(scene, { position: new Vector3(-5, 0, 0), volume_m3: 100, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator, animation: "bounce" })
         play()
 
-        setTimeout(() => grow(30), 1000)
-        setTimeout(() => grow(3000, 6000), 5000)
-        setTimeout(() => opacity(0.1), 1000)
-        setTimeout(() => opacity(1), 3000)
+        const gas2 = create_gas_bubble(scene, { position: new Vector3(5, 0, 0), volume_m3: 100, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator, animation: "ripple" })
+        gas2.play()
+
+        setTimeout(() => { grow(30); gas2.grow(30) }, 1000)
+        setTimeout(() => { grow(100, 4000); gas2.grow(100, 4000) }, 3000)
+        setTimeout(() => { opacity(0.1); gas2.opacity(0.1) }, 1000)
+        setTimeout(() => { opacity(1); gas2.opacity(1) }, 3000)
     }
     else if (content === Content.arrow)
     {
