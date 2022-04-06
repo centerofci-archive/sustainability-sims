@@ -11,7 +11,7 @@ import { url_params_parser } from "../utils/url_params_parser"
 import { create_arrow_scene } from "./create_arrow_scene"
 import { create_compare_home_gas_usage_scene } from "./create_compare_home_gas_usage_scene"
 import { create_house_scene } from "./create_house_scene"
-import { create_sustainable_home_scene } from "./create_sustainable_home_scene"
+import { create_sustainable_home_scene } from "./create_sustainable_home_scene/create_sustainable_home_scene"
 
 
 

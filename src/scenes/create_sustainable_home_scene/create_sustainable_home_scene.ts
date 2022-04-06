@@ -1,20 +1,21 @@
 import { Color4, Tools, Vector3 } from "@babylonjs/core"
 import { AdvancedDynamicTexture, TextBlock, StackPanel, Control, Slider, } from "@babylonjs/gui"
 
-import { create_gas_bubble } from "../components/create_gas_bubble"
-import { create_ground } from "../components/create_ground"
-import { create_house } from "../components/create_house"
-import { create_person } from "../components/create_person"
-import { create_sky } from "../components/create_sky"
-import { create_smoke_plume } from "../components/create_smoke_plume"
-import { scale_to_approximately_a_month, time_period_to_days } from "../data_support/datetime/range"
-import { days_range, subtract_days_from_date } from "../data_support/datetime/subtract"
-import { convert_value } from "../data_support/units/convert"
-import { UnitsID } from "../data_support/units/units"
-import { TemporalRangeValue } from "../data_support/value"
-import { ValueOrError } from "../data_support/value_or_error"
-import { get_url_param, get_url_param_number, URLParams } from "../utils/url_params_parser"
-import { CreateContentCommonArgs } from "./content"
+import { create_gas_bubble } from "../../components/create_gas_bubble"
+import { create_ground } from "../../components/create_ground"
+import { create_house } from "../../components/create_house"
+import { create_person } from "../../components/create_person"
+import { create_sky } from "../../components/create_sky"
+import { create_smoke_plume } from "../../components/create_smoke_plume"
+import { scale_to_approximately_a_month, time_period_to_days } from "../../data_support/datetime/range"
+import { days_range, subtract_days_from_date } from "../../data_support/datetime/subtract"
+import { convert_value } from "../../data_support/units/convert"
+import { UnitsID } from "../../data_support/units/units"
+import { TemporalRangeValue } from "../../data_support/value"
+import { ValueOrError } from "../../data_support/value_or_error"
+import { get_url_param, get_url_param_number, URLParams } from "../../utils/url_params_parser"
+import { CreateContentCommonArgs } from "../content"
+import { ui_show_name } from "./ui/ui_show_name"
 
 
 
@@ -60,37 +61,7 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     const gas_m3_per_month_value = gas_m3_per_month.value
 
 
-    const advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI", true, scene)
-
-    const panel = new StackPanel()
-    panel.width = "220px"
-    panel.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT
-    panel.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP
-    advancedTexture.addControl(panel)
-
-    const header = new TextBlock()
-    header.text = name
-    header.height = "30px"
-    header.color = "white"
-    header.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT
-    header.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP
-    panel.addControl(header)
-
-    const slider = new Slider()
-    slider.minimum = 0
-    slider.maximum = 2 * Math.PI
-    slider.value = 0
-    slider.height = "20px"
-    slider.width = "200px"
-    slider.onValueChangedObservable.add(function(value)
-    {
-        header.text = "Y-rotation: " + (Tools.ToDegrees(value) | 0) + " deg"
-        // if (skull) {
-        //     skull.rotation.y = value
-        // }
-    })
-    // panel.addControl(slider)
-
+    ui_show_name(scene, name)
 
 
     setTimeout(() => gas.grow(gas_m3_per_month_value.value), 1000)
