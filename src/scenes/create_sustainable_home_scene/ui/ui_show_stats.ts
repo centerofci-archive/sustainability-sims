@@ -23,16 +23,33 @@ export function ui_show_stats (scene: Scene, gas_m3_per_month_value: TemporalRan
     header.color = "white"
     panel.addControl(header)
 
-    const button = Button.CreateSimpleButton("button_show_gas", "Show gas")
-    button.width = 0.4
-    button.height = "30px"
-    button.color = "white"
-    button.onPointerClickObservable.add(() =>
+    const text_visualise = new TextBlock()
+    text_visualise.text = `Visualise`
+    text_visualise.height = "30px"
+    text_visualise.color = "blue"
+    panel.addControl(text_visualise)
+
+    const button_show_gas = Button.CreateSimpleButton("button_show_gas", "Show gas")
+    button_show_gas.width = 0.5
+    button_show_gas.height = "30px"
+    button_show_gas.color = "white"
+    button_show_gas.onPointerClickObservable.add(() =>
     {
-        pub_sub.ui.pub("ui_toggle_show_gas", undefined)
+        pub_sub.ui.pub("ui_toggle_show_natural_gas_bubble", undefined)
     })
     // button.background = "blue"
-    panel.addControl(button)
+    panel.addControl(button_show_gas)
+
+    const button_show_co2 = Button.CreateSimpleButton("button_show_co2", "Show CO2")
+    button_show_co2.width = 0.5
+    button_show_co2.height = "30px"
+    button_show_co2.color = "white"
+    button_show_co2.onPointerClickObservable.add(() =>
+    {
+        pub_sub.ui.pub("ui_toggle_show_co2_bubble", undefined)
+    })
+    // button.background = "blue"
+    panel.addControl(button_show_co2)
 
     // const slider = new Slider()
     // slider.minimum = 0

@@ -239,8 +239,11 @@ export function create_gas_bubble (scene: Scene, args: CreateGasBubbleArgs)
 
 
 
+    let playing = false
     let play = () =>
     {
+        if (playing) return
+        playing = true
         scene.beginAnimation(gas_bubble_container_scaling, 0, total_frames, true)
         scene.beginAnimation(gas_bubble, 0, total_frames, true)
     }

@@ -25,14 +25,14 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
 {
     create_sky(scene)
     create_ground(scene, ground_size)
-    const gas = create_gas_bubble(scene, { position: new Vector3(-5, 2, 0), volume_m3: 1, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator })
-    gas.gas_bubble_mesh.setEnabled(false)
-    pub_sub.ui.sub("ui_toggle_show_gas", () =>
-    {
-        const enable = !gas.gas_bubble_mesh.isEnabled()
-        gas.gas_bubble_mesh.setEnabled(enable)
-        if (enable) gas.play()
-    })
+    const natural_gas_bubble = create_gas_bubble(scene, { position: new Vector3(10, 2, -2), volume_m3: 0, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator })
+    natural_gas_bubble.play()
+    natural_gas_bubble.gas_bubble_mesh.setEnabled(false)
+
+    const co2_bubble = create_gas_bubble(scene, { position: new Vector3(0, 4, -2), volume_m3: 0, color: new Color4(0.5, 0.1, 0.2, 0.8), shadow_generator })
+    co2_bubble.play()
+    co2_bubble.gas_bubble_mesh.setEnabled(false)
+
 
     create_person(scene, shadow_generator, new Vector3(0, 0, 4))
     create_house(scene, shadow_generator, Vector3.Zero(), "house")
@@ -69,11 +69,23 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     const gas_m3_per_month_value = gas_m3_per_month.value
 
 
+    pub_sub.ui.sub("ui_toggle_show_natural_gas_bubble", () =>
+    {
+        const enable = !natural_gas_bubble.gas_bubble_mesh.isEnabled()
+        natural_gas_bubble.gas_bubble_mesh.setEnabled(enable)
+        natural_gas_bubble.grow(gas_m3_per_month_value.value)
+    })
+
+    pub_sub.ui.sub("ui_toggle_show_co2_bubble", () =>
+    {
+        const enable = !co2_bubble.gas_bubble_mesh.isEnabled()
+        co2_bubble.gas_bubble_mesh.setEnabled(enable)
+        co2_bubble.grow(gas_m3_per_month_value.value)
+    })
+
+
     ui_show_name(scene, name)
     ui_show_stats(scene, gas_m3_per_month_value)
-
-
-    setTimeout(() => gas.grow(gas_m3_per_month_value.value), 1000)
 }
 
 
