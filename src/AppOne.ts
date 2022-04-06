@@ -10,14 +10,16 @@ import { load_assets } from "./utils/load_assets"
 import { create_content } from "./scenes/content"
 
 
-export class AppOne {
+export class AppOne
+{
     engine: BABYLON.Engine
     scene: BABYLON.Scene
     assets_manager: BABYLON.AssetsManager
     camera: ArcRotateCamera
     sun: WrappedSun
 
-    constructor(readonly canvas: HTMLCanvasElement) {
+    constructor (readonly canvas: HTMLCanvasElement)
+    {
         this.engine = new BABYLON.Engine(canvas, true, { stencil: true })
         window.addEventListener("resize", () => {
             this.engine.resize()
@@ -30,17 +32,25 @@ export class AppOne {
         load_assets(this.assets_manager)
     }
 
-    debug(debugOn: boolean = true) {
-        if (debugOn) {
+    debug (debugOn: boolean)
+    {
+        ;(window as any).scene = this.scene
+
+        if (debugOn)
+        {
             this.scene.debugLayer.show({ overlay: true })
-            ;(window as any).scene = this.scene
-        } else {
+        }
+        else
+        {
             this.scene.debugLayer.hide()
         }
+
+        ;(window as any).show_debug = () => this.scene.debugLayer.show({ overlay: true })
     }
 
-    run() {
-        this.debug(true)
+    run ()
+    {
+        this.debug(false)
 
         this.assets_manager.load()
 

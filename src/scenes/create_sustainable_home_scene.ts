@@ -50,7 +50,7 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
         return
     }
 
-    debugger
+
     const gas_m3_per_month = calculate_gas_m3_per_month(sanitised_gas_params.value)
     if (gas_m3_per_month.value === undefined)
     {
