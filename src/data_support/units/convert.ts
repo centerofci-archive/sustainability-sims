@@ -1,4 +1,5 @@
-import { Value } from "../value"
+import { ValueObject } from "../value"
+import { ValueOrError } from "../value_or_error"
 import { UnitsID, UNITS } from "./units"
 import { units_are_compound, units_are_singular } from "./utils"
 
@@ -18,12 +19,16 @@ export const unit_conversion_map: UnitConversionMap = {
 
 
 
-export function convert_value <T extends Value> (value: T, new_units: UnitsID): T
+export function convert_value <T extends ValueObject> (value_object: T, new_units: UnitsID): ValueOrError<T>
 {
-    const { units } = value
+    let value: T | undefined = undefined
+    let error = ""
+
+    const { units } = value_object
     if (units_are_compound(units))
     {
-        throw new Error(`Can not yet convert compound units: "${JSON.stringify(units)}"`)
+        error = `Can not yet convert compound units: "${JSON.stringify(units)}"`
+        return { value, error }
     }
 
 
@@ -35,20 +40,23 @@ export function convert_value <T extends Value> (value: T, new_units: UnitsID): 
 
     if (!map)
     {
-        throw new Error(`No conversion map for units: "${units}"`)
+        error = `No conversion map for units: "${units}"`
+        return { value, error }
     }
 
     const factor = map[new_units]
     if (factor === undefined)
     {
-        debugger
-        throw new Error(`No conversion factor from: "${units}" to "${new_units}"`)
+        error = `No conversion factor from: "${units}" to "${new_units}"`
+        return { value, error }
     }
 
 
-    return {
-        ...value,
-        value: value.value * factor,
+    value = {
+        ...value_object,
+        value: value_object.value * factor,
         units: new_units,
     }
+
+    return { value, error }
 }

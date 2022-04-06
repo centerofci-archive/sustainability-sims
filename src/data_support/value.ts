@@ -8,7 +8,7 @@ import { Units } from "./units/utils"
 // }
 
 
-export interface Value
+export interface ValueObject
 {
     value: number
     units: Units
@@ -18,12 +18,12 @@ export interface Value
 }
 
 
-export interface TemporalValue extends Value
+export interface TemporalValue extends ValueObject
 {
     date: Date
 }
 
-export interface TemporalRangeValue extends Value
+export interface TemporalRangeValue extends ValueObject
 {
     date_from: Date
     date_to: Date
@@ -36,7 +36,7 @@ export interface TemporalRangeValue extends Value
 // }
 
 
-export function get_latest_value <T extends Value> (value: T | [T, ...Partial<T>[]]): T
+export function get_latest_value <T extends ValueObject> (value: T | [T, ...Partial<T>[]]): T
 {
     if (!(value instanceof Array)) return value
 
@@ -44,7 +44,7 @@ export function get_latest_value <T extends Value> (value: T | [T, ...Partial<T>
 }
 
 
-export function get_value <T extends Value> (value: T | [T, ...Partial<T>[]], version: number): T
+export function get_value <T extends ValueObject> (value: T | [T, ...Partial<T>[]], version: number): T
 {
     if (!(value instanceof Array)) return value
 
@@ -53,7 +53,7 @@ export function get_value <T extends Value> (value: T | [T, ...Partial<T>[]], ve
 
 
 
-function compose_to_version_n <T extends Value> (value: [T, ...Partial<T>[]], version: number): T
+function compose_to_version_n <T extends ValueObject> (value: [T, ...Partial<T>[]], version: number): T
 {
     if (version >= value.length)
     {

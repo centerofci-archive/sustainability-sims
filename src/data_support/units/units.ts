@@ -3,6 +3,9 @@
 
 export enum UnitsID
 {
+    // undefined
+    undefined = "undefined",
+
     // energy
     energy_joule = "energy_joule",
     energy_kWh = "energy_kWh",
@@ -34,6 +37,13 @@ interface Unit
 type UnitsMap = {[P in UnitsID]: Unit }
 export const UNITS: UnitsMap =
 {
+    undefined:
+    {
+        id: UnitsID.undefined,
+        name: "undefined",
+        symbol: "?",
+    },
+
     energy_joule:
     {
         id: UnitsID.energy_joule,

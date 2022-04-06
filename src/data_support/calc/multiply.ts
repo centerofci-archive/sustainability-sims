@@ -1,10 +1,10 @@
 import { simplify_units } from "../units/simplify_units"
 import { make_units_compound, make_num_units_list, make_denom_units_list, Units } from "../units/utils"
-import { Value } from "../value"
+import { ValueObject } from "../value"
 
 
 
-export function multiply (value1: Value, value2: Value): Value
+export function multiply (value1: ValueObject, value2: ValueObject): ValueObject
 {
     let { num, denom } = make_units_compound(value1.units)
 

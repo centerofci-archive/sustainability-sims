@@ -30,14 +30,22 @@ export function get_url_param_number (url_params: URLParams, key: string, defaul
     const value_str = url_params[key] ?? `${default_value}`
 
     let value = default_value
+    let error = ""
     try
     {
         value = parseFloat(value_str)
     }
     catch (e)
     {
-
+        error = `Not a valid number: "${value_str}"`
     }
 
-    return value
+    return { value, error }
+}
+
+
+
+export function get_url_param (url_params: URLParams, key: string, default_value = "")
+{
+    return url_params[key] ?? default_value
 }

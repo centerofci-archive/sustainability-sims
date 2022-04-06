@@ -1,10 +1,10 @@
 import { simplify_units } from "../units/simplify_units"
 import { make_denom_units_list, make_num_units_list, make_units_compound, Units } from "../units/utils"
-import { Value } from "../value"
+import { ValueObject } from "../value"
 
 
 
-export function divide (value1: Value, value2: Value): Value
+export function divide (value1: ValueObject, value2: ValueObject): ValueObject
 {
     let { num, denom } = make_units_compound(value1.units)
 

@@ -1,9 +1,9 @@
 import { units_are_equal, units_to_string } from "../units/utils"
-import { Value } from "../value"
+import { ValueObject } from "../value"
 
 
 
-export function subtract <T extends Value, T2 extends Value> (value1: T, value2: T2): T
+export function subtract <T extends ValueObject, T2 extends ValueObject> (value1: T, value2: T2): T
 {
     if (!units_are_equal(value1.units, value2.units))
     {
