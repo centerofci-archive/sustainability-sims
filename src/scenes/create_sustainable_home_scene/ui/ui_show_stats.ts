@@ -2,6 +2,7 @@ import { Scene } from "@babylonjs/core"
 import { AdvancedDynamicTexture, Button, Control, StackPanel, TextBlock } from "@babylonjs/gui"
 import { units_to_string } from "../../../data_support/units/utils"
 import { TemporalRangeValue } from "../../../data_support/value"
+import { valid_ui_msg } from "../../../state/ui_pub_sub"
 import { pub_sub } from "../../../utils/pub_sub"
 
 
@@ -29,27 +30,19 @@ export function ui_show_stats (scene: Scene, gas_m3_per_month_value: TemporalRan
     text_visualise.color = "blue"
     panel.addControl(text_visualise)
 
-    const button_show_gas = Button.CreateSimpleButton("button_show_gas", "Show gas")
-    button_show_gas.width = 0.5
-    button_show_gas.height = "30px"
-    button_show_gas.color = "white"
-    button_show_gas.onPointerClickObservable.add(() =>
-    {
-        pub_sub.ui.pub("ui_toggle_show_natural_gas_bubble", undefined)
-    })
-    // button.background = "blue"
-    panel.addControl(button_show_gas)
+    add_button("ui_toggle_show_natural_gas_bubble", "Show gas", panel, 0.5)
+    add_button("ui_toggle_show_co2_bubble", "Show CO2", panel, 0.5)
 
-    const button_show_co2 = Button.CreateSimpleButton("button_show_co2", "Show CO2")
-    button_show_co2.width = 0.5
-    button_show_co2.height = "30px"
-    button_show_co2.color = "white"
-    button_show_co2.onPointerClickObservable.add(() =>
-    {
-        pub_sub.ui.pub("ui_toggle_show_co2_bubble", undefined)
-    })
-    // button.background = "blue"
-    panel.addControl(button_show_co2)
+    const text_actions = new TextBlock()
+    text_actions.text = `Action`
+    text_actions.height = "30px"
+    text_actions.color = "orange"
+    panel.addControl(text_actions)
+
+    add_button("ui_toggle_action_plant_trees", "Plant trees", panel)
+    add_button("ui_toggle_action_protect_peatland", "Protect peatland", panel)
+    add_button("ui_toggle_action_improve_insulation", "Improve insulation", panel)
+
 
     // const slider = new Slider()
     // slider.minimum = 0
@@ -65,4 +58,19 @@ export function ui_show_stats (scene: Scene, gas_m3_per_month_value: TemporalRan
     //     // }
     // })
     // // panel.addControl(slider)
+}
+
+
+
+function add_button (ui_action: valid_ui_msg, description: string, panel: StackPanel, width = 0.7)
+{
+    const button = Button.CreateSimpleButton("button_" + ui_action, description)
+    button.width = width
+    button.height = "30px"
+    button.color = "white"
+    button.onPointerClickObservable.add(() =>
+    {
+        pub_sub.ui.pub(ui_action, undefined)
+    })
+    panel.addControl(button)
 }
