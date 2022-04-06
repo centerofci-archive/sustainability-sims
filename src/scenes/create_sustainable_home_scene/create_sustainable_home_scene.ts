@@ -13,9 +13,11 @@ import { convert_value } from "../../data_support/units/convert"
 import { UnitsID } from "../../data_support/units/units"
 import { TemporalRangeValue } from "../../data_support/value"
 import { ValueOrError } from "../../data_support/value_or_error"
+import { pub_sub } from "../../utils/pub_sub"
 import { get_url_param, get_url_param_number, URLParams } from "../../utils/url_params_parser"
 import { CreateContentCommonArgs } from "../content"
 import { ui_show_name } from "./ui/ui_show_name"
+import { ui_show_stats } from "./ui/ui_show_stats"
 
 
 
@@ -23,8 +25,14 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
 {
     create_sky(scene)
     create_ground(scene, ground_size)
-    const gas = create_gas_bubble(scene, { position: new Vector3(-5, 5, 0), volume_m3: 1, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator })
-    gas.play()
+    const gas = create_gas_bubble(scene, { position: new Vector3(-5, 2, 0), volume_m3: 1, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator })
+    gas.gas_bubble_mesh.setEnabled(false)
+    pub_sub.ui.sub("ui_toggle_show_gas", () =>
+    {
+        const enable = !gas.gas_bubble_mesh.isEnabled()
+        gas.gas_bubble_mesh.setEnabled(enable)
+        if (enable) gas.play()
+    })
 
     create_person(scene, shadow_generator, new Vector3(0, 0, 4))
     create_house(scene, shadow_generator, Vector3.Zero(), "house")
@@ -62,6 +70,7 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
 
 
     ui_show_name(scene, name)
+    ui_show_stats(scene, gas_m3_per_month_value)
 
 
     setTimeout(() => gas.grow(gas_m3_per_month_value.value), 1000)

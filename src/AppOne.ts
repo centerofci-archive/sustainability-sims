@@ -10,6 +10,7 @@ import { load_assets } from "./utils/load_assets"
 import { create_content } from "./scenes/content"
 
 
+
 export class AppOne
 {
     engine: BABYLON.Engine

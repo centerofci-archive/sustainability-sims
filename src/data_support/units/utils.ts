@@ -1,4 +1,4 @@
-import { UnitsID } from "./units"
+import { UNITS, UnitsID } from "./units"
 
 
 
@@ -23,8 +23,14 @@ export function units_are_compound (units: Units): units is CompoundUnits
 
 export function units_to_string (units: Units)
 {
-    if (units_are_singular(units)) return units
-    return `${units.num.join(" ")} / ${units.denom.join(" ")}`
+    if (units_are_singular(units)) return unit_to_symbol(units)
+    return `${units.num.map(unit_to_symbol).join(" ")} / ${units.denom.map(unit_to_symbol).join(" ")}`
+}
+
+
+export function unit_to_symbol (unit: UnitsID)
+{
+    return UNITS[unit].symbol
 }
 
 
