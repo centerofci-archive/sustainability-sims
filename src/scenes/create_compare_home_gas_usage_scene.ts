@@ -3,7 +3,7 @@ import { create_gas_bubble } from "../components/create_gas_bubble"
 import { create_ground } from "../components/create_ground"
 import { create_person } from "../components/create_person"
 import { create_sky } from "../components/create_sky"
-import { home1_2021_approx_gas_usage__m3 } from "../data/home_energy/home1"
+import { home1_2021_approx_gas_usage__m3__perspectives } from "../data/home_energy/home1"
 import { home2_annual_gas_usage__m3 } from "../data/home_energy/home2"
 import { CreateContentCommonArgs } from "./content"
 
@@ -27,7 +27,7 @@ export const create_compare_home_gas_usage_scene = ({ scene, shadow_generator }:
 
     create_person(scene, shadow_generator, new Vector3(0, 0, 6))
 
-    setTimeout(() => gas1.grow(home1_2021_approx_gas_usage__m3.value), 1000)
+    setTimeout(() => gas1.grow(home1_2021_approx_gas_usage__m3__perspectives[0].value), 1000)
     setTimeout(() => gas2.grow(home2_annual_gas_usage__m3.second_estimate_for_2022.value), 1000)
 
 

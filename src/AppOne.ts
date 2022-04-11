@@ -33,11 +33,11 @@ export class AppOne
         load_assets(this.assets_manager)
     }
 
-    debug (debugOn: boolean)
+    debug (debug_on: boolean)
     {
         ;(window as any).scene = this.scene
 
-        if (debugOn)
+        if (debug_on)
         {
             this.scene.debugLayer.show({ overlay: true })
         }

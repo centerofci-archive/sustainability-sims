@@ -1,8 +1,12 @@
-import { Color4, Tools, Vector3 } from "@babylonjs/core"
+import { AbstractMesh, Color4, Tools, Vector3 } from "@babylonjs/core"
 import { AdvancedDynamicTexture, TextBlock, StackPanel, Control, Slider, } from "@babylonjs/gui"
+import { CreateArrowArgs } from "../../components/create_arrow"
+import { create_arrow_chain } from "../../components/create_arrow_chain"
+import { create_forest } from "../../components/create_forest"
 
 import { create_gas_bubble } from "../../components/create_gas_bubble"
 import { create_ground } from "../../components/create_ground"
+import { create_ground_mist, Density } from "../../components/create_ground_mist"
 import { create_house } from "../../components/create_house"
 import { create_person } from "../../components/create_person"
 import { create_sky } from "../../components/create_sky"
@@ -29,7 +33,7 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     natural_gas_bubble.play()
     natural_gas_bubble.gas_bubble_mesh.setEnabled(false)
 
-    const co2_bubble = create_gas_bubble(scene, { position: new Vector3(0, 4, -2), volume_m3: 0, color: new Color4(0.5, 0.1, 0.2, 0.8), shadow_generator })
+    const co2_bubble = create_gas_bubble(scene, { position: new Vector3(0, 4, -2), volume_m3: 0, color: new Color4(0.5, 0.05, 0.0, 0.8), shadow_generator })
     co2_bubble.play()
     co2_bubble.gas_bubble_mesh.setEnabled(false)
 
@@ -82,6 +86,104 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
         co2_bubble.gas_bubble_mesh.setEnabled(enable)
         co2_bubble.grow(gas_m3_per_month_value.value)
     })
+
+    pub_sub.ui.sub("ui_toggle_show_co2_bubble__max", () =>
+    {
+        const enable = !co2_bubble.gas_bubble_mesh.isEnabled()
+        co2_bubble.gas_bubble_mesh.setEnabled(enable)
+        // https://www.effectech.co.uk/wp-content/uploads/Assessing_the_UKs_gas_quality_measurement_infrastructure.pdf
+        // Only including ethane, propane, and butane
+        // 1.16 = ((100 - (7.33 + 2.41  + (0.48 + 0.89))) + (7.33 * 2) + (2.41 * 3) + ((0.48 + 0.89) * 4)) / 100
+        // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/545567/Material_comparators_for_fuels_-_natural_gas.pdf
+        co2_bubble.grow(gas_m3_per_month_value.value * 1.16)
+    })
+
+
+    let { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
+
+    // remove trees near house
+    const near = 4
+    trees = trees.filter(tree =>
+    {
+        if (tree.position.x > -near && tree.position.x < near && tree.position.z > -near && tree.position.z < near)
+        {
+            tree.dispose()
+            return false
+        }
+        return true
+    })
+
+
+    let animated = false
+    let protected_trees = true
+    const planted_tree_size = 0.2
+
+    pub_sub.ui.sub("ui_toggle_action_protect_trees", () =>
+    {
+        protected_trees = true
+
+        trees.forEach(tree =>
+        {
+            const scale = Vector3.One().scale(tree.size)
+            tree.getChildMeshes().forEach(mesh => mesh.scaling = scale.clone())
+        })
+
+        if (animated) return
+        animated = true
+
+        make_forest()
+    })
+
+    pub_sub.ui.sub("ui_toggle_action_plant_trees", () =>
+    {
+        protected_trees = false
+
+        trees.forEach(tree =>
+        {
+            const scale = Vector3.One().scale(planted_tree_size)
+            tree.getChildMeshes().forEach(mesh => mesh.scaling = scale.clone())
+        })
+
+        if (animated) return
+        animated = true
+
+        make_forest()
+    })
+
+
+    function make_forest ()
+    {
+        grow_forest()
+        create_ground_mist(scene, ground_size * 0.45, Density.mediumlight)
+
+
+        const green = new Color4(0.3, 0.5, 0.25, 0.8)
+        let showing_arrows: AbstractMesh[] = []
+
+        pub_sub.ui.sub("ui_toggle_show_tree_CO2_absorbed", () =>
+        {
+            if (showing_arrows.length)
+            {
+                showing_arrows.forEach(arrow => arrow.dispose())
+                showing_arrows = []
+                return
+            }
+
+            trees.forEach((tree, i) =>
+            {
+                const arrow_args: CreateArrowArgs = {
+                    position: tree.position.add(new Vector3(0, 10, 0)),
+                    color: green,
+                    rotation: [Math.PI, 0, 0],
+                    volume_m3: protected_trees ? tree.size : planted_tree_size,
+                }
+
+                const result = create_arrow_chain(scene, "tree_CO2_absorbed_" + i, arrow_args, { number_of_arrows: 1 })
+                result.play()
+                showing_arrows = [...showing_arrows, ...result.arrows]
+            })
+        })
+    }
 
 
     ui_show_name(scene, name)

@@ -5,7 +5,7 @@ import { create_tree, Tree } from "./create_tree"
 
 export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3, size: number)
 {
-    const tree_nodes: AbstractMesh[] = []
+    const tree_nodes: (AbstractMesh & { size: number })[] = []
     const trees_with_delays: { tree: Tree, delay: number }[] = []
 
     let i = 0
@@ -22,7 +22,9 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
             const s = 0.5 + (Math.sin(Math.random() * Math.PI) * 0.7)
             const scale = Vector3.One().scale(s)
             tree.node.getChildMeshes().forEach(mesh => mesh.scaling = scale)
-            tree_nodes.push(tree.node)
+            const tree_node: any = tree.node
+            tree_node.size = s
+            tree_nodes.push(tree_node)
 
             const progress = (i + j) / ((size - 1) * 2)
             const inv_progress = 1 - progress

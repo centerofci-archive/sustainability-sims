@@ -108,6 +108,7 @@ export function create_arrow_chain (scene: Scene, name: string, arrow_args: Crea
                 const next_mesh_to_animate = arrows_copy.shift()
                 scene.beginAnimation(next_mesh_to_animate, 0, total_frames, true)
             })
-        }
+        },
+        arrows,
     }
 }
