@@ -13,9 +13,9 @@ export const create_compare_home_gas_usage_scene = ({ scene, shadow_generator }:
 {
     create_sky(scene)
     create_ground(scene, ground_size)
-    const gas1 = create_gas_bubble(scene, { position: new Vector3(-7, 0, 0), volume_m3: 1, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator, animation: "ripple" })
+    const gas1 = create_gas_bubble(scene, { position: new Vector3(-10, 0, 0), volume_m3: 1, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator, animation: "bounce", bounce_animation_squidge: 0.01 })
     gas1.play()
-    const gas2 = create_gas_bubble(scene, { position: new Vector3(7, 0, 0), volume_m3: 1, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator, animation: "bounce", bounce_animation_squidge: 0.01 })
+    const gas2 = create_gas_bubble(scene, { position: new Vector3(10, 0, 0), volume_m3: 1, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator, animation: "bounce", bounce_animation_squidge: 0.01 })
     gas2.play()
 
 
@@ -28,7 +28,10 @@ export const create_compare_home_gas_usage_scene = ({ scene, shadow_generator }:
     create_person(scene, shadow_generator, new Vector3(0, 0, 6))
 
     setTimeout(() => gas1.grow(home1_2021_approx_gas_usage__m3__perspectives[0].value), 1000)
-    setTimeout(() => gas2.grow(home2_annual_gas_usage__m3.second_estimate_for_2022.value), 1000)
+    setTimeout(() => gas2.grow(home2_annual_gas_usage__m3[0].value), 1000)
+
+    setTimeout(() => gas1.grow(home1_2021_approx_gas_usage__m3__perspectives[1].value), 6000)
+    setTimeout(() => gas2.grow(home2_annual_gas_usage__m3[1].value), 6000)
 
 
 

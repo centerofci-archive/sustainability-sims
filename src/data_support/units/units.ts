@@ -6,6 +6,12 @@ export enum UnitsID
     // undefined
     undefined = "undefined",
 
+    // time
+    time_period_year = "time_period_year",
+    time_period_month = "time_period_month",
+    time_period_day = "time_period_day",
+    time_period_second = "time_period_second",
+
     // energy
     energy_joule = "energy_joule",
     energy_kWh = "energy_kWh",
@@ -42,6 +48,31 @@ export const UNITS: UnitsMap =
         id: UnitsID.undefined,
         name: "undefined",
         symbol: "?",
+    },
+
+    time_period_month:
+    {
+        id: UnitsID.time_period_month,
+        name: "month",
+        symbol: "month",
+    },
+    time_period_year:
+    {
+        id: UnitsID.time_period_year,
+        name: "year",
+        symbol: "year",
+    },
+    time_period_day:
+    {
+        id: UnitsID.time_period_day,
+        name: "day",
+        symbol: "day",
+    },
+    time_period_second:
+    {
+        id: UnitsID.time_period_second,
+        name: "second",
+        symbol: "s",
     },
 
     energy_joule:

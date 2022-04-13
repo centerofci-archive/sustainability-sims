@@ -4,7 +4,7 @@ import { ValueObject } from "../value"
 
 
 
-export function divide (value1: ValueObject, value2: ValueObject): ValueObject
+export function divide <T extends ValueObject, T2 extends ValueObject> (value1: T, value2: T2): T
 {
     let { num, denom } = make_units_compound(value1.units)
 
@@ -14,6 +14,8 @@ export function divide (value1: ValueObject, value2: ValueObject): ValueObject
     const units: Units = simplify_units({ num, denom })
 
     return {
+        ...value1,
+        description: (value1.description || "") + " / " + (value2.description || ""),
         value: value1.value / value2.value,
         units,
     }
