@@ -7,6 +7,7 @@ import { create_gas_bubble } from "../components/create_gas_bubble"
 import { create_ground } from "../components/create_ground"
 import { create_sky } from "../components/create_sky"
 import { WrappedSun } from "../components/create_sun"
+import { bounded } from "../utils/bounded"
 import { url_params_parser } from "../utils/url_params_parser"
 import { create_arrow_scene } from "./create_arrow_scene"
 import { create_compare_home_gas_usage_scene } from "./create_compare_home_gas_usage_scene"
@@ -17,6 +18,7 @@ import { create_sustainable_home_scene } from "./create_sustainable_home_scene/c
 
 enum Content
 {
+    basic,
     earth,
     forest,
     house,
@@ -45,7 +47,29 @@ export const create_content = ({ scene, camera, sun, shadow_generator }: CreateC
 
     const small_ground_size = 40
 
-    if (content === Content.earth)
+    if (content === Content.basic)
+    {
+        // sun.set_intensity(0)
+        // const { skybox, skybox_material, set_sky_config } = create_sky(scene)
+        create_sky(scene)
+        create_ground(scene, small_ground_size)
+
+        // let new_inclination_direction = 1
+        // let new_inclination = 0
+        // setInterval(() =>
+        // {
+
+        //     new_inclination += (0.1 * new_inclination_direction)
+        //     new_inclination = bounded(new_inclination, 0, 1)
+        //     if (new_inclination >= 0.6) new_inclination_direction = -1
+        //     else if (new_inclination <= 0.2) new_inclination_direction = 1
+        //     set_sky_config("material.inclination", skybox_material.inclination, new_inclination)
+        //     // skybox.rotation = new Vector3(skybox.rotation.x + 0.1, 0, 0)
+        // }, 1000)
+
+
+    }
+    else if (content === Content.earth)
     {
         sun.configure_for_earth_globe()
         camera.position = new Vector3(170, 170, 170)

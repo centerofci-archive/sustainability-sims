@@ -154,7 +154,7 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     function make_forest ()
     {
         grow_forest()
-        create_ground_mist(scene, ground_size * 0.45, Density.mediumlight)
+        // create_ground_mist(scene, ground_size * 0.45, Density.mediumlight)
 
 
         const green = new Color4(0.3, 0.5, 0.25, 0.8)
