@@ -49,6 +49,7 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     const gas_volume = get_url_param_number(url_params, "gas")
     const gas_units = get_url_param(url_params, "gas_units")
     const name = get_url_param(url_params, "name")
+    const forest_kg_co2_per_m2_per_year = get_url_param_number(url_params, "forest_co2_absorb")
 
     if (gas_volume.error)
     {
@@ -71,6 +72,14 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
         return
     }
     const gas_m3_per_month_value = gas_m3_per_month.value
+
+
+    if (forest_kg_co2_per_m2_per_year.value === undefined)
+    {
+        console.error("Error, no forest CO2 absorption value given", forest_kg_co2_per_m2_per_year.error)
+        return
+    }
+    const forest_kg_co2_per_m2_per_year_value = forest_kg_co2_per_m2_per_year.value
 
 
     pub_sub.ui.sub("ui_toggle_show_natural_gas_bubble", () =>
@@ -99,7 +108,10 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     })
 
 
-    let { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
+    const kg_CO2_per_year = gas_m3_per_month_value.value * 12
+    const forest_m2 = kg_CO2_per_year / forest_kg_co2_per_m2_per_year_value
+    const forest_size_m = Math.round(Math.pow(forest_m2, 0.5))
+    let { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(15, 0, 15), forest_size_m)
 
     // remove trees near house
     const near = 4

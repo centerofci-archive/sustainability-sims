@@ -14,8 +14,8 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
         let j = 0
         while (j < size)
         {
-            const x = (i * 3) + (Math.random() * 2)
-            const z = (j * 3) + (Math.random() * 2)
+            const x = (i * -3) + (Math.random() * 2)
+            const z = (j * -3) + (Math.random() * 2)
             const pos = position.add(new Vector3(x, 0, z))
             const tree = create_tree(scene, shadow_generator, pos, `${i}_${j}`)
 
