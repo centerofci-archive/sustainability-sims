@@ -13,8 +13,8 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
     const growth_direction_near_to_far = true
 
 
-    // const tree = create_tree(scene, shadow_generator, vec3([0,0,0]), `thin_tree`).node
-    const tree = MeshBuilder.CreateBox("root", {size: 1})
+    const tree = create_tree(scene, shadow_generator, vec3([0,0,0]), `thin_tree`)
+    // const tree = MeshBuilder.CreateBox("root", {size: 1})
 
     const instance_count_1d = Math.round(size / space_between_tree_centers)
     const instance_count_2d = instance_count_1d ** 2
@@ -35,7 +35,7 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
             const s = 0.5 + (Math.sin(Math.random() * Math.PI) * 0.7)
             m = Matrix.Identity().scale(s)
 
-            const position = new Vector4(x, 0, z, 1)
+            const position = new Vector4(-x, z, 0, 1)
             m = m.setRow(3, position)
             m.copyToArray(matrices_data, index * 16)
 
@@ -60,12 +60,13 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
         ++i
     }
 
-    tree.thinInstanceSetBuffer("matrix", matrices_data, 16)
+    ;(tree.node.getChildMeshes()[0] as any).thinInstanceSetBuffer("matrix", matrices_data, 16)
     // tree.node..thinInstanceSetBuffer("color", colorData, 4);
 
 
     function play ()
     {
+        tree.play()
         trees_with_delays.forEach(({ tree, delay }) =>
         {
             setTimeout(() => tree.play(), delay)

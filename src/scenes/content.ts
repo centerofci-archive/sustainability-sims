@@ -18,6 +18,7 @@ import { create_sustainable_home_scene } from "./create_sustainable_home_scene/c
 
 enum Content
 {
+    nada,
     basic,
     earth,
     forest,

@@ -16,6 +16,7 @@ export function create_ground (scene: Scene, size: number, position?: Vector3)
     const ground = MeshBuilder.CreateBox("ground", { width: size, depth: size, height, faceColors }, scene)
     ground.setPivotPoint(vec3([size/2, height/2, size/2]))
     ground.position = vec3([0, -height/2, 0])
+
     const ground_container = new AbstractMesh("ground_container")
     ground_container.position = position
     ground_container.addChild(ground)
