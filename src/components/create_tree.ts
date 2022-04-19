@@ -3,7 +3,7 @@ import { get_mesh } from "../utils/get_mesh"
 
 
 
-export const mesh_name_low_poly_tree_1 = "low_poly_tree_1"
+const mesh_name_low_poly_tree_1 = "low_poly_tree_1"
 
 
 const frame_rate = 10

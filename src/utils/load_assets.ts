@@ -1,18 +1,12 @@
 import { AssetsManager, AbstractAssetTask, MeshAssetTask } from "@babylonjs/core"
 import "@babylonjs/loaders"
 
-import { mesh_name_low_poly_tree_1 } from "../components/create_tree"
 
 
-
-const parent_mesh_names = new Set([
-    mesh_name_low_poly_tree_1,
-    // mesh_name_low_poly_house_2,
-    // mesh_name_low_poly_house_2_chimney,
-])
+const parent_mesh_names = new Set<string>([])
 export function load_assets (assets_manager: AssetsManager)
 {
-    assets_manager.addMeshTask("load low_poly_tree_1", null, "public/models/low_poly_tree/", "low_poly_tree_1.obj")
+    assets_manager.addMeshTask("load low_poly_tree_1", null, "public/models/low_poly_tree/", "low_poly_tree_1.glb")
     // assets_manager.addMeshTask("load low_poly_tree2", null, "public/models/low_poly_tree/", "low_poly_trees2.obj")
     assets_manager.addMeshTask("load low_poly_house_2", null, "public/models/low_poly_house/", "low_poly_house_2.glb")
     assets_manager.addMeshTask("load low_poly_arrows_1", null, "public/models/low_poly_arrow/", "arrows_1.glb")
