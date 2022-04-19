@@ -1,4 +1,4 @@
-import { AbstractMesh, Animation, AnimationGroup, EasingFunction, ExponentialEase, Scene, ShadowGenerator, Vector3 } from "@babylonjs/core"
+import { AbstractMesh, Animation, AnimationGroup, EasingFunction, ExponentialEase, Mesh, Scene, ShadowGenerator, Vector3 } from "@babylonjs/core"
 import { get_mesh } from "../utils/get_mesh"
 
 
@@ -43,7 +43,7 @@ grow_tree_visibility.setKeys([
 export interface Tree
 {
     play: () => void
-    node: AbstractMesh
+    node: Mesh
 }
 
 export function create_tree (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3, name: string): Tree
@@ -67,6 +67,6 @@ export function create_tree (scene: Scene, shadow_generator: ShadowGenerator, po
 
     return {
         play: () => grow_tree_anim_group.play(),
-        node: tree,
+        node: tree as any,
     }
 }
