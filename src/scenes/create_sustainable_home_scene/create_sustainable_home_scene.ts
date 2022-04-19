@@ -19,6 +19,7 @@ import { TemporalRangeValue } from "../../data_support/value"
 import { ValueOrError } from "../../data_support/value_or_error"
 import { pub_sub } from "../../utils/pub_sub"
 import { get_url_param, get_url_param_number, URLParams } from "../../utils/url_params_parser"
+import { vec3 } from "../../utils/vector"
 import { CreateContentCommonArgs } from "../content"
 import { ui_show_name } from "./ui/ui_show_name"
 import { ui_show_stats } from "./ui/ui_show_stats"
@@ -28,7 +29,10 @@ import { ui_show_stats } from "./ui/ui_show_stats"
 export const create_sustainable_home_scene = ({ scene, shadow_generator}: CreateContentCommonArgs, ground_size: number, url_params: URLParams) =>
 {
     create_sky(scene)
-    create_ground(scene, ground_size)
+
+    const ground_position = vec3([ground_size / 2, -0.5, ground_size / 2])
+    const { resize_ground } = create_ground(scene, ground_size, ground_position)
+
     const natural_gas_bubble = create_gas_bubble(scene, { position: new Vector3(10, 2, -2), volume_m3: 0, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator })
     natural_gas_bubble.play()
     natural_gas_bubble.gas_bubble_mesh.setEnabled(false)
@@ -110,8 +114,8 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
 
     const kg_CO2_per_year = gas_m3_per_month_value.value * 12
     const forest_m2 = kg_CO2_per_year / forest_kg_co2_per_m2_per_year_value
-    const forest_size_m = Math.round(Math.pow(forest_m2, 0.5))
-    let { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(15, 0, 15), forest_size_m)
+    const forest_size_m = 20 // Math.round(Math.pow(forest_m2, 0.5))
+    let { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(0, 0, 0), forest_size_m)
 
     // remove trees near house
     const near = 4
@@ -165,6 +169,8 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
 
     function make_forest ()
     {
+        resize_ground(forest_size_m + ground_size)
+
         grow_forest()
         // create_ground_mist(scene, ground_size * 0.45, Density.mediumlight)
 

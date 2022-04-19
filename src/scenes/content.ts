@@ -46,6 +46,7 @@ export const create_content = ({ scene, camera, sun, shadow_generator }: CreateC
     camera.upperBetaLimit = (Math.PI / 2) * 0.99
 
     const small_ground_size = 40
+    const tiny_ground_size = 20
 
     if (content === Content.basic)
     {
@@ -111,6 +112,6 @@ export const create_content = ({ scene, camera, sun, shadow_generator }: CreateC
     }
     else if (content === Content.sustainable_home)
     {
-        create_sustainable_home_scene({ scene, camera, sun, shadow_generator }, small_ground_size, url_params)
+        create_sustainable_home_scene({ scene, camera, sun, shadow_generator }, tiny_ground_size, url_params)
     }
 }
