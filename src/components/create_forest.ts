@@ -1,4 +1,4 @@
-import { AbstractMesh, Matrix, MeshBuilder, Scene, ShadowGenerator, Vector3, Vector4 } from "@babylonjs/core"
+import { AbstractMesh, Matrix, Mesh, MeshBuilder, Scene, ShadowGenerator, Vector3, Vector4 } from "@babylonjs/core"
 import { vec3 } from "../utils/vector"
 import { create_tree, Tree } from "./create_tree"
 
@@ -14,10 +14,14 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
 
 
     const tree = create_tree(scene, shadow_generator, vec3([0,0,0]), `thin_tree`)
+    const leaves = tree.node.getChildMeshes()[0] as Mesh
+    const trunk = tree.node.getChildMeshes()[1] as Mesh
+    // const merged_tree = Mesh.MergeMeshes([leaves, trunk as any], false)
     // const tree = MeshBuilder.CreateBox("root", {size: 1})
 
     const instance_count_1d = Math.round(size / space_between_tree_centers)
     const instance_count_2d = instance_count_1d ** 2
+    console.log("instance_count_2d ", instance_count_2d)
     const matrices_data = new Float32Array(16 * instance_count_2d)
 
 
@@ -60,8 +64,9 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
         ++i
     }
 
-    ;(tree.node.getChildMeshes()[0] as any).thinInstanceSetBuffer("matrix", matrices_data, 16)
-    ;(tree.node.getChildMeshes()[1] as any).thinInstanceSetBuffer("matrix", matrices_data, 16)
+    leaves.thinInstanceSetBuffer("matrix", matrices_data, 16)
+    trunk.thinInstanceSetBuffer("matrix", matrices_data, 16)
+    // tree.node.thinInstanceSetBuffer("matrix", matrices_data, 16)
     // tree.node..thinInstanceSetBuffer("color", colorData, 4);
 
 

@@ -114,6 +114,7 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
 
     const kg_CO2_per_year = gas_m3_per_month_value.value * 12
     const forest_m2 = kg_CO2_per_year / forest_kg_co2_per_m2_per_year_value
+    console.log("forest_m2", forest_m2)
     const forest_size_m = Math.round(Math.pow(forest_m2, 0.5))
     let { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(0, 0, 0), forest_size_m)
 
