@@ -118,7 +118,7 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     let { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(0, 0, 0), forest_size_m)
 
     // remove trees near house
-    const near = 4
+    const near = 5
     trees = trees.filter(tree =>
     {
         if (tree.position.x > -near && tree.position.x < near && tree.position.z > -near && tree.position.z < near)
