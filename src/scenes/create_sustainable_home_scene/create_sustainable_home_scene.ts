@@ -51,7 +51,7 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     create_person(scene, shadow_generator, new Vector3(2, 0, 4), people[2])
     create_house(scene, shadow_generator, Vector3.Zero(), "house")
 
-    const { play } = create_smoke_plume(scene, { emit_position1: new Vector3(-0.5, 4.2, -1.9) }, shadow_generator)
+    const { play } = create_smoke_plume(scene, { emit_position1: new Vector3(0.5, 4.2, -1.9) }, shadow_generator)
     play()
 
 
