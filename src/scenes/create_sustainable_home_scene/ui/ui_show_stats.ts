@@ -41,7 +41,7 @@ export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRang
 
     add_button("ui_toggle_show_natural_gas_bubble", "Show gas", panel, 0.5)
     add_button("ui_toggle_show_co2_bubble", "Show CO2", panel, 0.5)
-    add_button("ui_toggle_show_co2_bubble__max", "Show max CO2", panel, 0.5)
+    // add_button("ui_toggle_show_co2_bubble__max", "Show max CO2", panel, 0.5)
 
     const text_actions = new TextBlock()
     text_actions.text = `Individual Action`
