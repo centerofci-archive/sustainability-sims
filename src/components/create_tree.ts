@@ -1,5 +1,5 @@
 import { AbstractMesh, Animation, AnimationGroup, EasingFunction, ExponentialEase, Mesh, Scene, ShadowGenerator, Vector3 } from "@babylonjs/core"
-import { get_mesh } from "../utils/get_mesh"
+import { get_transform_node } from "../utils/get_mesh"
 
 
 
@@ -48,7 +48,7 @@ export interface Tree
 
 export function create_tree (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3, name: string): Tree
 {
-    const tree = get_mesh(scene, mesh_name_low_poly_tree_1, "tree_green_" + name, {
+    const tree = get_transform_node(scene, mesh_name_low_poly_tree_1, "tree_green_" + name, {
         position,
         receive_shadows: true,
         shadow_generator,

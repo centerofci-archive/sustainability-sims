@@ -22,12 +22,13 @@ import { shuffle } from "../../utils/random"
 import { get_url_param, get_url_param_number, URLParams } from "../../utils/url_params_parser"
 import { vec3 } from "../../utils/vector"
 import { CreateContentCommonArgs } from "../content"
+import { listen_for_double_click } from "./listen_for_double_click"
 import { ui_show_name } from "./ui/ui_show_name"
 import { ui_show_stats } from "./ui/ui_show_stats"
 
 
 
-export const create_sustainable_home_scene = ({ scene, shadow_generator}: CreateContentCommonArgs, ground_size: number, url_params: URLParams) =>
+export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}: CreateContentCommonArgs, ground_size: number, url_params: URLParams) =>
 {
     create_sky(scene)
 
@@ -120,19 +121,19 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     const forest_m2 = kg_CO2_per_year / forest_kg_co2_per_m2_per_year_value
     console.log("forest_m2", forest_m2)
     const forest_size_m = Math.round(Math.pow(forest_m2, 0.5))
-    let { tree_nodes: trees, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(0, 0, 0), forest_size_m)
+    let { tree_nodes, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(-5, 0, -5), forest_size_m)
 
-    // remove trees near house
-    const near = 5
-    trees = trees.filter(tree =>
-    {
-        if (tree.position.x > -near && tree.position.x < near && tree.position.z > -near && tree.position.z < near)
-        {
-            tree.dispose()
-            return false
-        }
-        return true
-    })
+    // // remove trees near house
+    // const near = 5
+    // tree_nodes = tree_nodes.filter(tree =>
+    // {
+    //     if (tree.position.x > -near && tree.position.x < near && tree.position.z > -near && tree.position.z < near)
+    //     {
+    //         tree.dispose()
+    //         return false
+    //     }
+    //     return true
+    // })
 
 
     let animated = false
@@ -143,11 +144,11 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     {
         protected_trees = true
 
-        trees.forEach(tree =>
-        {
-            const scale = Vector3.One().scale(tree.size)
-            tree.getChildMeshes().forEach(mesh => mesh.scaling = scale.clone())
-        })
+        // trees.forEach(tree =>
+        // {
+        //     // const scale = Vector3.One().scale(tree.size)
+        //     // tree.getChildMeshes().forEach(mesh => mesh.scaling = scale.clone())
+        // })
 
         if (animated) return
         animated = true
@@ -159,7 +160,7 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     {
         protected_trees = false
 
-        trees.forEach(tree =>
+        tree_nodes.forEach(tree =>
         {
             const scale = Vector3.One().scale(planted_tree_size)
             tree.getChildMeshes().forEach(mesh => mesh.scaling = scale.clone())
@@ -192,25 +193,27 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
                 return
             }
 
-            trees.forEach((tree, i) =>
-            {
-                const arrow_args: CreateArrowArgs = {
-                    position: tree.position.add(new Vector3(0, 10, 0)),
-                    color: green,
-                    rotation: [Math.PI, 0, 0],
-                    volume_m3: protected_trees ? tree.size : planted_tree_size,
-                }
+            // trees.forEach((tree, i) =>
+            // {
+            //     const arrow_args: CreateArrowArgs = {
+            //         position: tree.position.add(new Vector3(0, 10, 0)),
+            //         color: green,
+            //         rotation: [Math.PI, 0, 0],
+            //         volume_m3: protected_trees ? tree.size : planted_tree_size,
+            //     }
 
-                const result = create_arrow_chain(scene, "tree_CO2_absorbed_" + i, arrow_args, { number_of_arrows: 1 })
-                result.play()
-                showing_arrows = [...showing_arrows, ...result.arrows]
-            })
+            //     const result = create_arrow_chain(scene, "tree_CO2_absorbed_" + i, arrow_args, { number_of_arrows: 1 })
+            //     result.play()
+            //     showing_arrows = [...showing_arrows, ...result.arrows]
+            // })
         })
     }
 
 
     ui_show_name(scene, name)
     ui_show_stats(scene, gas_m3_per_year_value)
+
+    listen_for_double_click(scene, camera, tree_nodes[0])
 }
 
 

@@ -1,12 +1,12 @@
 import { AbstractMesh, Matrix, Mesh, MeshBuilder, Scene, ShadowGenerator, Vector3, Vector4 } from "@babylonjs/core"
-import { vec3 } from "../utils/vector"
+import { is_Vector4, vec3 } from "../utils/vector"
 import { create_tree, Tree } from "./create_tree"
 
 
 
 export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3, size: number)
 {
-    const tree_nodes: (AbstractMesh & { size: number })[] = []
+    const tree_nodes: Mesh[] = []
     const trees_with_delays: { tree: Tree, delay: number }[] = []
 
     const space_between_tree_centers = 3
@@ -16,8 +16,7 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
     const tree = create_tree(scene, shadow_generator, vec3([0,0,0]), `thin_tree`)
     const leaves = tree.node.getChildMeshes()[0] as Mesh
     const trunk = tree.node.getChildMeshes()[1] as Mesh
-    // const merged_tree = Mesh.MergeMeshes([leaves, trunk as any], false)
-    // const tree = MeshBuilder.CreateBox("root", {size: 1})
+    tree_nodes.push(leaves, trunk)
 
     const instance_count_1d = Math.round(size / space_between_tree_centers)
     const instance_count_2d = instance_count_1d ** 2
@@ -39,8 +38,10 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
             const s = 0.5 + (Math.sin(Math.random() * Math.PI) * 0.7)
             m = Matrix.Identity().scale(s)
 
-            const position = new Vector4(-x, z, 0, 1)
-            m = m.setRow(3, position)
+
+            let pos = new Vector4(position.x + x, position.y, position.z + z, 1)
+            pos = convert_messed_up_coordinate_system(pos)
+            m = m.setRow(3, pos)
             m.copyToArray(matrices_data, index * 16)
 
             // const pos = position.add(new Vector3(x, 0, z))
@@ -66,6 +67,9 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
 
     leaves.thinInstanceSetBuffer("matrix", matrices_data, 16)
     trunk.thinInstanceSetBuffer("matrix", matrices_data, 16)
+
+    leaves.isPickable = true
+    leaves.thinInstanceEnablePicking = true
     // tree.node.thinInstanceSetBuffer("matrix", matrices_data, 16)
     // tree.node..thinInstanceSetBuffer("color", colorData, 4);
 
@@ -84,4 +88,16 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
         tree_nodes,
         play,
     }
+}
+
+
+
+// Helper as co-ordinate system seems completely messed up for some reason
+export function convert_messed_up_coordinate_system (vec: Vector3): Vector3
+export function convert_messed_up_coordinate_system (vec: Vector4): Vector4
+export function convert_messed_up_coordinate_system (vec: Vector3 | Vector4): Vector3 | Vector4
+{
+    if (is_Vector4(vec)) return new Vector4(vec.x, vec.z, vec.y, vec.w)
+
+    return new Vector3(vec.x, vec.z, vec.y)
 }
