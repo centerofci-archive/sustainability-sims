@@ -17,6 +17,7 @@ import { convert_value } from "../../data_support/units/convert"
 import { UnitsID } from "../../data_support/units/units"
 import { TemporalRangeValue } from "../../data_support/value"
 import { ValueOrError } from "../../data_support/value_or_error"
+import { retarget_and_move_camera_to_include_mesh } from "../../utils/move_camera"
 import { pub_sub } from "../../utils/pub_sub"
 import { shuffle } from "../../utils/random"
 import { get_url_param, get_url_param_number, URLParams } from "../../utils/url_params_parser"
@@ -33,7 +34,7 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     create_sky(scene)
 
     const ground_position = vec3([ground_size / 2, -0.5, ground_size / 2])
-    const { resize_ground } = create_ground(scene, ground_size, ground_position)
+    const { ground, resize_ground } = create_ground(scene, ground_size, ground_position)
 
     const natural_gas_bubble = create_gas_bubble(scene, { position: new Vector3(10, 2, -2), volume_m3: 0, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator })
     natural_gas_bubble.play()
@@ -179,6 +180,11 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
 
         grow_forest()
         // create_ground_mist(scene, ground_size * 0.45, Density.mediumlight)
+
+        setTimeout(() =>
+        {
+            retarget_and_move_camera_to_include_mesh(scene, camera, ground)
+        }, 1000)
 
 
         const green = new Color4(0.3, 0.5, 0.25, 0.8)

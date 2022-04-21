@@ -1,14 +1,14 @@
-import { Animation, ArcRotateCamera, EasingFunction, IAnimationKey, Scene, SineEase, Vector3 } from "@babylonjs/core"
+import { Animation, ArcRotateCamera, EasingFunction, IAnimationKey, Mesh, Scene, SineEase, Vector3 } from "@babylonjs/core"
 
 
 
 const frames_per_second = 24
 const total_frames = 1 * frames_per_second
 
-export function retarget_and_move_camera (scene: Scene, camera: ArcRotateCamera, new_target: Vector3)
+export function retarget_and_move_camera (scene: Scene, camera: ArcRotateCamera, new_target: Vector3, new_position?: Vector3)
 {
     const diff = new_target.subtract(camera.target)
-    const new_position = camera.position.add(diff)
+    new_position = new_position || camera.position.add(diff)
 
 
     const animation_camera_target = new Animation(
@@ -53,4 +53,20 @@ export function retarget_and_move_camera (scene: Scene, camera: ArcRotateCamera,
         animation_camera_target,
         animation_camera_position,
     ], 0, total_frames, false)
+}
+
+
+
+export function retarget_and_move_camera_to_include_mesh (scene: Scene, camera: ArcRotateCamera, mesh: Mesh)
+{
+    const field_of_view_angle = camera.fov
+    const mesh_sphere = mesh.getBoundingInfo().boundingSphere
+    const size = mesh_sphere.radiusWorld
+    const distance = (size/2) / Math.tan(field_of_view_angle/2)
+
+    let new_position = camera.position.subtract(camera.target)
+    new_position = new_position.normalize().scale(distance)
+    new_position.addInPlace(mesh_sphere.centerWorld)
+
+    retarget_and_move_camera(scene, camera, mesh_sphere.centerWorld, new_position)
 }

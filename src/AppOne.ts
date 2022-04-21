@@ -87,6 +87,10 @@ function create_scene (engine: BABYLON.Engine, canvas: HTMLCanvasElement)
 
     // This attaches the camera to the canvas
     camera.attachControl(canvas, true)
+
+    camera.lowerRadiusLimit = 3
+    camera.useBouncingBehavior = true
+
     // camera.speed = 0.25
 
     const sun = create_sun(scene)
