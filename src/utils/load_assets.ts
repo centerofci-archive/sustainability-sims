@@ -22,13 +22,16 @@ export function load_assets (assets_manager: AssetsManager)
         {
             if (typeof task.sceneFilename === "string" && task.sceneFilename.endsWith(".glb"))
             {
+                // console .log("Have mesh filename: ", task.sceneFilename)
                 const roots = task.loadedMeshes.filter(mesh => mesh.name === "__root__")
 
                 roots.forEach(mesh =>
                 {
-                    mesh.getChildMeshes().forEach(child =>
+                    // console .log("Have mesh: ", mesh.name, mesh.getChildren().map(c => c.name))
+                    mesh.getChildren().forEach(child =>
                     {
-                        if (child.parent === mesh) child.setParent(null)
+                        // console .log("Have child mesh: ", child.name, " with parent: ", child.parent?.name || "<null>")
+                        if (child.parent === mesh) child.parent = null
                     })
                     mesh.dispose()
                 })

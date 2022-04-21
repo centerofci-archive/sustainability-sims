@@ -40,3 +40,35 @@ export function get_mesh (scene: Scene, mesh_name: string, new_mesh_name: string
 
     return mesh
 }
+
+
+
+export function get_transform_node (scene: Scene, node_name: string, new_node_name: string, options: GetMeshOptions = {})
+{
+    const node = scene.getTransformNodeByName(node_name)?.clone(new_node_name, options.parent_node || null)!
+
+    if (!node)
+    {
+        console.error(`Missing node: ${node_name}`)
+        return MeshBuilder.CreateBox("missing node " + node_name, {}, scene)
+    }
+
+    const { position, receive_shadows, shadow_generator, visibility } = options
+
+    if (position) node.position = position
+
+
+    // if (receive_shadows) node.receiveShadows = true
+    // if (shadow_generator) shadow_generator.addShadowCaster(node)
+    node.getChildMeshes().forEach(mesh =>
+    {
+        if (receive_shadows) mesh.receiveShadows = true
+        if (shadow_generator) shadow_generator.addShadowCaster(mesh)
+    })
+
+
+    if (visibility !== undefined) set_mesh_visiblilty(node, visibility)
+
+
+    return node
+}
