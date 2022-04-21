@@ -39,8 +39,7 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
             m = Matrix.Identity().scale(s)
 
 
-            let pos = new Vector4(position.x + x, position.y, position.z + z, 1)
-            pos = convert_messed_up_coordinate_system(pos)
+            const pos = new Vector4(position.x + x, position.y, position.z + z, 1)
             m = m.setRow(3, pos)
             m.copyToArray(matrices_data, index * 16)
 
@@ -88,16 +87,4 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
         tree_nodes,
         play,
     }
-}
-
-
-
-// Helper as co-ordinate system seems completely messed up for some reason
-export function convert_messed_up_coordinate_system (vec: Vector3): Vector3
-export function convert_messed_up_coordinate_system (vec: Vector4): Vector4
-export function convert_messed_up_coordinate_system (vec: Vector3 | Vector4): Vector3 | Vector4
-{
-    if (is_Vector4(vec)) return new Vector4(vec.x, vec.z, vec.y, vec.w)
-
-    return new Vector3(vec.x, vec.z, vec.y)
 }

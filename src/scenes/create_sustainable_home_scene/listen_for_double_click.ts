@@ -1,5 +1,4 @@
 import { ArcRotateCamera, Mesh, PointerEventTypes, Scene, Vector3 } from "@babylonjs/core"
-import { convert_messed_up_coordinate_system } from "../../components/create_forest"
 
 
 const DOUBLE_CLICK_LIMIT = 200
@@ -24,8 +23,6 @@ export function listen_for_double_click (scene: Scene, camera: ArcRotateCamera, 
                 if (thinInstanceMatrix)
                 {
                     thinInstanceMatrix.getTranslationToRef(pos)
-                    // co-ordinate system seems completely messed up for some reason
-                    pos = convert_messed_up_coordinate_system(pos)
                 }
                 else
                 {
