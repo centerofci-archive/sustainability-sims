@@ -7,13 +7,36 @@ import {
     StandardMaterial,
     Color3,
 } from "@babylonjs/core"
+import { get_mesh } from "../utils/get_mesh"
+import { random_selection } from "../utils/random"
+
+
+
+export const person_mesh_names = ["f_7", "f_8", "m_8"]
+
+
+export function create_person (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3, person_mesh_name: string = "")
+{
+    const height = 1.7
+
+    person_mesh_name = person_mesh_name || random_selection(person_mesh_names)
+    const person = get_mesh(scene, person_mesh_name, "person" + name, {
+        position,
+        receive_shadows: true,
+        shadow_generator,
+        visibility: 1,
+    })
+
+    shadow_generator.addShadowCaster(person)
+    person.receiveShadows = true
+
+    return person
+}
 
 
 
 let person_material: StandardMaterial | undefined = undefined
-
-
-export function create_person (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3)
+function sculpt_person_cylinder (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3)
 {
     const body_height = 1.5
     const head_height_radius = 0.15

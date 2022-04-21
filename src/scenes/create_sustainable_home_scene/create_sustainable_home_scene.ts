@@ -8,7 +8,7 @@ import { create_gas_bubble } from "../../components/create_gas_bubble"
 import { create_ground } from "../../components/create_ground"
 import { create_ground_mist, Density } from "../../components/create_ground_mist"
 import { create_house } from "../../components/create_house"
-import { create_person } from "../../components/create_person"
+import { create_person, person_mesh_names } from "../../components/create_person"
 import { create_sky } from "../../components/create_sky"
 import { create_smoke_plume } from "../../components/create_smoke_plume"
 import { scale_to_approximately_a_month, time_period_to_days } from "../../data_support/datetime/range"
@@ -18,6 +18,7 @@ import { UnitsID } from "../../data_support/units/units"
 import { TemporalRangeValue } from "../../data_support/value"
 import { ValueOrError } from "../../data_support/value_or_error"
 import { pub_sub } from "../../utils/pub_sub"
+import { shuffle } from "../../utils/random"
 import { get_url_param, get_url_param_number, URLParams } from "../../utils/url_params_parser"
 import { vec3 } from "../../utils/vector"
 import { CreateContentCommonArgs } from "../content"
@@ -42,7 +43,10 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     co2_bubble.gas_bubble_mesh.setEnabled(false)
 
 
-    create_person(scene, shadow_generator, new Vector3(0, 0, 4))
+    const people = shuffle(person_mesh_names)
+    create_person(scene, shadow_generator, new Vector3(-4, 0, 3), people[0])
+    create_person(scene, shadow_generator, new Vector3(0, 0, 5), people[1])
+    create_person(scene, shadow_generator, new Vector3(2, 0, 4), people[2])
     create_house(scene, shadow_generator, Vector3.Zero(), "house")
 
     const { play } = create_smoke_plume(scene, { emit_position1: new Vector3(-0.5, 4.2, -1.9) }, shadow_generator)
