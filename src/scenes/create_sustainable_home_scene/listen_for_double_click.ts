@@ -1,4 +1,6 @@
 import { ArcRotateCamera, Mesh, PointerEventTypes, Scene, Vector3 } from "@babylonjs/core"
+import { retarget_and_move_camera } from "../../utils/move_camera"
+
 
 
 const DOUBLE_CLICK_LIMIT = 200
@@ -31,7 +33,7 @@ export function listen_for_double_click (scene: Scene, camera: ArcRotateCamera, 
 
                 // console .log("Double clicked on ", pointerInfo.pickInfo.pickedMesh, pos)
 
-                camera.target = pos
+                retarget_and_move_camera(scene, camera, pos)
             }
         }
         else if (pointerInfo.type === PointerEventTypes.POINTERMOVE)
