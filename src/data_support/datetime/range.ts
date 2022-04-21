@@ -62,6 +62,32 @@ export function scale_to_approximately_a_month (value_object: TemporalRangeValue
 
 
 
+function approximately_a_year (value_object: TemporalRangeValue)
+{
+    const days = days_range(value_object)
+    return days >= 365 && days <= 366
+}
+
+
+export function scale_to_approximately_a_year (value_object: TemporalRangeValue): TemporalRangeValue
+{
+    if (approximately_a_year(value_object)) return value_object
+
+    const days = days_range(value_object)
+    const ratio = DAYS_IN_YEAR / days
+
+    const date_from = subtract_days_from_date(value_object.date_to, Math.round(DAYS_IN_YEAR))
+    const value = value_object.value * ratio
+
+    return {
+        ...value_object,
+        date_from,
+        value,
+    }
+}
+
+
+
 export function scale_temporally <V extends ValueObject> (value_object: V, scale_to: "year" | "month"): ValueOrError<V>
 {
     const units = simplify_units(value_object.units)
@@ -118,7 +144,7 @@ export function scale_temporally <V extends ValueObject> (value_object: V, scale
         }
     }
 
-    const scaled_value_object: V = multiply<V>(value_object, scale)
+    const scaled_value_object: V = multiply<V, ValueObject>(value_object, scale)
 
 
     return { value: scaled_value_object, error: "" }

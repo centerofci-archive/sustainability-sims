@@ -7,7 +7,7 @@ import { pub_sub } from "../../../utils/pub_sub"
 
 
 
-export function ui_show_stats (scene: Scene, gas_m3_per_month_value: TemporalRangeValue)
+export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRangeValue)
 {
     const advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI", true, scene)
 
@@ -18,13 +18,13 @@ export function ui_show_stats (scene: Scene, gas_m3_per_month_value: TemporalRan
     advancedTexture.addControl(panel)
 
     const text_gas_volume_header = new TextBlock()
-    text_gas_volume_header.text = `Gas consumption\nin ${units_to_string(gas_m3_per_month_value.units)} per month`
+    text_gas_volume_header.text = `Gas consumption\nin ${units_to_string(gas_m3_per_year_value.units)} per year`
     text_gas_volume_header.height = "50px"
     text_gas_volume_header.color = "white"
     panel.addControl(text_gas_volume_header)
 
     const text_gas_volume_value = new TextBlock()
-    const vol = Number((gas_m3_per_month_value.value).toPrecision(2))
+    const vol = Number((gas_m3_per_year_value.value).toPrecision(2))
     text_gas_volume_value.text = `${vol}`
     const style = advancedTexture.createStyle()
     style.fontSize = 30

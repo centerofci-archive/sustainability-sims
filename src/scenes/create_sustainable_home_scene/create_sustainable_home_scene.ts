@@ -11,7 +11,7 @@ import { create_house } from "../../components/create_house"
 import { create_person, person_mesh_names } from "../../components/create_person"
 import { create_sky } from "../../components/create_sky"
 import { create_smoke_plume } from "../../components/create_smoke_plume"
-import { scale_to_approximately_a_month, time_period_to_days } from "../../data_support/datetime/range"
+import { scale_to_approximately_a_year, time_period_to_days } from "../../data_support/datetime/range"
 import { days_range, subtract_days_from_date } from "../../data_support/datetime/subtract"
 import { convert_value } from "../../data_support/units/convert"
 import { UnitsID } from "../../data_support/units/units"
@@ -73,13 +73,13 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     }
 
 
-    const gas_m3_per_month = calculate_gas_m3_per_month(sanitised_gas_params.value)
-    if (gas_m3_per_month.value === undefined)
+    const gas_m3_per_year = calculate_gas_m3_per_year(sanitised_gas_params.value)
+    if (gas_m3_per_year.value === undefined)
     {
-        console.error("Error converting gas to m3 per month", gas_m3_per_month.error)
+        console.error("Error converting gas to m3 per year", gas_m3_per_year.error)
         return
     }
-    const gas_m3_per_month_value = gas_m3_per_month.value
+    const gas_m3_per_year_value = gas_m3_per_year.value
 
 
     if (forest_kg_co2_per_m2_per_year.value === undefined)
@@ -94,14 +94,14 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
     {
         const enable = !natural_gas_bubble.gas_bubble_mesh.isEnabled()
         natural_gas_bubble.gas_bubble_mesh.setEnabled(enable)
-        natural_gas_bubble.grow(gas_m3_per_month_value.value)
+        natural_gas_bubble.grow(gas_m3_per_year_value.value)
     })
 
     pub_sub.ui.sub("ui_toggle_show_co2_bubble", () =>
     {
         const enable = !co2_bubble.gas_bubble_mesh.isEnabled()
         co2_bubble.gas_bubble_mesh.setEnabled(enable)
-        co2_bubble.grow(gas_m3_per_month_value.value)
+        co2_bubble.grow(gas_m3_per_year_value.value)
     })
 
     pub_sub.ui.sub("ui_toggle_show_co2_bubble__max", () =>
@@ -112,11 +112,11 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
         // Only including ethane, propane, and butane
         // 1.16 = ((100 - (7.33 + 2.41  + (0.48 + 0.89))) + (7.33 * 2) + (2.41 * 3) + ((0.48 + 0.89) * 4)) / 100
         // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/545567/Material_comparators_for_fuels_-_natural_gas.pdf
-        co2_bubble.grow(gas_m3_per_month_value.value * 1.16)
+        co2_bubble.grow(gas_m3_per_year_value.value * 1.16)
     })
 
 
-    const kg_CO2_per_year = gas_m3_per_month_value.value * 12
+    const kg_CO2_per_year = gas_m3_per_year_value.value
     const forest_m2 = kg_CO2_per_year / forest_kg_co2_per_m2_per_year_value
     console.log("forest_m2", forest_m2)
     const forest_size_m = Math.round(Math.pow(forest_m2, 0.5))
@@ -210,18 +210,18 @@ export const create_sustainable_home_scene = ({ scene, shadow_generator}: Create
 
 
     ui_show_name(scene, name)
-    ui_show_stats(scene, gas_m3_per_month_value)
+    ui_show_stats(scene, gas_m3_per_year_value)
 }
 
 
 
-interface CalculateGasM3PerMonth
+interface SanitiseGasParams
 {
     gas_period: string
     gas_volume: number
     gas_units: string
 }
-function sanitise_gas_params (args: CalculateGasM3PerMonth): ValueOrError<TemporalRangeValue>
+function sanitise_gas_params (args: SanitiseGasParams): ValueOrError<TemporalRangeValue>
 {
     const { gas_period, gas_volume, gas_units } = args
 
@@ -288,7 +288,7 @@ function sanitise_volume_units (volume_units: string): ValueOrError<UnitsID>
 
 
 
-function calculate_gas_m3_per_month (sanitised_gas_params: TemporalRangeValue): ValueOrError<TemporalRangeValue>
+function calculate_gas_m3_per_year (sanitised_gas_params: TemporalRangeValue): ValueOrError<TemporalRangeValue>
 {
     let value: TemporalRangeValue | undefined = sanitised_gas_params
     let error = ""
@@ -299,7 +299,7 @@ function calculate_gas_m3_per_month (sanitised_gas_params: TemporalRangeValue): 
         if (value === undefined) return { value, error }
     }
 
-    value = scale_to_approximately_a_month(value)
+    value = scale_to_approximately_a_year(value)
 
     return { value, error }
 }
