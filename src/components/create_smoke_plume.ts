@@ -1,4 +1,5 @@
 import { AbstractMesh, Animation, Color3, MeshBuilder, Scene, ShadowGenerator, StandardMaterial, Vector3 } from "@babylonjs/core"
+import { trigger_function_at } from "../utils/trigger_funktion_at"
 
 
 
@@ -28,9 +29,10 @@ export function create_smoke_plume (scene: Scene, options: EmitterOptions, shado
 
     const frame_rate = 10
     const total_frames = frame_rate * lifetime
+    const lifetime_ms = lifetime * 1000
 
 
-    const smokes: { mesh: AbstractMesh, delay: number }[] = []
+    const smokes: { mesh: AbstractMesh, delay_ms: number }[] = []
 
 
     let i = 0
@@ -87,9 +89,9 @@ export function create_smoke_plume (scene: Scene, options: EmitterOptions, shado
         // smoke_ball.animations.push(animate_rotation)
 
 
-        const delay = (i / number) * lifetime * 1000
+        const delay_ms = (i / number) * lifetime_ms
 
-        smokes.push({ mesh: smoke_ball, delay })
+        smokes.push({ mesh: smoke_ball, delay_ms })
 
         ++i
     }
@@ -97,9 +99,11 @@ export function create_smoke_plume (scene: Scene, options: EmitterOptions, shado
 
     function play ()
     {
-        smokes.forEach(({ mesh, delay }) =>
+        const start_ms = performance.now()
+        smokes.forEach(({ mesh, delay_ms }) =>
         {
-            setTimeout(() => scene.beginAnimation(mesh, 0, total_frames, true), delay)
+            const funktion = () => scene.beginAnimation(mesh, 0, total_frames, true)
+            trigger_function_at({ funktion, delay_ms, loop_ms: lifetime_ms, start_ms })
         })
     }
 
