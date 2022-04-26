@@ -1,5 +1,5 @@
 import { ArcRotateCamera, Mesh, PointerEventTypes, Scene, Vector3 } from "@babylonjs/core"
-import { retarget_and_move_camera } from "../../utils/move_camera"
+import { retarget_camera } from "../../utils/move_camera"
 
 
 
@@ -33,7 +33,7 @@ export function listen_for_double_click (scene: Scene, camera: ArcRotateCamera, 
 
                 // console .log("Double clicked on ", pointerInfo.pickInfo.pickedMesh, pos)
 
-                retarget_and_move_camera(scene, camera, pos)
+                retarget_camera(scene, camera, pos, 50)
             }
         }
         else if (pointerInfo.type === PointerEventTypes.POINTERMOVE)

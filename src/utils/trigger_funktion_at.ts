@@ -44,11 +44,11 @@ export function trigger_function_at (args: TriggerFunctionAtArgs)
 
         if (aim_for_next_cycle)
         {
-            console .warn(`Aiming to start funktion next cycle in `, wait_for, " attempts remaining ", attempts_remaining)
+            // console .warn(`Aiming to start funktion next cycle in `, wait_for, " attempts remaining ", attempts_remaining)
         }
         else
         {
-            console .log(`Aiming to start funktion this cycle in `, wait_for, " attempts remaining ", attempts_remaining)
+            // console .log(`Aiming to start funktion this cycle in `, wait_for, " attempts remaining ", attempts_remaining)
         }
 
         trigger_function_at({ ...args, tolerance_ms, attempts_remaining })

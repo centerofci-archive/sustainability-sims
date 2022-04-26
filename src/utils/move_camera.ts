@@ -5,6 +5,25 @@ import { Animation, ArcRotateCamera, EasingFunction, IAnimationKey, Mesh, Scene,
 const frames_per_second = 24
 const total_frames = 1 * frames_per_second
 
+export function retarget_camera (scene: Scene, camera: ArcRotateCamera, new_target: Vector3, max_distance?: number)
+{
+    let new_position = camera.position.clone()
+
+    if (max_distance !== undefined)
+    {
+        const vector_from_new_target = camera.position.subtract(new_target)
+        const ratio = max_distance / vector_from_new_target.length()
+        if (ratio < 1)
+        {
+            new_position = new_target.add(vector_from_new_target.scale(ratio))
+        }
+    }
+
+    retarget_and_move_camera(scene, camera, new_target, new_position)
+}
+
+
+
 export function retarget_and_move_camera (scene: Scene, camera: ArcRotateCamera, new_target: Vector3, new_position?: Vector3)
 {
     const diff = new_target.subtract(camera.target)
@@ -43,10 +62,10 @@ export function retarget_and_move_camera (scene: Scene, camera: ArcRotateCamera,
     animation_camera_position.setKeys(animation_keys_camera_position)
 
 
-    const ease_position = new SineEase()
-    ease_position.setEasingMode(EasingFunction.EASINGMODE_EASEINOUT)
-    animation_camera_target.setEasingFunction(ease_position)
-    animation_camera_position.setEasingFunction(ease_position)
+    const ease = new SineEase()
+    ease.setEasingMode(EasingFunction.EASINGMODE_EASEINOUT)
+    animation_camera_target.setEasingFunction(ease)
+    animation_camera_position.setEasingFunction(ease)
 
 
     scene.beginDirectAnimation(camera, [
