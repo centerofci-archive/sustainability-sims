@@ -205,13 +205,13 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     {
         resize_ground(forest_size_m + ground_size)
 
-        grow_forest()
         // create_ground_mist(scene, ground_size * 0.45, Density.mediumlight)
 
         setTimeout(() =>
         {
             retarget_and_move_camera_to_include_mesh(scene, camera, ground)
-        }, 1000)
+            setTimeout(() => grow_forest(), 1000)
+        }, 50)
 
 
         const green = new Color4(0.3, 0.5, 0.25, 0.8)
