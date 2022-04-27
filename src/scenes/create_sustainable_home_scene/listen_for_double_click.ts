@@ -33,7 +33,7 @@ export function listen_for_double_click (scene: Scene, camera: ArcRotateCamera, 
 
                 // console .log("Double clicked on ", pointerInfo.pickInfo.pickedMesh, pos)
 
-                retarget_camera(scene, camera, pos, { max_distance: 50, keep_angle: true })
+                retarget_camera(scene, camera, pos, { max_distance: undefined, keep_angle: true })
             }
         }
         else if (pointerInfo.type === PointerEventTypes.POINTERMOVE)

@@ -9,14 +9,14 @@ export function retarget_camera (scene: Scene, camera: ArcRotateCamera, new_targ
 {
     let new_position = camera.position.clone()
 
-    if (options.max_distance !== undefined)
+    if (options.max_distance !== undefined || options.keep_angle)
     {
         // vector_from_new_target
         let vector = camera.position.subtract(new_target)
 
         if (options.keep_angle) vector = camera.position.subtract(camera.target)
 
-        const ratio = options.max_distance / vector.length()
+        const ratio = options.max_distance === undefined ? 1 : options.max_distance / vector.length()
         if (ratio < 1 || options.keep_angle)
         {
             new_position = new_target.add(vector.scale(ratio))
