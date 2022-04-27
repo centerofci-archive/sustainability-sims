@@ -60,6 +60,8 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     const gas_units = get_url_param(url_params, "gas_units")
     const name = get_url_param(url_params, "name")
     const forest_kg_co2_per_m2_per_year = get_url_param_number(url_params, "forest_co2_absorb")
+    const mangrove_kg_co2_per_m2_per_year = get_url_param_number(url_params, "mangrove_co2_absorb")
+    const peatland_kg_co2_per_m2_per_year = get_url_param_number(url_params, "peatland_co2_absorb")
 
     if (gas_volume.error)
     {

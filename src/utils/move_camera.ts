@@ -5,17 +5,21 @@ import { Animation, ArcRotateCamera, EasingFunction, IAnimationKey, Mesh, Scene,
 const frames_per_second = 24
 const total_frames = 1 * frames_per_second
 
-export function retarget_camera (scene: Scene, camera: ArcRotateCamera, new_target: Vector3, max_distance?: number)
+export function retarget_camera (scene: Scene, camera: ArcRotateCamera, new_target: Vector3, options: { max_distance?: number, keep_angle?: boolean } = {})
 {
     let new_position = camera.position.clone()
 
-    if (max_distance !== undefined)
+    if (options.max_distance !== undefined)
     {
-        const vector_from_new_target = camera.position.subtract(new_target)
-        const ratio = max_distance / vector_from_new_target.length()
-        if (ratio < 1)
+        // vector_from_new_target
+        let vector = camera.position.subtract(new_target)
+
+        if (options.keep_angle) vector = camera.position.subtract(camera.target)
+
+        const ratio = options.max_distance / vector.length()
+        if (ratio < 1 || options.keep_angle)
         {
-            new_position = new_target.add(vector_from_new_target.scale(ratio))
+            new_position = new_target.add(vector.scale(ratio))
         }
     }
 
