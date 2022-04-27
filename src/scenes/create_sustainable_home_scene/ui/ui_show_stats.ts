@@ -55,11 +55,14 @@ export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRang
     add_button("ui_toggle_action_improve_insulation", "Improve insulation", panel)
 
 
-    let added_ui = false
-    pub_sub.ui.sub("ui_toggle_action_protect_trees", () =>
+    pub_sub.ui.sub("ui_toggle_action_protect_trees", () => extend_ui_with_forest_related_ui())
+    pub_sub.ui.sub("ui_toggle_action_plant_trees", () => extend_ui_with_forest_related_ui())
+
+    let added_forest_related_ui = false
+    function extend_ui_with_forest_related_ui ()
     {
-        if (added_ui) return
-        added_ui = true
+        if (added_forest_related_ui) return
+        added_forest_related_ui = true
 
         const text_visualise_tree_action_effects = new TextBlock()
         text_visualise_tree_action_effects.text = `Visualise tree effects`
@@ -68,21 +71,18 @@ export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRang
         panel.addControl(text_visualise_tree_action_effects)
 
         add_button("ui_toggle_show_tree_CO2_absorbed", "Show tree CO2", panel)
-    })
 
-    pub_sub.ui.sub("ui_toggle_action_plant_trees", () =>
-    {
-        if (added_ui) return
-        added_ui = true
 
-        const text_visualise_tree_action_effects = new TextBlock()
-        text_visualise_tree_action_effects.text = `Visualise tree effects`
-        text_visualise_tree_action_effects.height = "30px"
-        text_visualise_tree_action_effects.color = "blue"
-        panel.addControl(text_visualise_tree_action_effects)
+        const text_visualise_forest_area_constaints = new TextBlock()
+        text_visualise_forest_area_constaints.text = `Forest area constraints`
+        text_visualise_forest_area_constaints.height = "30px"
+        text_visualise_forest_area_constaints.color = "blue"
+        panel.addControl(text_visualise_forest_area_constaints)
 
-        add_button("ui_toggle_show_tree_CO2_absorbed", "Show tree CO2", panel)
-    })
+        add_button("ui_toggle_show_forest_area_constraint_personal_property_area", "Personal property", panel)
+        add_button("ui_toggle_show_forest_area_constraint_country_area", "Country area per home", panel)
+        // add_button("ui_toggle_show_forest_area_constraint_world_area", "World area per home", panel)
+    }
 
 
     // const slider = new Slider()

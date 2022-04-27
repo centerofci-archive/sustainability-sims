@@ -240,6 +240,18 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
             //     showing_arrows = [...showing_arrows, ...result.arrows]
             // })
         })
+
+
+        pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_personal_property_area", () =>
+        {
+
+        })
+
+
+        pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_country_area", () =>
+        {
+
+        })
     }
 
 

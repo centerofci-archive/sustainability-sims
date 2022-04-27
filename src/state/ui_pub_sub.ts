@@ -12,6 +12,8 @@ interface UIMsgMap
     ui_toggle_action_protect_peatland: undefined
     ui_toggle_action_improve_insulation: undefined
     ui_toggle_show_tree_CO2_absorbed: undefined
+    ui_toggle_show_forest_area_constraint_personal_property_area: undefined
+    ui_toggle_show_forest_area_constraint_country_area: undefined
 }
 
 
