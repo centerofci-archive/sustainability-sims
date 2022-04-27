@@ -55,27 +55,60 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     play()
 
 
-    const gas_period = get_url_param(url_params, "gas_period")
-    const gas_volume = get_url_param_number(url_params, "gas")
-    const gas_units = get_url_param(url_params, "gas_units")
-    const name = get_url_param(url_params, "name")
-    const forest_kg_co2_per_m2_per_year = get_url_param_number(url_params, "forest_co2_absorb")
-    const mangrove_kg_co2_per_m2_per_year = get_url_param_number(url_params, "mangrove_co2_absorb")
-    const peatland_kg_co2_per_m2_per_year = get_url_param_number(url_params, "peatland_co2_absorb")
-
-    if (gas_volume.error)
-    {
-        console.error("Error in gas_volume param", gas_volume.error)
-        return
+    const params = {
+        gas_period: get_url_param(url_params, "gas_period"),
+        gas_volume: get_url_param_number(url_params, "gas"),
+        gas_units: get_url_param(url_params, "gas_units"),
+        name: get_url_param(url_params, "name"),
+        home_footprint_m2: get_url_param_number(url_params, "home_footprint_m2"),
+        home_property_m2: get_url_param_number(url_params, "home_property_m2"),
+        forest_kg_co2_per_m2_per_year: get_url_param_number(url_params, "forest_co2_absorb"),
+        mangrove_kg_co2_per_m2_per_year: get_url_param_number(url_params, "mangrove_co2_absorb"),
+        peatland_kg_co2_per_m2_per_year: get_url_param_number(url_params, "peatland_co2_absorb"),
     }
 
-    const sanitised_gas_params = sanitise_gas_params({ gas_period, gas_volume: gas_volume.value, gas_units })
+    const ok_params: {[k in keyof typeof params]: Exclude<(typeof params[k])["value"], undefined>} = {} as any
+
+    let failure = false
+    ;(Object.keys(params) as (keyof typeof params)[]).forEach(key =>
+    {
+        const result = params[key]
+
+        if (result.value === undefined)
+        {
+            console.error(`Error in "${key}" param`, result.error)
+            failure = true
+        }
+        else
+        {
+            (ok_params[key] as any) = result.value
+        }
+    })
+
+    if (failure) return
+
+
+    const {
+        name,
+        gas_period,
+        gas_volume,
+        gas_units,
+        forest_kg_co2_per_m2_per_year,
+        home_footprint_m2,
+        home_property_m2,
+    } = ok_params
+
+    // Assume you can not use roof and assume you can use all land right up to next of property
+    // (clearly not true as some tree roots known to damage properties with weak or small foundations)
+    const land_area_m2 = home_property_m2 - home_footprint_m2
+
+
+    const sanitised_gas_params = sanitise_gas_params({ gas_period, gas_volume, gas_units })
     if (sanitised_gas_params.value === undefined)
     {
         console.error("Error in gas params", sanitised_gas_params.error)
         return
     }
-
 
     const gas_m3_per_year = calculate_gas_m3_per_year(sanitised_gas_params.value)
     if (gas_m3_per_year.value === undefined)
@@ -84,14 +117,6 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
         return
     }
     const gas_m3_per_year_value = gas_m3_per_year.value
-
-
-    if (forest_kg_co2_per_m2_per_year.value === undefined)
-    {
-        console.error("Error, no forest CO2 absorption value given", forest_kg_co2_per_m2_per_year.error)
-        return
-    }
-    const forest_kg_co2_per_m2_per_year_value = forest_kg_co2_per_m2_per_year.value
 
 
     pub_sub.ui.sub("ui_toggle_show_natural_gas_bubble", () =>
@@ -121,7 +146,7 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
 
 
     const kg_CO2_per_year = gas_m3_per_year_value.value
-    const forest_m2 = kg_CO2_per_year / forest_kg_co2_per_m2_per_year_value
+    const forest_m2 = kg_CO2_per_year / forest_kg_co2_per_m2_per_year
     console.log("forest_m2", forest_m2)
     const forest_size_m = Math.round(Math.pow(forest_m2, 0.5))
     let { tree_nodes, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(-5, 0, -5), forest_size_m)

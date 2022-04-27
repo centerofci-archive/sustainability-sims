@@ -1,3 +1,4 @@
+import { ValueOrError } from "../data_support/value_or_error"
 
 
 
@@ -25,7 +26,7 @@ export function url_params_parser ()
 
 
 
-export function get_url_param_number (url_params: URLParams, key: string, default_value = 0)
+export function get_url_param_number (url_params: URLParams, key: string, default_value?: number): ValueOrError<number>
 {
     const value_str = url_params[key] ?? `${default_value}`
 
@@ -45,7 +46,7 @@ export function get_url_param_number (url_params: URLParams, key: string, defaul
 
 
 
-export function get_url_param (url_params: URLParams, key: string, default_value = "")
+export function get_url_param (url_params: URLParams, key: string, default_value?: string): ValueOrError<string>
 {
-    return url_params[key] ?? default_value
+    return { value: url_params[key] ?? default_value, error: "" }
 }
