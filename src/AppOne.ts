@@ -91,8 +91,6 @@ function create_scene (engine: BABYLON.Engine, canvas: HTMLCanvasElement)
     camera.lowerRadiusLimit = 3
     camera.useBouncingBehavior = true
 
-    // camera.speed = 0.25
-
     const sun = create_sun(scene)
 
     return { scene, camera, sun }

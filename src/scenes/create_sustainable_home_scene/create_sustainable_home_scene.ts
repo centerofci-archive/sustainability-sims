@@ -1,4 +1,5 @@
 import { Color4, Vector3 } from "@babylonjs/core"
+import { AdvancedDynamicTexture } from "@babylonjs/gui"
 
 import { create_forest } from "../../components/create_forest"
 import { create_gas_bubble } from "../../components/create_gas_bubble"
@@ -17,6 +18,7 @@ import { ValueOrError } from "../../data_support/value_or_error"
 import { retarget_and_move_camera_to_include_mesh } from "../../utils/move_camera"
 import { pub_sub } from "../../utils/pub_sub"
 import { shuffle } from "../../utils/random"
+import { ui_make_edge_scroll } from "../../utils/ui/ui_make_edge_scroll"
 import { URLParams, get_url_param, get_url_param_number } from "../../utils/url_params_parser"
 import { vec3 } from "../../utils/vector"
 import { CreateContentCommonArgs } from "../content"
@@ -266,8 +268,10 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     })
 
 
-    ui_show_name(scene, name)
+    const ui_full_screen_advanced_texture = AdvancedDynamicTexture.CreateFullscreenUI("UI", true, scene)
+    ui_show_name(ui_full_screen_advanced_texture, name)
     ui_show_stats(scene, gas_m3_per_year_value)
+    ui_make_edge_scroll(camera, ui_full_screen_advanced_texture)
 
     listen_for_double_click(scene, camera, tree_nodes[0])
 }

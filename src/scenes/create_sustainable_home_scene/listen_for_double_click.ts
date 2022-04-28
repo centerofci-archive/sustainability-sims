@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Mesh, PointerEventTypes, Scene, Vector3 } from "@babylonjs/core"
+import { ArcRotateCamera, Mesh, PointerEventTypes, PointerInfo, Scene, Vector3 } from "@babylonjs/core"
 import { retarget_camera } from "../../utils/move_camera"
 
 
@@ -13,28 +13,8 @@ export function listen_for_double_click (scene: Scene, camera: ArcRotateCamera, 
         if (pointerInfo.type === PointerEventTypes.POINTERDOWN)
         {
             const have_double_clicked = (performance.now() - last_pointer_down) < DOUBLE_CLICK_LIMIT
-
             last_pointer_down = performance.now()
-
-            if (pointerInfo.pickInfo?.hit && pointerInfo.pickInfo.pickedMesh?.position && have_double_clicked)
-            {
-                let pos = new Vector3()
-                const worldMat = leaves.thinInstanceGetWorldMatrices()
-                const thinInstanceMatrix = worldMat[pointerInfo.pickInfo.thinInstanceIndex]
-
-                if (thinInstanceMatrix)
-                {
-                    thinInstanceMatrix.getTranslationToRef(pos)
-                }
-                else
-                {
-                    pos = pointerInfo.pickInfo.pickedMesh.position.clone()
-                }
-
-                // console .log("Double clicked on ", pointerInfo.pickInfo.pickedMesh, pos)
-
-                retarget_camera(scene, camera, pos, { max_distance: undefined, keep_angle: true })
-            }
+            if (have_double_clicked) handle_double_click(pointerInfo, leaves, scene, camera)
         }
         else if (pointerInfo.type === PointerEventTypes.POINTERMOVE)
         {
@@ -57,4 +37,26 @@ export function listen_for_double_click (scene: Scene, camera: ArcRotateCamera, 
             // }
         }
     })
+}
+
+
+
+function handle_double_click (pointerInfo: PointerInfo, leaves: Mesh, scene: Scene, camera: ArcRotateCamera)
+{
+    if (pointerInfo.pickInfo?.hit && pointerInfo.pickInfo.pickedMesh?.position) {
+        let pos = new Vector3()
+        const worldMat = leaves.thinInstanceGetWorldMatrices()
+        const thinInstanceMatrix = worldMat[pointerInfo.pickInfo.thinInstanceIndex]
+
+        if (thinInstanceMatrix) {
+            thinInstanceMatrix.getTranslationToRef(pos)
+        }
+
+        else {
+            pos = pointerInfo.pickInfo.pickedMesh.position.clone()
+        }
+
+        // console .log("Double clicked on ", pointerInfo.pickInfo.pickedMesh, pos)
+        retarget_camera(scene, camera, pos, { max_distance: undefined, keep_angle: true })
+    }
 }
