@@ -12,7 +12,6 @@ export function create_ground (scene: Scene, size: number, position?: Vector3)
     const brown = new Color4(0.2, 0.15, 0, 1)
     const faceColors: Color4[] = [brown, brown, brown, brown, green, brown]
 
-    // Our built-in "ground" shape.
     const ground = MeshBuilder.CreateBox("ground", { width: size, depth: size, height, faceColors }, scene)
     ground.setPivotPoint(vec3([size/2, height/2, size/2]))
     ground.position = vec3([0, -height/2, 0])

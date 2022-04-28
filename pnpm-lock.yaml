@@ -6,6 +6,8 @@ specifiers:
   '@babylonjs/inspector': 5.1.0
   '@babylonjs/loaders': 5.1.0
   '@babylonjs/materials': 5.1.0
+  '@types/earcut': ^2.1.1
+  earcut: ^2.2.3
   typescript: 4.6.2
   vite: 2.8.6
 
@@ -14,6 +16,8 @@ dependencies:
   '@babylonjs/gui': 5.1.0
   '@babylonjs/loaders': 5.1.0
   '@babylonjs/materials': 5.1.0
+  '@types/earcut': 2.1.1
+  earcut: 2.2.3
 
 devDependencies:
   '@babylonjs/inspector': 5.1.0
@@ -100,8 +104,16 @@ packages:
       '@fortawesome/fontawesome-common-types': 6.1.1
     dev: true
 
+  /@types/earcut/2.1.1:
+    resolution: {integrity: sha512-w8oigUCDjElRHRRrMvn/spybSMyX8MTkKA5Dv+tS1IE/TgmNZPqUYtvYBXGY8cieSE66gm+szeK+bnbxC2xHTQ==}
+    dev: false
+
   /babylonjs-gltf2interface/5.1.0:
     resolution: {integrity: sha512-E98En5Rb5uIPtD4wxQDXA/ww2qjPgymqjsYP+M8+AM/ZUeXJ2xKlhM4fmkFym7+i439qHdefCSUZWBI6k7fPOA==}
+
+  /earcut/2.2.3:
+    resolution: {integrity: sha512-iRDI1QeCQIhMCZk48DRDMVgQSSBDmbzzNhnxIo+pwx3swkfjMh6vh0nWLq1NdvGHLKH6wIrAM3vQWeTj6qeoug==}
+    dev: false
 
   /esbuild-android-64/0.14.27:
     resolution: {integrity: sha512-LuEd4uPuj/16Y8j6kqy3Z2E9vNY9logfq8Tq+oTE2PZVuNs3M1kj5Qd4O95ee66yDGb3isaOCV7sOLDwtMfGaQ==}

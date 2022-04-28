@@ -4,6 +4,8 @@ import { create_tree, Tree } from "./create_tree"
 
 
 
+const MODEL_TREE_HEIGHT_m = 5.1
+
 export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, position: Vector3, size: number)
 {
     const tree_nodes: Mesh[] = []
@@ -23,6 +25,8 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
     console.log("instance_count_2d ", instance_count_2d)
     const matrices_data = new Float32Array(16 * instance_count_2d)
 
+    const desired_max_tree_height = 10
+    const max_tree_scale = desired_max_tree_height / MODEL_TREE_HEIGHT_m
 
     let m = Matrix.Identity()
     let index = 0
@@ -35,7 +39,7 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
             const x = (i * -1 * space_between_tree_centers) - (Math.random() * 2)
             const z = (j * -1 * space_between_tree_centers) - (Math.random() * 2)
 
-            const s = 0.5 + (Math.sin(Math.random() * Math.PI) * 0.7)
+            const s = (0.4 + (Math.sin(Math.random() * Math.PI) * 0.6) * max_tree_scale)
             m = Matrix.Identity().scale(s)
 
 

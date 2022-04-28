@@ -1,18 +1,15 @@
-import { AbstractMesh, Color4, Tools, Vector3 } from "@babylonjs/core"
-import { AdvancedDynamicTexture, TextBlock, StackPanel, Control, Slider, } from "@babylonjs/gui"
-import { CreateArrowArgs } from "../../components/create_arrow"
-import { create_arrow_chain } from "../../components/create_arrow_chain"
-import { create_forest } from "../../components/create_forest"
+import { Color4, Vector3 } from "@babylonjs/core"
 
+import { create_forest } from "../../components/create_forest"
 import { create_gas_bubble } from "../../components/create_gas_bubble"
 import { create_ground } from "../../components/create_ground"
-import { create_ground_mist, Density } from "../../components/create_ground_mist"
 import { create_house } from "../../components/create_house"
-import { create_person, person_mesh_names } from "../../components/create_person"
+import { create_missing_area_visual, MissingVisualArea } from "../../components/create_missing_area_visual"
+import { person_mesh_names, create_person } from "../../components/create_person"
 import { create_sky } from "../../components/create_sky"
 import { create_smoke_plume } from "../../components/create_smoke_plume"
-import { scale_to_approximately_a_year, time_period_to_days } from "../../data_support/datetime/range"
-import { days_range, subtract_days_from_date } from "../../data_support/datetime/subtract"
+import { time_period_to_days, scale_to_approximately_a_year } from "../../data_support/datetime/range"
+import { subtract_days_from_date } from "../../data_support/datetime/subtract"
 import { convert_value } from "../../data_support/units/convert"
 import { UnitsID } from "../../data_support/units/units"
 import { TemporalRangeValue } from "../../data_support/value"
@@ -20,7 +17,7 @@ import { ValueOrError } from "../../data_support/value_or_error"
 import { retarget_and_move_camera_to_include_mesh } from "../../utils/move_camera"
 import { pub_sub } from "../../utils/pub_sub"
 import { shuffle } from "../../utils/random"
-import { get_url_param, get_url_param_number, URLParams } from "../../utils/url_params_parser"
+import { URLParams, get_url_param, get_url_param_number } from "../../utils/url_params_parser"
 import { vec3 } from "../../utils/vector"
 import { CreateContentCommonArgs } from "../content"
 import { listen_for_double_click } from "./listen_for_double_click"
@@ -100,7 +97,8 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
 
     // Assume you can not use roof and assume you can use all land right up to next of property
     // (clearly not true as some tree roots known to damage properties with weak or small foundations)
-    const land_area_m2 = home_property_m2 - home_footprint_m2
+    const personal_land_area_m2 = home_property_m2 - home_footprint_m2
+    const country_land_area_m2 = 10000
 
 
     const sanitised_gas_params = sanitise_gas_params({ gas_period, gas_volume, gas_units })
@@ -145,11 +143,13 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     })
 
 
+    const forest_position = new Vector3(-5, 0, -5)
     const kg_CO2_per_year = gas_m3_per_year_value.value
     const forest_m2 = kg_CO2_per_year / forest_kg_co2_per_m2_per_year
     console.log("forest_m2", forest_m2)
     const forest_size_m = Math.round(Math.pow(forest_m2, 0.5))
-    let { tree_nodes, play: grow_forest } = create_forest(scene, shadow_generator, new Vector3(-5, 0, -5), forest_size_m)
+    // const forest_size_m = Math.round(Math.pow(land_area_m2, 0.5))
+    let { tree_nodes, play: grow_forest } = create_forest(scene, shadow_generator, forest_position, forest_size_m)
 
     // // remove trees near house
     // const near = 5
@@ -212,47 +212,48 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
             retarget_and_move_camera_to_include_mesh(scene, camera, ground)
             setTimeout(() => grow_forest(), 1000)
         }, 50)
-
-
-        const green = new Color4(0.3, 0.5, 0.25, 0.8)
-        let showing_arrows: AbstractMesh[] = []
-
-        pub_sub.ui.sub("ui_toggle_show_tree_CO2_absorbed", () =>
-        {
-            if (showing_arrows.length)
-            {
-                showing_arrows.forEach(arrow => arrow.dispose())
-                showing_arrows = []
-                return
-            }
-
-            // trees.forEach((tree, i) =>
-            // {
-            //     const arrow_args: CreateArrowArgs = {
-            //         position: tree.position.add(new Vector3(0, 10, 0)),
-            //         color: green,
-            //         rotation: [Math.PI, 0, 0],
-            //         volume_m3: protected_trees ? tree.size : planted_tree_size,
-            //     }
-
-            //     const result = create_arrow_chain(scene, "tree_CO2_absorbed_" + i, arrow_args, { number_of_arrows: 1 })
-            //     result.play()
-            //     showing_arrows = [...showing_arrows, ...result.arrows]
-            // })
-        })
-
-
-        pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_personal_property_area", () =>
-        {
-
-        })
-
-
-        pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_country_area", () =>
-        {
-
-        })
     }
+
+
+    pub_sub.ui.sub("ui_toggle_show_tree_CO2_absorbed", () =>
+    {
+    })
+
+
+    let missing_area_visual__personal_property: MissingVisualArea
+    pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_personal_property_area", () =>
+    {
+        if (missing_area_visual__personal_property)
+        {
+            missing_area_visual__personal_property.toggle_visible()
+            return
+        }
+
+        const land_spare_m2 = personal_land_area_m2 - forest_m2
+
+        if (land_spare_m2 < 0)
+        {
+            missing_area_visual__personal_property = create_missing_area_visual(scene, forest_position, personal_land_area_m2, forest_m2)
+        }
+    })
+
+
+    let missing_area_visual__country_area: MissingVisualArea
+    pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_country_area", () =>
+    {
+        if (missing_area_visual__country_area)
+        {
+            missing_area_visual__country_area.toggle_visible()
+            return
+        }
+
+        const land_spare_m2 = country_land_area_m2 - forest_m2
+
+        if (land_spare_m2 < 0)
+        {
+            missing_area_visual__country_area = create_missing_area_visual(scene, forest_position, country_land_area_m2, forest_m2)
+        }
+    })
 
 
     ui_show_name(scene, name)
