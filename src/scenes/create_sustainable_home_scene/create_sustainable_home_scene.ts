@@ -98,7 +98,17 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     // Assume you can not use roof and assume you can use all land right up to next of property
     // (clearly not true as some tree roots known to damage properties with weak or small foundations)
     const personal_land_area_m2 = home_property_m2 - home_footprint_m2
-    const country_land_area_m2 = 10000
+    // 1.5% is water according to https://en.wikipedia.org/wiki/United_Kingdom
+    // 6% is built on according to https://www.sheffield.ac.uk/news/nr/land-cover-atlas-uk-1.744440
+    // 9.4% is peat bogs on according to https://www.sheffield.ac.uk/news/nr/land-cover-atlas-uk-1.744440
+    // 0.831 = 100 - (1.5 + 6 + 9.4)
+    //
+    // 0.098 = (5.1 + 2.2 + 1.4 + 1.1) existing forest
+    //
+    // 27.8 million homes according to https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/housingandhomeownershipintheuk/2015-01-22
+    const all_country_land_area_per_home_m2 = ((242495 * 1000000) * 0.831) / (27.8 * 1000000)
+    const growable_country_land_area_per_home_m2 = all_country_land_area_per_home_m2 * 0.831
+    const country_forest_land_area_per_home_m2 = all_country_land_area_per_home_m2 * 0.098
 
 
     const sanitised_gas_params = sanitise_gas_params({ gas_period, gas_volume, gas_units })
@@ -247,11 +257,11 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
             return
         }
 
-        const land_spare_m2 = country_land_area_m2 - forest_m2
+        const land_spare_m2 = country_forest_land_area_per_home_m2 - forest_m2
 
         if (land_spare_m2 < 0)
         {
-            missing_area_visual__country_area = create_missing_area_visual(scene, forest_position, country_land_area_m2, forest_m2)
+            missing_area_visual__country_area = create_missing_area_visual(scene, forest_position, country_forest_land_area_per_home_m2, forest_m2)
         }
     })
 
