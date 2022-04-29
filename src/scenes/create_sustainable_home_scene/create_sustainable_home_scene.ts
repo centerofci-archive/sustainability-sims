@@ -1,4 +1,4 @@
-import { Color4, Vector3 } from "@babylonjs/core"
+import { Camera, Color4, Vector3 } from "@babylonjs/core"
 import { AdvancedDynamicTexture } from "@babylonjs/gui"
 
 import { create_forest } from "../../components/create_forest"
@@ -15,7 +15,7 @@ import { convert_value } from "../../data_support/units/convert"
 import { UnitsID } from "../../data_support/units/units"
 import { TemporalRangeValue } from "../../data_support/value"
 import { ValueOrError } from "../../data_support/value_or_error"
-import { retarget_and_move_camera_to_include_mesh } from "../../utils/move_camera"
+import { change_camera_angle, retarget_and_move_camera_to_include_mesh } from "../../utils/move_camera"
 import { pub_sub } from "../../utils/pub_sub"
 import { shuffle } from "../../utils/random"
 import { ui_make_edge_scroll } from "../../utils/ui/ui_make_edge_scroll"
@@ -232,20 +232,24 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     })
 
 
+    const missing_area_options = { height: 8, base_height: 8 }
     let missing_area_visual__personal_property: MissingVisualArea
     pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_personal_property_area", () =>
     {
-        if (missing_area_visual__personal_property)
+        if (missing_area_visual__personal_property) missing_area_visual__personal_property.toggle_visible()
+        else
         {
-            missing_area_visual__personal_property.toggle_visible()
-            return
+            const land_spare_m2 = personal_land_area_m2 - forest_m2
+
+            if (land_spare_m2 < 0)
+            {
+                missing_area_visual__personal_property = create_missing_area_visual(scene, forest_position, personal_land_area_m2, forest_m2, missing_area_options)
+            }
         }
 
-        const land_spare_m2 = personal_land_area_m2 - forest_m2
-
-        if (land_spare_m2 < 0)
+        if (missing_area_visual__personal_property.is_visible())
         {
-            missing_area_visual__personal_property = create_missing_area_visual(scene, forest_position, personal_land_area_m2, forest_m2)
+            change_camera_angle(scene, camera, { alpha: Math.PI/2, beta: 0 })
         }
     })
 
@@ -253,17 +257,20 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     let missing_area_visual__country_area: MissingVisualArea
     pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_country_area", () =>
     {
-        if (missing_area_visual__country_area)
+        if (missing_area_visual__country_area) missing_area_visual__country_area.toggle_visible()
+        else
         {
-            missing_area_visual__country_area.toggle_visible()
-            return
+            const land_spare_m2 = country_forest_land_area_per_home_m2 - forest_m2
+
+            if (land_spare_m2 < 0)
+            {
+                missing_area_visual__country_area = create_missing_area_visual(scene, forest_position, country_forest_land_area_per_home_m2, forest_m2, missing_area_options)
+            }
         }
 
-        const land_spare_m2 = country_forest_land_area_per_home_m2 - forest_m2
-
-        if (land_spare_m2 < 0)
+        if (missing_area_visual__country_area.is_visible())
         {
-            missing_area_visual__country_area = create_missing_area_visual(scene, forest_position, country_forest_land_area_per_home_m2, forest_m2)
+            change_camera_angle(scene, camera, { alpha: Math.PI/2, beta: 0 })
         }
     })
 
