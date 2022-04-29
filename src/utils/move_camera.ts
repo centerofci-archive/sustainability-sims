@@ -85,7 +85,7 @@ export function retarget_and_move_camera_to_include_mesh (scene: Scene, camera: 
     const field_of_view_angle = camera.fov
     const mesh_sphere = mesh.getBoundingInfo().boundingSphere
     const size = mesh_sphere.radiusWorld
-    const distance = (size/2) / Math.tan(field_of_view_angle/2)
+    const distance = size / Math.tan(field_of_view_angle/2)
 
     let new_position = camera.position.subtract(camera.target)
     new_position = new_position.normalize().scale(distance)
