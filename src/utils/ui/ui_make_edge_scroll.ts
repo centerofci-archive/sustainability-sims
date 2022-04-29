@@ -102,7 +102,9 @@ export function ui_make_edge_scroll (camera: ArcRotateCamera, ui_full_screen_adv
     let target_camera_position = camera.target.clone()
     function execute_scroll ()
     {
-        const direction = new Vector3(-scroll_direction.horizontal, 0, -scroll_direction.vertical).scale(camera.speed * 0.3)
+        const camera_distance = camera.target.subtract(camera.position).length()
+        const scale = camera.speed * 0.2 * Math.log(camera_distance)
+        const direction = new Vector3(-scroll_direction.horizontal, 0, -scroll_direction.vertical).scale(scale)
 
         if (direction.length() > 0)
         {
