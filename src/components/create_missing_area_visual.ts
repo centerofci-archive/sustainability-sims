@@ -15,6 +15,7 @@ export interface MissingVisualArea
 {
     toggle_visible: () => void
     is_visible: () => boolean
+    update_bounding_area_m2: (bounding_area_m2: number) => void
 }
 
 interface CreateMissingAreaVisualOptions
@@ -23,19 +24,46 @@ interface CreateMissingAreaVisualOptions
     base_height?: number
 }
 
-export function create_missing_area_visual (scene: Scene, bounding_area_apex_position: Vector3, bounding_area: number, required_area: number, options: CreateMissingAreaVisualOptions = {}): MissingVisualArea
+export function create_missing_area_visual (scene: Scene, bounding_area_apex_position: Vector3, bounding_area_m2: number, required_area_m2: number, options: CreateMissingAreaVisualOptions = {}): MissingVisualArea
 {
     const height = options.height ?? DEFAULT_WALL_HEIGHT
     const base_height = options.base_height ?? 0.1
-    const meshes = draw_corner_wall(scene, bounding_area_apex_position, bounding_area, height)
+    const meshes = create_missing_area_visual_meshes(scene, bounding_area_apex_position, bounding_area_m2, height, required_area_m2, base_height)
+    const meshes_ref = { current: meshes }
 
-    const required_m = required_area ** 0.5
 
-    const { x_point, z_point, far_apex } = calculate_corner_wall_points(bounding_area, bounding_area_apex_position)
+    let is_visible = true
 
-    const far_far_apex = bounding_area_apex_position.subtract(vec3([required_m, 0, required_m]))
-    const x_far_point = bounding_area_apex_position.subtract(vec3([required_m, 0, 0]))
-    const z_far_point = bounding_area_apex_position.subtract(vec3([0, 0, required_m]))
+    return {
+        toggle_visible: () =>
+        {
+            is_visible = !is_visible
+
+            meshes_ref.current.forEach(wall =>
+            {
+                wall.enablePointerMoveEvents = is_visible
+                wall.visibility = is_visible ? 1 : 0
+            })
+        },
+        is_visible: () => is_visible,
+        update_bounding_area_m2: (bounding_area_m2: number) =>
+        {
+            meshes_ref.current.forEach(mesh => mesh.dispose())
+            meshes_ref.current = create_missing_area_visual_meshes(scene, bounding_area_apex_position, bounding_area_m2, height, required_area_m2, base_height)
+        },
+    }
+}
+
+
+
+function create_missing_area_visual_meshes (scene: Scene, bounding_area_apex_position: Vector3, bounding_area_m2: number, height: number, required_area_m2: number, base_height: number)
+{
+    const meshes = draw_corner_wall(scene, bounding_area_apex_position, bounding_area_m2, height)
+
+    const required_m = required_area_m2 ** 0.5
+
+    const { x_point, z_point, far_apex } = calculate_corner_wall_points(bounding_area_m2, bounding_area_apex_position)
+    const { x_far_point, far_far_apex, z_far_point } = calculate_far_wall_points(bounding_area_apex_position, required_m)
 
     meshes.push(draw_wall(scene, { point1: x_point, point2: x_far_point, height }))
     meshes.push(draw_wall(scene, { point1: x_far_point, point2: far_far_apex, height }))
@@ -59,20 +87,16 @@ export function create_missing_area_visual (scene: Scene, bounding_area_apex_pos
     ]
     meshes.push(draw_area_base(scene, { points: present_area_points, height: base_height, color: "green" }))
 
+    return meshes
+}
 
-    let is_visible = true
 
-    return {
-        toggle_visible: () =>
-        {
-            is_visible = !is_visible
 
-            meshes.forEach(wall =>
-            {
-                wall.enablePointerMoveEvents = is_visible
-                wall.visibility = is_visible ? 1 : 0
-            })
-        },
-        is_visible: () => is_visible,
-    }
+function calculate_far_wall_points (bounding_area_apex_position: Vector3, required_m: number)
+{
+    const far_far_apex = bounding_area_apex_position.subtract(vec3([required_m, 0, required_m]))
+    const x_far_point = bounding_area_apex_position.subtract(vec3([required_m, 0, 0]))
+    const z_far_point = bounding_area_apex_position.subtract(vec3([0, 0, required_m]))
+
+    return { x_far_point, far_far_apex, z_far_point }
 }

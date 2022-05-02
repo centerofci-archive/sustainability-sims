@@ -81,12 +81,19 @@ export function draw_wall (scene: Scene, { point1, point2, height, color = "red"
     // created with a vector direction of 1, 0, 0 the calculate the required rotation
     // around the y-axis
     const angle_required = -Math.atan(wall_vector.z / wall_vector.x) + (wall_vector.x < 0 ? Math.PI : 0)
-    console.log("angle_required ", angle_required)
     wall.rotation = vec3([0, angle_required, 0])
 
     wall.material = color === "red" ? red_a50 : (color === "blue" ? blue_a50 : green_a50)
 
     return wall
+
+    // return {
+    //     wall,
+    //     animate_change: (args: { new_point1?: Vector3, new_point2?: Vector3 }) =>
+    //     {
+    //         // todo
+    //     }
+    // }
 }
 
 

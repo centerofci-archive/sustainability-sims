@@ -39,9 +39,9 @@ export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRang
     text_visualise.color = "blue"
     panel.addControl(text_visualise)
 
-    add_button("ui_toggle_show_natural_gas_bubble", "Show gas", panel, 0.5)
-    add_button("ui_toggle_show_co2_bubble", "Show CO2", panel, 0.5)
-    // add_button("ui_toggle_show_co2_bubble__max", "Show max CO2", panel, 0.5)
+    add_button("ui_toggle_show_natural_gas_bubble", "Show gas", panel, { width: 0.5 })
+    add_button("ui_toggle_show_co2_bubble", "Show CO2", panel, { width: 0.5 })
+    // add_button("ui_toggle_show_co2_bubble__max", "Show max CO2", panel, { width: 0.5 })
 
     const text_actions = new TextBlock()
     text_actions.text = `Individual Action`
@@ -50,9 +50,9 @@ export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRang
     panel.addControl(text_actions)
 
     add_button("ui_toggle_action_protect_trees", "Protect trees", panel)
-    add_button("ui_toggle_action_plant_trees", "Plant trees", panel)
-    add_button("ui_toggle_action_protect_peatland", "Protect peatland", panel)
-    add_button("ui_toggle_action_improve_insulation", "Improve insulation", panel)
+    // add_button("ui_toggle_action_plant_trees", "Plant trees", panel)
+    // add_button("ui_toggle_action_protect_peatland", "Protect peatland", panel)
+    add_button("ui_toggle_action_improve_insulation", "<Not implemented: Improve insulation>", panel, { height: 60 })
 
 
     pub_sub.ui.sub("ui_toggle_action_protect_trees", () => extend_ui_with_forest_related_ui())
@@ -80,7 +80,9 @@ export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRang
         panel.addControl(text_visualise_forest_area_constaints)
 
         add_button("ui_toggle_show_forest_area_constraint_personal_property_area", "Personal property", panel)
-        add_button("ui_toggle_show_forest_area_constraint_country_area", "Country area per home", panel)
+        add_button("ui_toggle_show_forest_area_constraint_existing_forest_country_area", "Existing Forest Country Area per Home", panel, { height: 60 })
+        add_button("ui_toggle_show_forest_area_constraint_max_forestable_country_area", "Max Forestable Country Area per Home", panel, { height: 60 })
+        add_button("ui_toggle_show_forest_area_constraint_max_forestable_city_plus_country_area", "Max Forestable + City Trees Country Area per Home", panel, { height: 60 })
         // add_button("ui_toggle_show_forest_area_constraint_world_area", "World area per home", panel)
     }
 
@@ -103,11 +105,11 @@ export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRang
 
 
 
-function add_button (ui_action: valid_ui_msg, description: string, panel: StackPanel, width = 0.7)
+function add_button (ui_action: valid_ui_msg, description: string, panel: StackPanel, options: { width?: number, height?: number } = {})
 {
     const button = Button.CreateSimpleButton("button_" + ui_action, description)
-    button.width = width
-    button.height = "30px"
+    button.width = options.width ?? 0.7
+    button.height = `${options.height ?? 30}px`
     button.color = "white"
     button.onPointerClickObservable.add(() =>
     {

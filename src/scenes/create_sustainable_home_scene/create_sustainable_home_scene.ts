@@ -100,17 +100,18 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     // Assume you can not use roof and assume you can use all land right up to next of property
     // (clearly not true as some tree roots known to damage properties with weak or small foundations)
     const personal_land_area_m2 = home_property_m2 - home_footprint_m2
+    // 27.8 million homes according to https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/housingandhomeownershipintheuk/2015-01-22
+    const all_country_land_area_per_home_m2 = (242495 * 1000000) / (27.8 * 1000000)
+    // https://www.sheffield.ac.uk/news/nr/land-cover-atlas-uk-1.744440
+    // 0.098 = (5.1 + 2.2 + 1.4 + 1.1) existing forest
+    const existing_forest_country_land_area_per_home_m2 = all_country_land_area_per_home_m2 * 0.098
     // 1.5% is water according to https://en.wikipedia.org/wiki/United_Kingdom
     // 6% is built on according to https://www.sheffield.ac.uk/news/nr/land-cover-atlas-uk-1.744440
     // 9.4% is peat bogs on according to https://www.sheffield.ac.uk/news/nr/land-cover-atlas-uk-1.744440
     // 0.831 = 100 - (1.5 + 6 + 9.4)
-    //
-    // 0.098 = (5.1 + 2.2 + 1.4 + 1.1) existing forest
-    //
-    // 27.8 million homes according to https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/housingandhomeownershipintheuk/2015-01-22
-    const all_country_land_area_per_home_m2 = ((242495 * 1000000) * 0.831) / (27.8 * 1000000)
-    const growable_country_land_area_per_home_m2 = all_country_land_area_per_home_m2 * 0.831
-    const country_forest_land_area_per_home_m2 = all_country_land_area_per_home_m2 * 0.098
+    const max_forestable_country_land_area_per_home_m2 = all_country_land_area_per_home_m2 * 0.831
+    // 0.861 = 100 - (1.5 + (6 * 0.5) + 9.4) // assuming 50 of land in developed areas could be used for "energy crops / forestry"
+    const existing_forest_city_plus_country_land_area_per_home_m2 = all_country_land_area_per_home_m2 * 0.861
 
 
     const sanitised_gas_params = sanitise_gas_params({ gas_period, gas_volume, gas_units })
@@ -232,47 +233,43 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     })
 
 
-    const missing_area_options = { height: 8, base_height: 8 }
-    let missing_area_visual__personal_property: MissingVisualArea
-    pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_personal_property_area", () =>
-    {
-        if (missing_area_visual__personal_property) missing_area_visual__personal_property.toggle_visible()
-        else
-        {
-            const land_spare_m2 = personal_land_area_m2 - forest_m2
+    let current_missing_forest_area_constraint_type = ""
+    let current_missing_forest_area_available_land_area_m2 = 0
+    const missing_forest_area_visual = create_missing_area_visual(scene, forest_position, current_missing_forest_area_available_land_area_m2, forest_m2, { height: 8, base_height: 8 })
+    missing_forest_area_visual.toggle_visible() // immediately hide it
 
-            if (land_spare_m2 < 0)
+    function factory_handle_toggle_show_forest_area_constraint (constraint_type: string, available_land_area_m2: number)
+    {
+        return () =>
+        {
+            const hiding_current_type = !!current_missing_forest_area_constraint_type && current_missing_forest_area_constraint_type === constraint_type
+
+            // Make it visible when not visible
+            if (!missing_forest_area_visual.is_visible()) missing_forest_area_visual.toggle_visible()
+            // When we already have something visible and it is unchanged, then hide it
+            else if (hiding_current_type)
             {
-                missing_area_visual__personal_property = create_missing_area_visual(scene, forest_position, personal_land_area_m2, forest_m2, missing_area_options)
+                missing_forest_area_visual.toggle_visible()
+                current_missing_forest_area_constraint_type = ""
+            }
+
+
+            if (missing_forest_area_visual.is_visible())
+            {
+                current_missing_forest_area_constraint_type = constraint_type
+                const changing_available_land_area_m2 = current_missing_forest_area_available_land_area_m2 !== available_land_area_m2
+                current_missing_forest_area_available_land_area_m2 = available_land_area_m2
+                change_camera_angle(scene, camera, { alpha: Math.PI/2, beta: 0 })
+
+                if (changing_available_land_area_m2) missing_forest_area_visual.update_bounding_area_m2(available_land_area_m2)
             }
         }
+    }
 
-        if (missing_area_visual__personal_property.is_visible())
-        {
-            change_camera_angle(scene, camera, { alpha: Math.PI/2, beta: 0 })
-        }
-    })
-
-
-    let missing_area_visual__country_area: MissingVisualArea
-    pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_country_area", () =>
-    {
-        if (missing_area_visual__country_area) missing_area_visual__country_area.toggle_visible()
-        else
-        {
-            const land_spare_m2 = country_forest_land_area_per_home_m2 - forest_m2
-
-            if (land_spare_m2 < 0)
-            {
-                missing_area_visual__country_area = create_missing_area_visual(scene, forest_position, country_forest_land_area_per_home_m2, forest_m2, missing_area_options)
-            }
-        }
-
-        if (missing_area_visual__country_area.is_visible())
-        {
-            change_camera_angle(scene, camera, { alpha: Math.PI/2, beta: 0 })
-        }
-    })
+    pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_personal_property_area", factory_handle_toggle_show_forest_area_constraint("personal", personal_land_area_m2))
+    pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_existing_forest_country_area", factory_handle_toggle_show_forest_area_constraint("existing_forest", existing_forest_country_land_area_per_home_m2))
+    pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_max_forestable_country_area", factory_handle_toggle_show_forest_area_constraint("max_forestable", max_forestable_country_land_area_per_home_m2))
+    pub_sub.ui.sub("ui_toggle_show_forest_area_constraint_max_forestable_city_plus_country_area", factory_handle_toggle_show_forest_area_constraint("existing_forest_city_plus", existing_forest_city_plus_country_land_area_per_home_m2))
 
 
     const ui_full_screen_advanced_texture = AdvancedDynamicTexture.CreateFullscreenUI("UI", true, scene)
