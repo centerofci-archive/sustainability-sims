@@ -43,16 +43,26 @@ export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRang
     add_button("ui_toggle_show_co2_bubble", "Show CO2", panel, { width: 0.5 })
     // add_button("ui_toggle_show_co2_bubble__max", "Show max CO2", panel, { width: 0.5 })
 
-    const text_actions = new TextBlock()
-    text_actions.text = `Individual Action`
-    text_actions.height = "30px"
-    text_actions.color = "orange"
-    panel.addControl(text_actions)
+    const individual_text_actions = new TextBlock()
+    individual_text_actions.text = `Individual Action`
+    individual_text_actions.height = "30px"
+    individual_text_actions.color = "orange"
+    panel.addControl(individual_text_actions)
+
+    add_button("ui_toggle_action_improve_insulation", "Gas boiler", panel)
+    add_button("ui_toggle_action_improve_insulation", "Wood stove", panel, { color: "grey" })
+    add_button("ui_toggle_action_improve_insulation", "Heat pump", panel, { color: "grey" })
+    add_button("ui_toggle_action_improve_insulation", "Improve insulation", panel, { color: "grey" })
+
+    const systemic_text_actions = new TextBlock()
+    systemic_text_actions.text = `Systemic Action`
+    systemic_text_actions.height = "30px"
+    systemic_text_actions.color = "orange"
+    panel.addControl(systemic_text_actions)
 
     add_button("ui_toggle_action_protect_trees", "Protect trees", panel)
     // add_button("ui_toggle_action_plant_trees", "Plant trees", panel)
     // add_button("ui_toggle_action_protect_peatland", "Protect peatland", panel)
-    add_button("ui_toggle_action_improve_insulation", "<Not implemented: Improve insulation>", panel, { height: 60 })
 
 
     pub_sub.ui.sub("ui_toggle_action_protect_trees", () => extend_ui_with_forest_related_ui())
@@ -105,12 +115,12 @@ export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRang
 
 
 
-function add_button (ui_action: valid_ui_msg, description: string, panel: StackPanel, options: { width?: number, height?: number } = {})
+function add_button (ui_action: valid_ui_msg, description: string, panel: StackPanel, options: { width?: number, height?: number, color?: string } = {})
 {
     const button = Button.CreateSimpleButton("button_" + ui_action, description)
     button.width = options.width ?? 0.7
     button.height = `${options.height ?? 30}px`
-    button.color = "white"
+    button.color = options.color ?? "white"
     button.onPointerClickObservable.add(() =>
     {
         pub_sub.ui.pub(ui_action, undefined)
