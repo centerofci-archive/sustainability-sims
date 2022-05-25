@@ -19,9 +19,9 @@ export function create_earth (scene: Scene, camera: ArcRotateCamera, sun: PointL
     camera.setTarget(earth)
 
     const earth_material = new StandardMaterial("earth_material", scene)
-    earth_material.diffuseTexture = new Texture("./public/textures/earth.jpg", scene)
-    earth_material.emissiveTexture = new Texture("./public/textures/night2.jpg", scene)
-    earth_material.specularTexture = new Texture("./public/textures/specular2.jpg", scene)
+    earth_material.diffuseTexture = new Texture("textures/earth.jpg", scene)
+    earth_material.emissiveTexture = new Texture("textures/night2.jpg", scene)
+    earth_material.specularTexture = new Texture("textures/specular2.jpg", scene)
 
     earth.material = earth_material
     earth.rotation.x = Math.PI // textures are always upside down on sphere for some reason...

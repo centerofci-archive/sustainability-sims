@@ -6,14 +6,14 @@ import "@babylonjs/loaders"
 const parent_mesh_names = new Set<string>([])
 export function load_assets (assets_manager: AssetsManager)
 {
-    assets_manager.addMeshTask("load low_poly_tree_1", null, "public/models/low_poly_tree/", "low_poly_tree_1.glb")
-    // assets_manager.addMeshTask("load low_poly_tree2", null, "public/models/low_poly_tree/", "low_poly_trees2.obj")
-    assets_manager.addMeshTask("load low_poly_house_2", null, "public/models/low_poly_house/", "low_poly_house_2.glb")
-    assets_manager.addMeshTask("load low_poly_arrows_1", null, "public/models/low_poly_arrow/", "arrows_1.glb")
+    assets_manager.addMeshTask("load low_poly_tree_1", null, "models/low_poly_tree/", "low_poly_tree_1.glb")
+    // assets_manager.addMeshTask("load low_poly_tree2", null, "models/low_poly_tree/", "low_poly_trees2.obj")
+    assets_manager.addMeshTask("load low_poly_house_2", null, "models/low_poly_house/", "low_poly_house_2.glb")
+    assets_manager.addMeshTask("load low_poly_arrows_1", null, "models/low_poly_arrow/", "arrows_1.glb")
 
-    assets_manager.addMeshTask("load low_poly_characters", null, "public/models/low_poly_characters/", `person_f_7.glb`)
-    assets_manager.addMeshTask("load low_poly_characters", null, "public/models/low_poly_characters/", `person_f_8.glb`)
-    assets_manager.addMeshTask("load low_poly_characters", null, "public/models/low_poly_characters/", `person_m_8.glb`)
+    assets_manager.addMeshTask("load low_poly_characters", null, "models/low_poly_characters/", `person_f_7.glb`)
+    assets_manager.addMeshTask("load low_poly_characters", null, "models/low_poly_characters/", `person_f_8.glb`)
+    assets_manager.addMeshTask("load low_poly_characters", null, "models/low_poly_characters/", `person_m_8.glb`)
 
 
     assets_manager.onTaskSuccess = task =>

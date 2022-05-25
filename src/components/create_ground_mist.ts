@@ -28,7 +28,7 @@ const target_y = -0.5
 // const use_GPU_version = false
 function create_new_system (scene: Scene, size: number, density: number, particle_system: GPUParticleSystem | ParticleSystem | undefined)
 {
-    const fog_texture = new Texture("./public/textures/smoke.png", scene)
+    const fog_texture = new Texture("textures/smoke.png", scene)
     const fountain = Mesh.CreateBox("fountain", 0.01, scene)
     fountain.visibility = 0
     fountain.position = new Vector3(0, hide_y, 0)
