@@ -275,7 +275,7 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     const ui_full_screen_advanced_texture = AdvancedDynamicTexture.CreateFullscreenUI("UI", true, scene)
     ui_show_name(ui_full_screen_advanced_texture, name)
     ui_show_stats(scene, gas_m3_per_year_value)
-    ui_make_edge_scroll(camera, ui_full_screen_advanced_texture)
+    // ui_make_edge_scroll(camera, ui_full_screen_advanced_texture)
 
     listen_for_double_click(scene, camera, tree_nodes[0])
 }
