@@ -2,7 +2,7 @@
   "name": "friends",
   "version": "0.0.0",
   "scripts": {
-    "deploy": "gh-pages -d dist",
+    "deploy": "npm run build && gh-pages -d dist -m $1",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview --host"
