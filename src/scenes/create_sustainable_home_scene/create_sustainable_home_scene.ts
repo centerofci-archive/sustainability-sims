@@ -35,14 +35,6 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     const ground_position = vec3([ground_size / 2, -0.5, ground_size / 2])
     const { ground, resize_ground } = create_ground(scene, ground_size, ground_position)
 
-    const natural_gas_bubble = create_gas_bubble(scene, { position: new Vector3(10, 2, -2), volume_m3: 0, color: new Color4(0.25, 0.3, 0.5, 0.8), shadow_generator })
-    natural_gas_bubble.play()
-    natural_gas_bubble.gas_bubble_mesh.setEnabled(false)
-
-    const co2_bubble = create_gas_bubble(scene, { position: new Vector3(0, 4, -2), volume_m3: 0, color: new Color4(0.5, 0.05, 0.0, 0.8), shadow_generator })
-    co2_bubble.play()
-    co2_bubble.gas_bubble_mesh.setEnabled(false)
-
 
     const people = shuffle(person_mesh_names)
     create_person(scene, shadow_generator, new Vector3(-4, 0, 3), people[0])
@@ -128,32 +120,6 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
         return
     }
     const gas_m3_per_year_value = gas_m3_per_year.value
-
-
-    pub_sub.ui.sub("ui_toggle_show_natural_gas_bubble", () =>
-    {
-        const enable = !natural_gas_bubble.gas_bubble_mesh.isEnabled()
-        natural_gas_bubble.gas_bubble_mesh.setEnabled(enable)
-        natural_gas_bubble.grow(gas_m3_per_year_value.value)
-    })
-
-    pub_sub.ui.sub("ui_toggle_show_co2_bubble", () =>
-    {
-        const enable = !co2_bubble.gas_bubble_mesh.isEnabled()
-        co2_bubble.gas_bubble_mesh.setEnabled(enable)
-        co2_bubble.grow(gas_m3_per_year_value.value)
-    })
-
-    pub_sub.ui.sub("ui_toggle_show_co2_bubble__max", () =>
-    {
-        const enable = !co2_bubble.gas_bubble_mesh.isEnabled()
-        co2_bubble.gas_bubble_mesh.setEnabled(enable)
-        // https://www.effectech.co.uk/wp-content/uploads/Assessing_the_UKs_gas_quality_measurement_infrastructure.pdf
-        // Only including ethane, propane, and butane
-        // 1.16 = ((100 - (7.33 + 2.41  + (0.48 + 0.89))) + (7.33 * 2) + (2.41 * 3) + ((0.48 + 0.89) * 4)) / 100
-        // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/545567/Material_comparators_for_fuels_-_natural_gas.pdf
-        co2_bubble.grow(gas_m3_per_year_value.value * 1.16)
-    })
 
 
     const forest_position = new Vector3(-5, 0, -5)

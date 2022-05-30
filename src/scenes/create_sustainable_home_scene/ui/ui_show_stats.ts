@@ -33,15 +33,6 @@ export function ui_show_stats (scene: Scene, gas_m3_per_year_value: TemporalRang
     text_gas_volume_value.color = "white"
     panel.addControl(text_gas_volume_value)
 
-    const text_visualise = new TextBlock()
-    text_visualise.text = `Visualise`
-    text_visualise.height = "30px"
-    text_visualise.color = "blue"
-    panel.addControl(text_visualise)
-
-    add_button("ui_toggle_show_natural_gas_bubble", "Show gas", panel, { width: 0.5 })
-    add_button("ui_toggle_show_co2_bubble", "Show CO2", panel, { width: 0.5 })
-    // add_button("ui_toggle_show_co2_bubble__max", "Show max CO2", panel, { width: 0.5 })
 
     const individual_text_actions = new TextBlock()
     individual_text_actions.text = `Individual Action`

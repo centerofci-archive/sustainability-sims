@@ -4,9 +4,6 @@ import { pub_sub_factory } from "../utils/pub_sub_factory"
 
 interface UIMsgMap
 {
-    ui_toggle_show_natural_gas_bubble: undefined
-    ui_toggle_show_co2_bubble: undefined
-    ui_toggle_show_co2_bubble__max: undefined
     ui_toggle_action_protect_trees: undefined
     ui_toggle_action_plant_trees: undefined
     ui_toggle_action_protect_peatland: undefined
