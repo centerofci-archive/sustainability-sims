@@ -8,6 +8,7 @@ export enum UnitsID
 
     // time
     time_period_year = "time_period_year",
+    time_period_quarter = "time_period_quarter",
     time_period_month = "time_period_month",
     time_period_day = "time_period_day",
     time_period_second = "time_period_second",
@@ -50,17 +51,23 @@ export const UNITS: UnitsMap =
         symbol: "?",
     },
 
-    time_period_month:
-    {
-        id: UnitsID.time_period_month,
-        name: "month",
-        symbol: "month",
-    },
     time_period_year:
     {
         id: UnitsID.time_period_year,
         name: "year",
         symbol: "year",
+    },
+    time_period_quarter:
+    {
+        id: UnitsID.time_period_quarter,
+        name: "quarter",
+        symbol: "quarter",
+    },
+    time_period_month:
+    {
+        id: UnitsID.time_period_month,
+        name: "month",
+        symbol: "month",
     },
     time_period_day:
     {
@@ -126,3 +133,27 @@ export const UNITS: UnitsMap =
 
 const error2 = Object.entries(UNITS).filter(([key, value]) => key !== value.id)
 if (error2.length) throw new Error(`Mismatching UNITS keys and values: ${error2.map(([key]) => key).join(",")}`)
+
+
+
+// Needs an object of strings instead of enum as these strings will be parsed from url params
+export const TIME_PERIODS =
+{
+    year: UNITS.time_period_year.symbol,
+    quarter: UNITS.time_period_quarter.symbol,
+    month: UNITS.time_period_month.symbol,
+    day: UNITS.time_period_day.symbol,
+}
+export const VALID_TIME_PERIODS_VALUES = new Set(Object.values(TIME_PERIODS))
+
+const _type_check_TIME_PERIODS: {[id: string]: string } = TIME_PERIODS
+
+
+
+export const VOLUME_UNITS =
+{
+    m3: UNITS.volume_normal_m3.symbol,
+    ft3: UNITS.volume_normal_cubic_feet.symbol,
+}
+
+const _type_check_VOLUME_UNITS: {[id: string]: string } = VOLUME_UNITS

@@ -9,10 +9,10 @@ import { create_missing_area_visual, MissingVisualArea } from "../../components/
 import { person_mesh_names, create_person } from "../../components/create_person"
 import { create_sky } from "../../components/create_sky"
 import { create_smoke_plume } from "../../components/create_smoke_plume"
-import { time_period_to_days, scale_to_approximately_a_year } from "../../data_support/datetime/range"
+import { time_period_to_days, scale_to_approximately_a_year, sanitise_time_period } from "../../data_support/datetime/range"
 import { subtract_days_from_date } from "../../data_support/datetime/subtract"
 import { convert_value } from "../../data_support/units/convert"
-import { UnitsID } from "../../data_support/units/units"
+import { TIME_PERIODS, UnitsID, VOLUME_UNITS } from "../../data_support/units/units"
 import { TemporalRangeValue } from "../../data_support/value"
 import { ValueOrError } from "../../data_support/value_or_error"
 import { change_camera_angle, retarget_and_move_camera_to_include_mesh } from "../../utils/move_camera"
@@ -55,10 +55,10 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
 
 
     const params = {
-        gas_period: get_url_param(url_params, "gas_period"),
-        gas_volume: get_url_param_number(url_params, "gas"),
-        gas_units: get_url_param(url_params, "gas_units"),
-        name: get_url_param(url_params, "name"),
+        gas_period: sanitise_time_period(get_url_param(url_params, "gas_period", TIME_PERIODS.month)),
+        gas_volume: get_url_param_number(url_params, "gas", 140),
+        gas_units: get_url_param(url_params, "gas_units", VOLUME_UNITS.m3),
+        name: get_url_param(url_params, "name", ""),
         home_footprint_m2: get_url_param_number(url_params, "home_footprint_m2"),
         home_property_m2: get_url_param_number(url_params, "home_property_m2"),
         forest_kg_co2_per_m2_per_year: get_url_param_number(url_params, "forest_co2_absorb"),
@@ -343,8 +343,8 @@ function sanitise_volume_units (volume_units: string): ValueOrError<UnitsID>
     let value = UnitsID.undefined
     let error = ""
 
-    if (volume_units === "m3") value = UnitsID.volume_normal_m3
-    else if (volume_units === "ft3") value = UnitsID.volume_normal_cubic_feet
+    if (volume_units === VOLUME_UNITS.m3) value = UnitsID.volume_normal_m3
+    else if (volume_units === VOLUME_UNITS.ft3) value = UnitsID.volume_normal_cubic_feet
     else
     {
         error = `Unsupported volume units: "${value}"`

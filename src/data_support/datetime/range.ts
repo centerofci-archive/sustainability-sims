@@ -1,6 +1,6 @@
 import { multiply } from "../calc/multiply"
 import { simplify_units } from "../units/simplify_units"
-import { UnitsID } from "../units/units"
+import { TIME_PERIODS, UnitsID, VALID_TIME_PERIODS_VALUES } from "../units/units"
 import { units_are_singular } from "../units/utils"
 import { TemporalRangeValue, ValueObject } from "../value"
 import { ValueOrError } from "../value_or_error"
@@ -15,6 +15,31 @@ const SECONDS_IN_DAY = 24 * 3600
 const SECONDS_IN_MONTH = SECONDS_IN_DAY * DAYS_IN_MONTH
 const SECONDS_IN_YEAR = SECONDS_IN_DAY * DAYS_IN_YEAR
 
+
+
+export function sanitise_time_period (time_period: ValueOrError<string>): ValueOrError<string>
+{
+    if (time_period.error) return time_period
+
+    let { value = "", error } = time_period
+
+    if (VALID_TIME_PERIODS_VALUES.has(value)) return time_period
+
+    if (value === "annually") value = TIME_PERIODS.year
+    else if (value === "quarterly") value = TIME_PERIODS.quarter
+    else if (value === "monthly") value = TIME_PERIODS.month
+    else if (value === "daily") value = TIME_PERIODS.day
+    else
+    {
+        value = ""
+        error = `Unsupported time period "${value}"`
+    }
+
+    return { value, error }
+}
+
+
+
 export function time_period_to_days (time_period: string): ValueOrError<number>
 {
     time_period = time_period.toLowerCase()
@@ -22,10 +47,10 @@ export function time_period_to_days (time_period: string): ValueOrError<number>
     let value = undefined
     let error = ""
 
-    if (time_period === "annually") value = Math.round(DAYS_IN_YEAR)
-    else if (time_period === "quarterly") value = Math.round(DAYS_IN_QUARTER)
-    else if (time_period === "monthly") value = Math.round(DAYS_IN_MONTH)
-    else if (time_period === "daily") value = 1
+    if (time_period === TIME_PERIODS.year) value = Math.round(DAYS_IN_YEAR)
+    else if (time_period === TIME_PERIODS.quarter) value = Math.round(DAYS_IN_QUARTER)
+    else if (time_period === TIME_PERIODS.month) value = Math.round(DAYS_IN_MONTH)
+    else if (time_period === TIME_PERIODS.day) value = 1
     else
     {
         error = `Unsupported time period: "${time_period}"`
