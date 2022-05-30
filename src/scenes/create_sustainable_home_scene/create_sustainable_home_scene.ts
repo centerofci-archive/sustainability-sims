@@ -59,11 +59,11 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
         gas_volume: get_url_param_number(url_params, "gas", 140),
         gas_units: get_url_param(url_params, "gas_units", VOLUME_UNITS.m3),
         name: get_url_param(url_params, "name", ""),
-        home_footprint_m2: get_url_param_number(url_params, "home_footprint_m2"),
-        home_property_m2: get_url_param_number(url_params, "home_property_m2"),
-        forest_kg_co2_per_m2_per_year: get_url_param_number(url_params, "forest_co2_absorb"),
-        mangrove_kg_co2_per_m2_per_year: get_url_param_number(url_params, "mangrove_co2_absorb"),
-        peatland_kg_co2_per_m2_per_year: get_url_param_number(url_params, "peatland_co2_absorb"),
+        home_footprint_m2: get_url_param_number(url_params, "home_footprint_m2", 50),
+        home_property_m2: get_url_param_number(url_params, "home_property_m2", 100),
+        forest_kg_co2_per_m2_per_year: get_url_param_number(url_params, "forest_co2_absorb", 0.171),
+        mangrove_kg_co2_per_m2_per_year: get_url_param_number(url_params, "mangrove_co2_absorb", 1.232),
+        peatland_kg_co2_per_m2_per_year: get_url_param_number(url_params, "peatland_co2_absorb", 0.123),
     }
 
     const ok_params: {[k in keyof typeof params]: Exclude<(typeof params[k])["value"], undefined>} = {} as any
@@ -73,7 +73,7 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     {
         const result = params[key]
 
-        if (result.value === undefined)
+        if (result.value === undefined || Number.isNaN(result.value))
         {
             console.error(`Error in "${key}" param`, result.error)
             failure = true
