@@ -6,29 +6,38 @@ specifiers:
   '@babylonjs/inspector': 5.1.0
   '@babylonjs/loaders': 5.1.0
   '@babylonjs/materials': 5.1.0
-  '@types/earcut': ^2.1.1
-  earcut: ^2.2.3
+  '@types/earcut': 2.1.1
+  earcut: 2.2.3
   gh-pages: 4.0.0
+  redux: 4.2.0
   typescript: 4.6.2
   vite: 2.8.6
-  xmachina: ^0.0.8
+  xmachina: 0.0.8
 
 dependencies:
   '@babylonjs/core': 5.1.0
   '@babylonjs/gui': 5.1.0
   '@babylonjs/loaders': 5.1.0
   '@babylonjs/materials': 5.1.0
-  '@types/earcut': 2.1.1
   earcut: 2.2.3
+  redux: 4.2.0
   xmachina: 0.0.8
 
 devDependencies:
   '@babylonjs/inspector': 5.1.0
+  '@types/earcut': 2.1.1
   gh-pages: 4.0.0
   typescript: 4.6.2
   vite: 2.8.6
 
 packages:
+
+  /@babel/runtime/7.18.3:
+    resolution: {integrity: sha512-38Y8f7YUhce/K7RMwTp7m0uCumpv9hZkitCbBClqQIow1qSbCvGkcegKOXpEWCQLfWmevgRiWokZ1GkpfhbZug==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.9
+    dev: false
 
   /@babylonjs/core/5.1.0:
     resolution: {integrity: sha512-yHC+k2pbpjcFOkhAFcXYLLv/WbXLZlPTVdOcC3/ExC+WlnsrmiulT26AhU8ghzZCcTpil3WsyTxqB0GYMtvwcA==}
@@ -110,7 +119,7 @@ packages:
 
   /@types/earcut/2.1.1:
     resolution: {integrity: sha512-w8oigUCDjElRHRRrMvn/spybSMyX8MTkKA5Dv+tS1IE/TgmNZPqUYtvYBXGY8cieSE66gm+szeK+bnbxC2xHTQ==}
-    dev: false
+    dev: true
 
   /array-union/1.0.2:
     resolution: {integrity: sha512-Dxr6QJj/RdU/hCaBjOfxW+q6lyuVE6JFWIrAUpuOOhoJJoQ99cUn3igRaHVB5P9WrgFVN0FfArM3x0cueOU8ng==}
@@ -613,6 +622,16 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
     dev: true
+
+  /redux/4.2.0:
+    resolution: {integrity: sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA==}
+    dependencies:
+      '@babel/runtime': 7.18.3
+    dev: false
+
+  /regenerator-runtime/0.13.9:
+    resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
+    dev: false
 
   /resolve/1.22.0:
     resolution: {integrity: sha512-Hhtrw0nLeSrFQ7phPp4OOcVjLPIeMnRlr5mcnVuMe7M/7eBn98A3hmFRLoFo3DLZkivSYwhRUJTyPyWAk56WLw==}
