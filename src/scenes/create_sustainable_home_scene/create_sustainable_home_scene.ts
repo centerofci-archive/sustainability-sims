@@ -32,20 +32,6 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
 {
     create_sky(scene)
 
-    const ground_position = vec3([ground_size / 2, -0.5, ground_size / 2])
-    const { ground, resize_ground } = create_ground(scene, ground_size, ground_position)
-
-
-    const people = shuffle(person_mesh_names)
-    create_person(scene, shadow_generator, new Vector3(-4, 0, 3), people[0])
-    create_person(scene, shadow_generator, new Vector3(0, 0, 5), people[1])
-    create_person(scene, shadow_generator, new Vector3(2, 0, 4), people[2])
-    create_house(scene, shadow_generator, Vector3.Zero(), "house")
-
-    const { play } = create_smoke_plume(scene, { emit_position1: new Vector3(0.5, 4.2, -1.9) }, shadow_generator)
-    play()
-
-
     const params = {
         gas_period: sanitise_time_period(get_url_param(url_params, "gas_period", TIME_PERIODS.month)),
         gas_volume: get_url_param_number(url_params, "gas", 140),
@@ -89,6 +75,23 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
         home_property_m2,
     } = ok_params
 
+    const sanitised_gas_params = sanitise_gas_params({ gas_period, gas_volume, gas_units })
+    if (sanitised_gas_params.value === undefined)
+    {
+        console.error("Error in gas params", sanitised_gas_params.error)
+        return
+    }
+
+    const gas_m3_per_year = calculate_gas_m3_per_year(sanitised_gas_params.value)
+    if (gas_m3_per_year.value === undefined)
+    {
+        console.error("Error converting gas to m3 per year", gas_m3_per_year.error)
+        return
+    }
+    const gas_m3_per_year_value = gas_m3_per_year.value
+
+
+
     // Assume you can not use roof and assume you can use all land right up to next of property
     // (clearly not true as some tree roots known to damage properties with weak or small foundations)
     const personal_land_area_m2 = home_property_m2 - home_footprint_m2
@@ -105,21 +108,6 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     // 0.861 = 100 - (1.5 + (6 * 0.5) + 9.4) // assuming 50 of land in developed areas could be used for "energy crops / forestry"
     const existing_forest_city_plus_country_land_area_per_home_m2 = all_country_land_area_per_home_m2 * 0.861
 
-
-    const sanitised_gas_params = sanitise_gas_params({ gas_period, gas_volume, gas_units })
-    if (sanitised_gas_params.value === undefined)
-    {
-        console.error("Error in gas params", sanitised_gas_params.error)
-        return
-    }
-
-    const gas_m3_per_year = calculate_gas_m3_per_year(sanitised_gas_params.value)
-    if (gas_m3_per_year.value === undefined)
-    {
-        console.error("Error converting gas to m3 per year", gas_m3_per_year.error)
-        return
-    }
-    const gas_m3_per_year_value = gas_m3_per_year.value
 
 
     const forest_position = new Vector3(-5, 0, -5)
@@ -143,7 +131,25 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
     // })
 
 
-    let animated = false
+
+
+    const ground_position = vec3([ground_size / 2, -0.5, ground_size / 2])
+    const { ground, resize_ground } = create_ground(scene, ground_size, ground_position)
+
+
+    const people = shuffle(person_mesh_names)
+    create_person(scene, shadow_generator, new Vector3(-4, 0, 3), people[0])
+    create_person(scene, shadow_generator, new Vector3(0, 0, 5), people[1])
+    create_person(scene, shadow_generator, new Vector3(2, 0, 4), people[2])
+    create_house(scene, shadow_generator, Vector3.Zero(), "house")
+
+    const { play } = create_smoke_plume(scene, { emit_position1: new Vector3(0.5, 4.2, -1.9) }, shadow_generator)
+    play()
+
+
+
+
+    let animated_forest = false
     let protected_trees = true
     const planted_tree_size = 0.2
 
@@ -157,8 +163,8 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
         //     // tree.getChildMeshes().forEach(mesh => mesh.scaling = scale.clone())
         // })
 
-        if (animated) return
-        animated = true
+        if (animated_forest) return
+        animated_forest = true
 
         make_forest()
     })
@@ -173,8 +179,8 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
             tree.getChildMeshes().forEach(mesh => mesh.scaling = scale.clone())
         })
 
-        if (animated) return
-        animated = true
+        if (animated_forest) return
+        animated_forest = true
 
         make_forest()
     })
