@@ -23,6 +23,7 @@
     "@babylonjs/gui": "5.1.0",
     "@babylonjs/loaders": "5.1.0",
     "@babylonjs/materials": "5.1.0",
+    "@reduxjs/toolkit": "1.8.2",
     "earcut": "2.2.3",
     "redux": "4.2.0",
     "xmachina": "0.0.8"

@@ -2,7 +2,10 @@
 import { create_sky } from "../../components/create_sky"
 import { URLParams } from "../../utils/url_params_parser"
 import { CreateContentCommonArgs } from "../content"
-import { create_state_machine, LightState, LightTransition, StateMachine } from "./state/create_state_machine"
+import { ACTIONS } from "./state/actions"
+import { connect } from "./state/connected_component"
+import { get_store } from "./state/store"
+import { setup_UI_home_selection_menu } from "./ui/home_selection_menu/setup_UI_home_selection_menu"
 
 
 
@@ -10,38 +13,48 @@ export const create_sustainable_home_scene_v2 = ({ scene, camera, shadow_generat
 {
     create_sky(scene)
 
-    const state_machine = create_state_machine()
+    const store = get_store()
 
-    setup_light(state_machine)
-    setup_lightswitch(state_machine)
+    connect(setup_UI_home_selection_menu())
+
+    setup_lightswitch()
+
+    // const state_machine = create_state_machine()
+
+
+
+    /*
+
+    start -> show home selection menu
+    user selects a home -> change selected home
+    user chooses "confirm"
+        -> closes home selection menu
+        -> renders house
+
+
+
+    */
 
     // const is_revisiting = determine_if_revisiting()
 
     // show_home_selector()
 
-    state_machine.start()
+    // state_machine.start()
 }
 
 
 
-function setup_light (state_machine: StateMachine)
+function setup_lightswitch ()
 {
-    state_machine.subscribe(e =>
-    {
-        window.document.body.innerText = e.value.new
-    })
-}
+    const store = get_store()
 
-
-function setup_lightswitch (state_machine: StateMachine)
-{
     ;(window as any).switch_on = () =>
     {
-        state_machine.transition(LightTransition.TurnOn)
+        store.dispatch(ACTIONS.user_info.set_detected_user_location({ detected_location: { country: "abc" } }))
     }
 
     ;(window as any).switch_off = () =>
     {
-        state_machine.transition(LightTransition.TurnOff)
+        store.dispatch(ACTIONS.user_info.set_detected_user_location({ detected_location: undefined }))
     }
 }
