@@ -13,6 +13,7 @@ import { create_arrow_scene } from "./create_arrow_scene"
 import { create_compare_home_gas_usage_scene } from "./create_compare_home_gas_usage_scene"
 import { create_house_scene } from "./create_house_scene"
 import { create_sustainable_home_scene } from "./create_sustainable_home_scene/create_sustainable_home_scene"
+import { create_sustainable_home_scene_v2 } from "./create_sustainable_home_scene/create_sustainable_home_scene_v2"
 
 
 
@@ -27,10 +28,11 @@ enum Content
     arrow,
     compare_home_gas_usage,
     sustainable_home,
+    sustainable_home_v2,
 }
 
 const url_params = url_params_parser()
-let content = Content.sustainable_home
+let content = Content.sustainable_home_v2
 
 
 
@@ -114,5 +116,9 @@ export const create_content = ({ scene, camera, sun, shadow_generator }: CreateC
     else if (content === Content.sustainable_home)
     {
         create_sustainable_home_scene({ scene, camera, sun, shadow_generator }, tiny_ground_size, url_params)
+    }
+    else if (content === Content.sustainable_home_v2)
+    {
+        create_sustainable_home_scene_v2({ scene, camera, sun, shadow_generator }, tiny_ground_size, url_params)
     }
 }
