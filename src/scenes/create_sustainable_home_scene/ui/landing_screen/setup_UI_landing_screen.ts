@@ -9,8 +9,8 @@ import { draw_modal } from "../modal/draw_modal"
 
 const map_state = (state: RootState, last_state: RootState) =>
 {
-    const show = state.routing.view === VIEWS.home_selection_menu
-    const last_show = last_state.routing.view === VIEWS.home_selection_menu
+    const show = state.routing.view === VIEWS.landing_screen
+    const last_show = last_state.routing.view === VIEWS.landing_screen
 
     return {
         show,
@@ -21,7 +21,7 @@ type Props = ReturnType<typeof map_state>
 
 
 
-export const setup_UI_home_selection_menu: ConnectedableComponent<Props> = ({ scene, ui_layer }) =>
+export const setup_UI_landing_screen: ConnectedableComponent<Props> = ({ scene, ui_layer }) =>
 {
     function update (props: Props)
     {

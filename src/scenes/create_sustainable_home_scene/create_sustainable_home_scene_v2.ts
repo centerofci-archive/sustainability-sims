@@ -6,16 +6,19 @@ import { ACTIONS } from "./state/actions"
 import { connect } from "./state/connected_component"
 import { get_store } from "./state/store"
 import { setup_UI_home_selection_menu } from "./ui/home_selection_menu/setup_UI_home_selection_menu"
+import { setup_UI_landing_screen } from "./ui/landing_screen/setup_UI_landing_screen"
 
 
 
-export const create_sustainable_home_scene_v2 = ({ scene, camera, shadow_generator}: CreateContentCommonArgs, ground_size: number, url_params: URLParams) =>
+export const create_sustainable_home_scene_v2 = (args: CreateContentCommonArgs, ground_size: number, url_params: URLParams) =>
 {
+    const { scene, camera, shadow_generator } = args
     create_sky(scene)
 
     const store = get_store()
 
-    connect(setup_UI_home_selection_menu())
+    connect(setup_UI_landing_screen(args))
+    connect(setup_UI_home_selection_menu(args))
 
     setup_lightswitch()
 
@@ -39,6 +42,7 @@ export const create_sustainable_home_scene_v2 = ({ scene, camera, shadow_generat
 
     // show_home_selector()
 
+    store.dispatch(ACTIONS.setup_complete())
     // state_machine.start()
 }
 

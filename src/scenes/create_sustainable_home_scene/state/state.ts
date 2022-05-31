@@ -6,5 +6,5 @@ import { UserInfoState } from "./user_info/state"
 export interface RootState
 {
     routing: RoutingState
-    user: UserInfoState
+    user_info: UserInfoState
 }

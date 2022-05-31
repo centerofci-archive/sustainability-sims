@@ -1,10 +1,11 @@
+import { CreateContentCommonArgs } from "../../content"
 import { RootState } from "./state"
 import { get_store } from "./store"
 
 
 
 type ConnectedComponent<P extends object> = { map_state: (state: RootState, last_state: RootState) => P, update: (props: P, last_props: P) => void }
-export type ConnectedableComponent<P extends object> = () => ConnectedComponent<P>
+export type ConnectedableComponent<P extends object> = (args: CreateContentCommonArgs) => ConnectedComponent<P>
 
 
 

@@ -1,4 +1,5 @@
 import { Scene, ArcRotateCamera, ShadowGenerator, Vector3, Color4, StandardMaterial } from "@babylonjs/core"
+import { AdvancedDynamicTexture } from "@babylonjs/gui"
 
 import { create_arrow } from "../components/create_arrow"
 import { create_earth } from "../components/create_earth"
@@ -42,6 +43,7 @@ export interface CreateContentCommonArgs
     camera: ArcRotateCamera
     sun: WrappedSun
     shadow_generator: ShadowGenerator
+    ui_layer: AdvancedDynamicTexture
 }
 
 export const create_content = ({ scene, camera, sun, shadow_generator }: CreateContentCommonArgs) =>
@@ -50,6 +52,8 @@ export const create_content = ({ scene, camera, sun, shadow_generator }: CreateC
 
     const small_ground_size = 40
     const tiny_ground_size = 20
+
+    const ui_layer = AdvancedDynamicTexture.CreateFullscreenUI("UI", true, scene)
 
     if (content === Content.basic)
     {
@@ -88,7 +92,7 @@ export const create_content = ({ scene, camera, sun, shadow_generator }: CreateC
     }
     else if (content === Content.house)
     {
-        create_house_scene({ scene, camera, sun, shadow_generator }, small_ground_size)
+        create_house_scene({ scene, camera, sun, shadow_generator, ui_layer }, small_ground_size)
     }
     else if (content === Content.gas_bubble)
     {
@@ -107,18 +111,18 @@ export const create_content = ({ scene, camera, sun, shadow_generator }: CreateC
     }
     else if (content === Content.arrow)
     {
-        create_arrow_scene({ scene, camera, sun, shadow_generator }, small_ground_size)
+        create_arrow_scene({ scene, camera, sun, shadow_generator, ui_layer }, small_ground_size)
     }
     else if (content === Content.compare_home_gas_usage)
     {
-        create_compare_home_gas_usage_scene({ scene, camera, sun, shadow_generator }, small_ground_size)
+        create_compare_home_gas_usage_scene({ scene, camera, sun, shadow_generator, ui_layer }, small_ground_size)
     }
     else if (content === Content.sustainable_home)
     {
-        create_sustainable_home_scene({ scene, camera, sun, shadow_generator }, tiny_ground_size, url_params)
+        create_sustainable_home_scene({ scene, camera, sun, shadow_generator, ui_layer }, tiny_ground_size, url_params)
     }
     else if (content === Content.sustainable_home_v2)
     {
-        create_sustainable_home_scene_v2({ scene, camera, sun, shadow_generator }, tiny_ground_size, url_params)
+        create_sustainable_home_scene_v2({ scene, camera, sun, shadow_generator, ui_layer }, tiny_ground_size, url_params)
     }
 }
