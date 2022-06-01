@@ -18,7 +18,6 @@ export function connect <P extends { show: boolean }> (component: ConnectedCompo
 {
     const store = get_store()
 
-    let last_state = store.getState()
     let last_props = { show: false } as P
     store.subscribe(() =>
     {
@@ -40,7 +39,6 @@ export function connect <P extends { show: boolean }> (component: ConnectedCompo
             }
         }
 
-        last_state = new_state
         last_props = new_props
     })
 }

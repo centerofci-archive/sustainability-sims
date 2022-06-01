@@ -23,7 +23,7 @@ export const setup_UI_home_selection_menu: ConnectedableComponent<Props> = ({ sc
 
     function render (props: Props)
     {
-        modal = draw_modal(ui_layer)
+        modal = draw_modal(ui_layer, "Select Your Starting Home")
         // todo render 'home selection menu'
     }
 
