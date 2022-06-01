@@ -1,6 +1,6 @@
 
 
-type ViewTypes = (
+export type ViewTypes = (
     "landing_screen"
     | "home_selection_menu"
 )

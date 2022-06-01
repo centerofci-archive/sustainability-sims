@@ -1,11 +1,16 @@
 import { AdvancedDynamicTexture, Button, Control, Rectangle, ScrollViewer, StackPanel, TextBlock, TextWrapping } from "@babylonjs/gui"
+import { ACTIONS } from "../../state/actions"
 
-import { ConnectedableComponent } from "../../state/connected_component"
+import { ConnectedableComponent, connect_dispatch } from "../../state/connected_component"
 import { VIEWS } from "../../state/routing/state"
 import { RootState } from "../../state/state"
 import { draw_modal, ModalReturn } from "../modal/draw_modal"
 
 
+
+const dispatch = connect_dispatch({
+    change_view: ACTIONS.routing.change_view,
+})
 
 const map_state = (state: RootState) =>
 {
@@ -13,8 +18,10 @@ const map_state = (state: RootState) =>
 
     return {
         show,
+        ...dispatch,
     }
 }
+
 type Props = ReturnType<typeof map_state>
 
 
@@ -58,7 +65,7 @@ export const setup_UI_landing_screen: ConnectedableComponent<Props> = ({ scene, 
         button_start.background = "orange"
         button_start.onPointerClickObservable.add(() =>
         {
-            // pub_sub.ui.pub(ui_action, undefined)
+            props.change_view({ view: "home_selection_menu" })
         })
         stack.addControl(button_start)
 
