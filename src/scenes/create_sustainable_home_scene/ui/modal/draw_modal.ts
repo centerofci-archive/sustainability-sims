@@ -2,7 +2,13 @@ import { AdvancedDynamicTexture, Rectangle } from "@babylonjs/gui"
 
 
 
-export function draw_modal (ui_layer: AdvancedDynamicTexture)
+export interface ModalReturn
+{
+    dispose: () => void
+}
+
+
+export function draw_modal (ui_layer: AdvancedDynamicTexture): ModalReturn
 {
     const outer_window = new Rectangle()
     outer_window.width = 0.6
@@ -12,4 +18,6 @@ export function draw_modal (ui_layer: AdvancedDynamicTexture)
     outer_window.thickness = 2
     outer_window.background = "lightblue"
     ui_layer.addControl(outer_window)
+
+    return { dispose: () => outer_window.dispose() }
 }
