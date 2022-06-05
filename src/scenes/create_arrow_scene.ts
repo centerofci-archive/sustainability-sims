@@ -3,11 +3,11 @@ import { create_arrow } from "../components/create_arrow"
 import { create_arrow_chain } from "../components/create_arrow_chain"
 import { create_ground } from "../components/create_ground"
 import { create_sky } from "../components/create_sky"
-import { CreateContentCommonArgs } from "./content"
+import { ContentCommonArgs } from "./content"
 
 
 
-export const create_arrow_scene = ({ scene, shadow_generator }: CreateContentCommonArgs, ground_size: number) =>
+export const create_arrow_scene = ({ scene, shadow_generator }: ContentCommonArgs, ground_size: number) =>
 {
     create_sky(scene)
     create_ground(scene, ground_size)

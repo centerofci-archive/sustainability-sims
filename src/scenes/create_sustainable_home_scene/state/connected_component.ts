@@ -1,4 +1,4 @@
-import { CreateContentCommonArgs } from "../../content"
+import { ContentCommonArgs } from "../../content"
 import { RootState } from "./state"
 import { get_store } from "./store"
 
@@ -10,7 +10,7 @@ type ConnectedComponent<P extends { show: boolean }> = {
     update: (props: P) => void
     dispose: (props: P) => void
 }
-export type ConnectedableComponent<P extends { show: boolean }> = (args: CreateContentCommonArgs) => ConnectedComponent<P>
+export type ConnectedableComponent<P extends { show: boolean }> = (args: ContentCommonArgs) => ConnectedComponent<P>
 
 
 

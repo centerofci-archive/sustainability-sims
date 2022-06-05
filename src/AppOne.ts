@@ -8,6 +8,8 @@ import { ArcRotateCamera, Vector3 } from "@babylonjs/core"
 import { create_shadow_generator } from "./utils/create_shadow_generator"
 import { load_assets } from "./utils/load_assets"
 import { create_content } from "./scenes/content"
+import { AdvancedDynamicTexture } from "@babylonjs/gui"
+import { CustomScene } from "./utils/CustomScene"
 
 
 
@@ -18,6 +20,7 @@ export class AppOne
     assets_manager: BABYLON.AssetsManager
     camera: ArcRotateCamera
     sun: WrappedSun
+    ui_layer: AdvancedDynamicTexture
 
     constructor (readonly canvas: HTMLCanvasElement)
     {
@@ -30,6 +33,7 @@ export class AppOne
         this.camera = res.camera
         this.sun = res.sun
         this.assets_manager = new BABYLON.AssetsManager(this.scene)
+        this.ui_layer = AdvancedDynamicTexture.CreateFullscreenUI("UI", true, this.scene)
         load_assets(this.assets_manager)
     }
 
@@ -63,6 +67,7 @@ export class AppOne
                 camera: this.camera,
                 sun: this.sun,
                 shadow_generator,
+                ui_layer: this.ui_layer,
             })
 
             this.engine.runRenderLoop(() =>
@@ -79,7 +84,7 @@ export class AppOne
 function create_scene (engine: BABYLON.Engine, canvas: HTMLCanvasElement)
 {
     // This creates a basic Babylon Scene object (non-mesh)
-    var scene = new BABYLON.Scene(engine)
+    var scene = new CustomScene(engine)
     scene.clearColor = new BABYLON.Color4(0, 0, 0, 1)
 
     // This creates and positions a camera

@@ -26,15 +26,15 @@ type Props = ReturnType<typeof map_state>
 
 
 
-export const setup_UI_landing_screen: ConnectedableComponent<Props> = ({ scene, ui_layer }) =>
+export const setup_UI_landing_screen: ConnectedableComponent<Props> = common_args =>
 {
     let modal: ModalReturn
 
     function render (props: Props)
     {
-        modal = draw_modal(ui_layer, "Welcome!")
+        modal = draw_modal(common_args, "Welcome!")
 
-        const scroll_viewer = new ScrollViewer("welcome text scroll viewer")
+        const scroll_viewer = new ScrollViewer("welcome screen")
         scroll_viewer.heightInPixels = modal.inner_content.heightInPixels
         scroll_viewer.thickness = 0
         modal.inner_content.addControl(scroll_viewer)
@@ -58,7 +58,7 @@ export const setup_UI_landing_screen: ConnectedableComponent<Props> = ({ scene, 
         scroll_viewer.paddingLeftInPixels = 5
         content_text.paddingRightInPixels = 5
 
-        const button_start = Button.CreateSimpleButton("button_start", "Start")
+        const button_start = Button.CreateSimpleButton("start", "Start")
         button_start.width = 0.7
         button_start.height = `30px`
         button_start.color = "black"

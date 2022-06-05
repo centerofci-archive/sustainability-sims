@@ -21,14 +21,14 @@ import { shuffle } from "../../utils/random"
 import { ui_make_edge_scroll } from "../../utils/ui/ui_make_edge_scroll"
 import { URLParams, get_url_param, get_url_param_number } from "../../utils/url_params_parser"
 import { vec3 } from "../../utils/vector"
-import { CreateContentCommonArgs } from "../content"
+import { ContentCommonArgs } from "../content"
 import { listen_for_double_click } from "./listen_for_double_click"
 import { ui_show_name } from "./ui/ui_show_name"
 import { ui_show_stats } from "./ui/ui_show_stats"
 
 
 
-export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}: CreateContentCommonArgs, ground_size: number, url_params: URLParams) =>
+export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}: ContentCommonArgs, ground_size: number, url_params: URLParams) =>
 {
     create_sky(scene)
 

@@ -1,7 +1,7 @@
 
 import { create_sky } from "../../components/create_sky"
 import { URLParams } from "../../utils/url_params_parser"
-import { CreateContentCommonArgs } from "../content"
+import { ContentCommonArgs } from "../content"
 import { ACTIONS } from "./state/actions"
 import { connect } from "./state/connected_component"
 import { get_store } from "./state/store"
@@ -10,7 +10,7 @@ import { setup_UI_landing_screen } from "./ui/landing_screen/setup_UI_landing_sc
 
 
 
-export const create_sustainable_home_scene_v2 = (args: CreateContentCommonArgs, ground_size: number, url_params: URLParams) =>
+export const create_sustainable_home_scene_v2 = (args: ContentCommonArgs, ground_size: number, url_params: URLParams) =>
 {
     const { scene, camera, shadow_generator } = args
     create_sky(scene)

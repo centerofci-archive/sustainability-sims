@@ -9,6 +9,7 @@ import { create_ground } from "../components/create_ground"
 import { create_sky } from "../components/create_sky"
 import { WrappedSun } from "../components/create_sun"
 import { bounded } from "../utils/bounded"
+import { CustomScene } from "../utils/CustomScene"
 import { url_params_parser } from "../utils/url_params_parser"
 import { create_arrow_scene } from "./create_arrow_scene"
 import { create_compare_home_gas_usage_scene } from "./create_compare_home_gas_usage_scene"
@@ -37,23 +38,21 @@ let content = Content.sustainable_home_v2
 
 
 
-export interface CreateContentCommonArgs
+export interface ContentCommonArgs
 {
-    scene: Scene
+    scene: CustomScene
     camera: ArcRotateCamera
     sun: WrappedSun
     shadow_generator: ShadowGenerator
     ui_layer: AdvancedDynamicTexture
 }
 
-export const create_content = ({ scene, camera, sun, shadow_generator }: CreateContentCommonArgs) =>
+export const create_content = ({ scene, camera, sun, shadow_generator, ui_layer }: ContentCommonArgs) =>
 {
     camera.upperBetaLimit = (Math.PI / 2) * 0.99
 
     const small_ground_size = 40
     const tiny_ground_size = 20
-
-    const ui_layer = AdvancedDynamicTexture.CreateFullscreenUI("UI", true, scene)
 
     if (content === Content.basic)
     {
