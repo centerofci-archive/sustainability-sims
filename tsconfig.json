@@ -8,16 +8,8 @@
     "sourceMap": true,
     "lib": [
       "dom",
-      "dom.iterable",
       "ESNext"
     ],
-    "jsx": "preserve",
-    "jsxFactory": "h",
-    "baseUrl": "./",
-    "paths": {
-      "react": ["node_modules/preact/compat"],
-      "react-dom": ["node_modules/preact/compat"]
-    },
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -27,7 +19,6 @@
     "noImplicitReturns": true
   },
   "include": [
-    "./src",
-    "vite.config.js",
+    "./src", "vite.config.js",
   ]
 }
