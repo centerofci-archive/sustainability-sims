@@ -16,7 +16,9 @@ export default defineConfig(({ command, mode }) => {
     return {
         resolve: {
             alias: {
-                'babylonjs': mode === 'development' ? 'babylonjs/babylon.max' : 'babylonjs'
+                "babylonjs": mode === "development" ? "babylonjs/babylon.max" : "babylonjs",
+                "react": "preact/compat",
+                "react-dom": "preact/compat",
             }
         },
         base: "sustainability-sims",
