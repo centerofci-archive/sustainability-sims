@@ -12,8 +12,8 @@ import { render } from "react-dom"
 window.addEventListener("DOMContentLoaded", () => {
     let canvas = document.getElementById("renderCanvas") as HTMLCanvasElement
     render(
-        // <AppTwo />,
-        <SceneWithSpinningBoxes />,
+        <AppTwo />,
+        // <SceneWithSpinningBoxes />,
         // <Provider store={get_store({ load_state_from_storage: false })}>
         //     <AppTwo />
         // </Provider>,
