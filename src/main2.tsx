@@ -1,13 +1,13 @@
 import { Vector3, Color3, Mesh } from "@babylonjs/core"
-import { h, render } from "preact"
-import { useRef, useState } from "preact/hooks"
+import React, { useRef, useState } from "react"
+
 import { useClick, useHover, useBeforeRender, Engine, Scene, BabylonNode, FiberBoxPropsCtor, FiberMeshProps } from "react-babylonjs"
 import { Provider } from "react-redux"
 
 import { AppTwo } from "./AppTwo"
 import { get_store } from "./scenes/create_sustainable_home_scene/state/store"
+import { render } from "react-dom"
 
-debugger
 
 window.addEventListener("DOMContentLoaded", () => {
     let canvas = document.getElementById("renderCanvas") as HTMLCanvasElement
@@ -31,7 +31,7 @@ const BiggerScale = new Vector3(1.25, 1.25, 1.25)
 
 const SpinningBox = (props: { name: string, position: Vector3, hoveredColor: Color3, color: Color3 }) => {
   // access Babylon scene objects with same React hook as regular DOM elements
-  const boxRef = useRef<FiberMeshProps & FiberBoxPropsCtor & BabylonNode<Mesh>>(null)
+  const boxRef = useRef<Mesh>(null)
 
   const [clicked, setClicked] = useState(false)
   useClick(() => setClicked((clicked) => !clicked), boxRef)
@@ -57,7 +57,7 @@ const SpinningBox = (props: { name: string, position: Vector3, hoveredColor: Col
   return (
     <box
       name={props.name}
-      ref={boxRef}
+      ref={boxRef as any}
       size={2}
       position={props.position}
       scaling={clicked ? BiggerScale : DefaultScale}
@@ -75,7 +75,7 @@ const SpinningBox = (props: { name: string, position: Vector3, hoveredColor: Col
 
 const SceneWithSpinningBoxes = () => (
   <div>
-    <Engine antialias adaptToDeviceRatio canvasId="babylonJS">
+    <Engine antialias adaptToDeviceRatio canvasId="renderCanvas">
       <Scene>
         <arcRotateCamera
           name="camera1"

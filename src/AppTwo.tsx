@@ -1,9 +1,10 @@
 import { ArcRotateCamera, Color3, Color4, Mesh, Texture, TransformNode, Vector3 } from "@babylonjs/core"
 import { Control } from "@babylonjs/gui"
-import { h, JSX } from "preact"
-import { useMemo, useState } from "preact/hooks"
+import React from "react"
+// import { useMemo, useState } from "preact/hooks"
 
 import { BabylonNode, Engine, FiberMeshProps, FiberPlanePropsCtor, Scene } from "react-babylonjs"
+
 
 
 
@@ -23,10 +24,10 @@ export const AppTwo = () =>
     // const dialogWidth = 900
 
 
-    const deleteSelectedMesh = useMemo(() =>
-    {
-      return () => {}
-    }, [])
+    // const deleteSelectedMesh = useMemo(() =>
+    // {
+    //   return () => {}
+    // }, [])
 
 
     return <Engine antialias adaptToDeviceRatio>
