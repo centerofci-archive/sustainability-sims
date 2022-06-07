@@ -16,7 +16,7 @@ import { CustomScene } from "./utils/CustomScene"
 export class AppOne
 {
     engine: BABYLON.Engine
-    scene: BABYLON.Scene
+    scene: CustomScene
     assets_manager: BABYLON.AssetsManager
     camera: ArcRotateCamera
     sun: WrappedSun
