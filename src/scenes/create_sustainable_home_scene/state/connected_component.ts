@@ -1,47 +1,73 @@
-import { ContentCommonArgs } from "../../content"
 import { RootState } from "./state"
 import { get_store } from "./store"
 
 
 
-type ConnectedComponent<P extends { show: boolean }> = {
-    map_state: (state: RootState) => P,
-    render: (props: P) => void
-    update: (props: P) => void
-    dispose: (props: P) => void
+type ConnectedComponent<StateProps extends { show: boolean }, LocalProps extends Exclude<{}, StateProps>> = {
+    map_state: (state: RootState) => StateProps
+    initial_local?: () => LocalProps
+    render: (props: StateProps & LocalProps) => void
+    update: (props: StateProps & LocalProps) => void
+    dispose: (props: StateProps & LocalProps) => void
 }
-export type ConnectedableComponent<P extends { show: boolean }> = (args: ContentCommonArgs) => ConnectedComponent<P>
+export type ConnectedableComponent<StateProps extends { show: boolean }, LocalProps extends Exclude<{}, StateProps>> = (update_local: (new_local: Partial<LocalProps>) => void) => ConnectedComponent<StateProps, LocalProps>
 
 
 
-export function connect <P extends { show: boolean }> (component: ConnectedComponent<P>)
+export function connect <StateProps extends { show: boolean }, LocalProps extends Exclude<{}, StateProps>> (component: ConnectedableComponent<StateProps, LocalProps>)
 {
-    const store = get_store()
+    const last: { state_props: StateProps, local_props: LocalProps } = {
+        state_props: { show: false } as StateProps,
+        local_props: {} as LocalProps,
+    }
 
-    let last_props = { show: false } as P
+
+    function update_local (new_local: Partial<LocalProps>)
+    {
+        last.local_props = { ...last.local_props, ...new_local }
+
+        const new_props = { ...last.state_props, ...last.local_props }
+        process_new_props(new_props)
+    }
+
+
+    const connected_component = component(update_local)
+
+    if (connected_component.initial_local) last.local_props = connected_component.initial_local()
+
+
+    const store = get_store()
     store.subscribe(() =>
     {
         const new_state = store.getState()
-        const new_state_props = component.map_state(new_state)
-        const new_props = new_state_props
+        last.state_props = connected_component.map_state(new_state)
+        const new_props = { ...last.state_props, ...last.local_props }
+        process_new_props(new_props)
+    })
+
+
+    let last_props = { ...last.local_props, ...last.state_props } as (StateProps & LocalProps)
+
+    function process_new_props (new_props: StateProps & LocalProps)
+    {
         const props_changed = shallow_diff(last_props, new_props)
 
         if (props_changed)
         {
             if (new_props.show)
             {
-                if (!last_props.show) component.render(new_props)
-                else component.update(new_props)
+                if (!last_props.show) connected_component.render(new_props)
+                else connected_component.update(new_props)
             }
             else
             {
-                if (last_props.show) component.dispose(new_props)
+                if (last_props.show) connected_component.dispose(new_props)
                 else {} // no-op
             }
         }
 
         last_props = new_props
-    })
+    }
 }
 
 

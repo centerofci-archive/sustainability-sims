@@ -1,4 +1,5 @@
 import { AdvancedDynamicTexture, Button, Control, Rectangle, ScrollViewer, StackPanel, TextBlock, TextWrapping } from "@babylonjs/gui"
+import { ContentCommonArgs } from "../../../content"
 import { ACTIONS } from "../../state/actions"
 
 import { ConnectedableComponent, connect_dispatch } from "../../state/connected_component"
@@ -22,15 +23,16 @@ const map_state = (state: RootState) =>
     }
 }
 
-type Props = ReturnType<typeof map_state>
+type StateProps = ReturnType<typeof map_state>
 
 
 
-export const setup_UI_landing_screen: ConnectedableComponent<Props> = common_args =>
+export const setup_UI_landing_screen = (common_args: ContentCommonArgs): ConnectedableComponent<StateProps, {}> => update_local =>
 {
     let modal: ModalReturn
 
-    function render (props: Props)
+
+    function render (props: StateProps)
     {
         modal = draw_modal(common_args, "Welcome!")
 
@@ -78,15 +80,18 @@ export const setup_UI_landing_screen: ConnectedableComponent<Props> = common_arg
 
     }
 
-    function update (props: Props)
+
+    function update (props: StateProps)
     {
 
     }
 
-    function dispose (props: Props)
+
+    function dispose (props: StateProps)
     {
         modal.dispose()
     }
+
 
     return { map_state, render, update, dispose }
 }

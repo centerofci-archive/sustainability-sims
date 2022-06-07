@@ -1,5 +1,6 @@
 import { PointerEventTypes } from "@babylonjs/core"
 import { Rectangle, ScrollViewer, StackPanel } from "@babylonjs/gui"
+import { ContentCommonArgs } from "../../../content"
 import { ConnectedableComponent } from "../../state/connected_component"
 import { VIEWS } from "../../state/routing/state"
 import { RootState } from "../../state/state"
@@ -16,13 +17,27 @@ const map_state = (state: RootState) =>
         show,
     }
 }
-type Props = ReturnType<typeof map_state>
+type StateProps = ReturnType<typeof map_state>
 
 
+interface LocalProps
+{
+    chosen_home: number | undefined
+}
 
-export const setup_UI_home_selection_menu: ConnectedableComponent<Props> = common_args =>
+type Props = StateProps & LocalProps
+
+
+export const setup_UI_home_selection_menu = (common_args: ContentCommonArgs): ConnectedableComponent<StateProps, LocalProps> => update_local =>
 {
     let modal: ModalReturn
+
+
+    function initial_local ()
+    {
+        return { chosen_home: undefined }
+    }
+
 
     function render (props: Props)
     {
@@ -50,27 +65,39 @@ export const setup_UI_home_selection_menu: ConnectedableComponent<Props> = commo
         const width = 200
         house_names.forEach((house_name, index) =>
         {
+            const is_chosen = index === props.chosen_home
+
             const option_panel = new Rectangle()
             option_panel.widthInPixels = width
             option_panel.heightInPixels = 200
             option_panel.cornerRadius = 12
-            option_panel.color = "lightblue"
-            option_panel.thickness = 2
+            option_panel.color = is_chosen ? "lightorange" : "lightblue"
+            option_panel.thickness = is_chosen ? 6 : 2
             option_panel.background = "white"
+
+            option_panel.onPointerMoveObservable.add(() =>
+            {
+                debugger
+                update_local({ chosen_home: index })
+            })
             // option_panel.left = (index * width) + 20
             stack.addControl(option_panel)
         })
+
     }
+
 
     function update (props: Props)
     {
 
     }
 
+
     function dispose (props: Props)
     {
         modal.dispose()
     }
 
-    return { map_state, render, update, dispose }
+
+    return { map_state, initial_local, render, update, dispose }
 }
