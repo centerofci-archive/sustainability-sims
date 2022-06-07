@@ -1,12 +1,14 @@
 import { Vector3, Color3, Mesh } from "@babylonjs/core"
-import React, { useRef, useState } from "react"
+import { h, render } from "preact"
+import { useRef, useState } from "preact/hooks"
+
 
 import { useClick, useHover, useBeforeRender, Engine, Scene, BabylonNode, FiberBoxPropsCtor, FiberMeshProps } from "react-babylonjs"
-import { Provider } from "react-redux"
+
 
 import { AppTwo } from "./AppTwo"
 import { get_store } from "./scenes/create_sustainable_home_scene/state/store"
-import { render } from "react-dom"
+
 
 
 window.addEventListener("DOMContentLoaded", () => {
