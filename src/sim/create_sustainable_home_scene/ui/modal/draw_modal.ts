@@ -1,6 +1,6 @@
 import { Container, Control, Rectangle, TextBlock } from "@babylonjs/gui"
 import { ContentCommonArgs } from "../../../content"
-import { get_store } from "../../state/store"
+import { get_store } from "../../../../state/store"
 
 
 
@@ -14,7 +14,7 @@ export interface ModalReturn
 export function draw_modal ({ ui_layer }: ContentCommonArgs, title: string): ModalReturn
 {
     const store = get_store()
-    const state = store.getState()
+    const state = store.getState().sustainable_home
 
     const on_mobile = state.device_info.screen_width < 600
 

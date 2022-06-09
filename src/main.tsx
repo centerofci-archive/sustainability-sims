@@ -4,18 +4,19 @@ import React, { useRef, useState } from "react"
 import { useClick, useHover, useBeforeRender, Engine, Scene, BabylonNode, FiberBoxPropsCtor, FiberMeshProps } from "react-babylonjs"
 import { Provider } from "react-redux"
 
-import { AppTwo } from "./AppTwo"
-import { get_store } from "./scenes/create_sustainable_home_scene/state/store"
+import { get_store } from "./state/store"
 import { render } from "react-dom"
+import { AppOne } from "./AppOne"
+import { AppTwo } from "./AppTwo"
 
 
 window.addEventListener("DOMContentLoaded", () => {
     let canvas = document.getElementById("renderCanvas") as HTMLCanvasElement
     render(
         <AppTwo />,
+        // <AppOne />,
         // <SceneWithSpinningBoxes />,
         // <Provider store={get_store({ load_state_from_storage: false })}>
-        //     <AppTwo />
         // </Provider>,
         canvas
     )

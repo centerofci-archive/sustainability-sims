@@ -3,13 +3,13 @@ import { Rectangle, ScrollViewer, StackPanel } from "@babylonjs/gui"
 import { ContentCommonArgs } from "../../../content"
 import { ConnectedableComponent } from "../../state/connected_component"
 import { VIEWS } from "../../state/routing/state"
-import { RootState } from "../../state/state"
+import { SustainableHomeRootState } from "../../state/state"
 import { CustomScrollViewer } from "../CustomScrollViewer"
 import { draw_modal, ModalReturn } from "../modal/draw_modal"
 
 
 
-const map_state = (state: RootState) =>
+const map_state = (state: SustainableHomeRootState) =>
 {
     const show = state.routing.view === VIEWS.home_selection_menu
 

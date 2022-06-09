@@ -1,10 +1,10 @@
-import { AdvancedDynamicTexture, Button, Control, Rectangle, ScrollViewer, StackPanel, TextBlock, TextWrapping } from "@babylonjs/gui"
+import { Button, Control, ScrollViewer, StackPanel, TextBlock, TextWrapping } from "@babylonjs/gui"
+
 import { ContentCommonArgs } from "../../../content"
 import { ACTIONS } from "../../state/actions"
-
 import { ConnectedableComponent, connect_dispatch } from "../../state/connected_component"
 import { VIEWS } from "../../state/routing/state"
-import { RootState } from "../../state/state"
+import { SustainableHomeRootState } from "../../state/state"
 import { draw_modal, ModalReturn } from "../modal/draw_modal"
 
 
@@ -13,7 +13,7 @@ const dispatch = connect_dispatch({
     change_view: ACTIONS.routing.change_view,
 })
 
-const map_state = (state: RootState) =>
+const map_state = (state: SustainableHomeRootState) =>
 {
     const show = state.routing.view === VIEWS.landing_screen
 

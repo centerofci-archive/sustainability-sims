@@ -1,12 +1,12 @@
 import { AnyAction } from "redux"
 import { update_substate } from "../../../../utils/update_state"
 
-import { RootState } from "../state"
+import { SustainableHomeRootState } from "../state"
 import { is_change_view } from "./actions"
 
 
 
-export const routing_reducer = (state: RootState, action: AnyAction): RootState =>
+export const routing_reducer = (state: SustainableHomeRootState, action: AnyAction): SustainableHomeRootState =>
 {
 
     if (is_change_view(action))

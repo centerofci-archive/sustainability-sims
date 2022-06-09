@@ -1,10 +1,10 @@
-import { RootState } from "./state"
-import { get_store } from "./store"
+import { SustainableHomeRootState } from "./state"
+import { get_store } from "../../../state/store"
 
 
 
 type ConnectedComponent<StateProps extends { show: boolean }, LocalProps extends Exclude<{}, StateProps>> = {
-    map_state: (state: RootState) => StateProps
+    map_state: (state: SustainableHomeRootState) => StateProps
     initial_local?: () => LocalProps
     render: (props: StateProps & LocalProps) => void
     update: (props: StateProps & LocalProps) => void
@@ -39,7 +39,7 @@ export function connect <StateProps extends { show: boolean }, LocalProps extend
     const store = get_store()
     store.subscribe(() =>
     {
-        const new_state = store.getState()
+        const new_state = store.getState().sustainable_home
         last.state_props = connected_component.map_state(new_state)
         const new_props = { ...last.state_props, ...last.local_props }
         process_new_props(new_props)

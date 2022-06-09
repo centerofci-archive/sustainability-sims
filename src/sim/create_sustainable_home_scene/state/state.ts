@@ -4,7 +4,7 @@ import { UserInfoState } from "./user_info/state"
 
 
 
-export interface RootState
+export interface SustainableHomeRootState
 {
     device_info: DeviceInfoState
     routing: RoutingState

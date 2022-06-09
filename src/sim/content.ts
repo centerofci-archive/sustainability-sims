@@ -8,6 +8,7 @@ import { create_gas_bubble } from "../components/create_gas_bubble"
 import { create_ground } from "../components/create_ground"
 import { create_sky } from "../components/create_sky"
 import { WrappedSun } from "../components/create_sun"
+import { RoutingPath1 } from "../state/routes"
 import { bounded } from "../utils/bounded"
 import { CustomScene } from "../utils/CustomScene"
 import { url_params_parser } from "../utils/url_params_parser"
@@ -19,22 +20,8 @@ import { create_sustainable_home_scene_v2 } from "./create_sustainable_home_scen
 
 
 
-enum Content
-{
-    nada,
-    basic,
-    earth,
-    forest,
-    house,
-    gas_bubble,
-    arrow,
-    compare_home_gas_usage,
-    sustainable_home,
-    sustainable_home_v2,
-}
-
 const url_params = url_params_parser()
-let content = Content.sustainable_home_v2
+let content = RoutingPath1.sustainable_home_v2
 
 
 
@@ -54,7 +41,7 @@ export const create_content = ({ scene, camera, sun, shadow_generator, ui_layer 
     const small_ground_size = 40
     const tiny_ground_size = 20
 
-    if (content === Content.basic)
+    if (content === RoutingPath1.basic)
     {
         // sun.set_intensity(0)
         // const { skybox, skybox_material, set_sky_config } = create_sky(scene)
@@ -76,24 +63,24 @@ export const create_content = ({ scene, camera, sun, shadow_generator, ui_layer 
 
 
     }
-    else if (content === Content.earth)
+    else if (content === RoutingPath1.earth)
     {
         sun.configure_for_earth_globe()
         camera.position = new Vector3(170, 170, 170)
         create_earth(scene, camera, sun.sun_point_light)
     }
-    else if (content === Content.forest)
+    else if (content === RoutingPath1.forest)
     {
         create_sky(scene)
         create_ground(scene, small_ground_size)
         const { play } = create_forest(scene, shadow_generator, new Vector3(-15, 0, -15), 10)
         play()
     }
-    else if (content === Content.house)
+    else if (content === RoutingPath1.house)
     {
         create_house_scene({ scene, camera, sun, shadow_generator, ui_layer }, small_ground_size)
     }
-    else if (content === Content.gas_bubble)
+    else if (content === RoutingPath1.gas_bubble)
     {
         create_sky(scene)
         create_ground(scene, small_ground_size)
@@ -108,19 +95,19 @@ export const create_content = ({ scene, camera, sun, shadow_generator, ui_layer 
         setTimeout(() => { opacity(0.1); gas2.opacity(0.1) }, 1000)
         setTimeout(() => { opacity(1); gas2.opacity(1) }, 3000)
     }
-    else if (content === Content.arrow)
+    else if (content === RoutingPath1.arrow)
     {
         create_arrow_scene({ scene, camera, sun, shadow_generator, ui_layer }, small_ground_size)
     }
-    else if (content === Content.compare_home_gas_usage)
+    else if (content === RoutingPath1.compare_home_gas_usage)
     {
         create_compare_home_gas_usage_scene({ scene, camera, sun, shadow_generator, ui_layer }, small_ground_size)
     }
-    else if (content === Content.sustainable_home)
+    else if (content === RoutingPath1.sustainable_home)
     {
         create_sustainable_home_scene({ scene, camera, sun, shadow_generator, ui_layer }, tiny_ground_size, url_params)
     }
-    else if (content === Content.sustainable_home_v2)
+    else if (content === RoutingPath1.sustainable_home_v2)
     {
         create_sustainable_home_scene_v2({ scene, camera, sun, shadow_generator, ui_layer }, tiny_ground_size, url_params)
     }

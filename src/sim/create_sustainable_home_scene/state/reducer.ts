@@ -2,12 +2,12 @@ import { AnyAction } from "redux"
 import { device_info_reducer } from "./device_info/reducer"
 import { routing_reducer } from "./routing/reducer"
 
-import { RootState } from "./state"
+import { SustainableHomeRootState } from "./state"
 import { user_info_reducer } from "./user_info/reducer"
 
 
 
-export const root_reducer = (state: RootState, action: AnyAction): RootState =>
+export const sustainable_home_root_reducer = (state: SustainableHomeRootState, action: AnyAction): SustainableHomeRootState =>
 {
     // const initial_state = state
 
@@ -16,8 +16,6 @@ export const root_reducer = (state: RootState, action: AnyAction): RootState =>
     state = user_info_reducer(state, action)
 
     // state = { ...state, last_action: action }
-
-    ;(window as any).debug_state = state
 
     return state
 }
