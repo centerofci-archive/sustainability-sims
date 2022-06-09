@@ -53,7 +53,7 @@ const _UIHomeSelectionMenu = (props: Props) =>
                 {
                     const is_chosen = house_name === chosen_home
 
-                    return <rectangle
+                    return <babylon-button
                         key={house_name}
                         widthInPixels={OPTION_SIZE + (is_chosen ? 8 : 0)}
                         heightInPixels={OPTION_SIZE + (is_chosen ? 8 : 0)}
@@ -65,7 +65,6 @@ const _UIHomeSelectionMenu = (props: Props) =>
                         paddingBottomInPixels={10 + (is_chosen ? -4 : 0)}
                         onPointerDownObservable={() =>
                         {
-                            console.log(house_name)
                             set_chosen_home(house_name)
                         }}
                     />
