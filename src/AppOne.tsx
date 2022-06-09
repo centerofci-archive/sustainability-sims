@@ -1,6 +1,7 @@
 // As per instructions here: https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking#almighty-inspector
 import "@babylonjs/core/Debug/debugLayer" // Augments the scene with the debug methods
 import "@babylonjs/inspector" // Injects a local ES6 version of the inspector to prevent automatically relying on the none compatible version
+import * as GUI from "@babylonjs/gui"
 
 import { Vector3, Scene as BabylonCoreScene, Color4 } from "@babylonjs/core"
 import React, { Component } from "react"
@@ -75,27 +76,12 @@ export class AppOne extends Component<{}, State>
                     useBouncingBehavior={true}
                 />
 
-                <advancedDynamicTexture
-                    name="UI"
-                    isForeground={true}
-                    width={1024}
-                    height={1024}
-                >
-                    <rectangle
-                        name="test"
-                        width={50}
-                        height={50}
-                        color="white"
-                    />
-                    {/* <UILandingScreen /> */}
-                </advancedDynamicTexture>
-
-                {/* {scene_path === RoutingPath1.sustainable_home_v2 && <Provider store={sustainable_home_store}>
+                {scene_path === RoutingPath1.sustainable_home_v2 && <Provider store={sustainable_home_store}>
                     <SustainableHomeV2 />
                     {/* <sphere name="wrap">
                         <Demo />
-                    </sphere> * /}
-                </Provider>} */}
+                    </sphere> */}
+                </Provider>}
             </Scene>
         </Engine>
     }

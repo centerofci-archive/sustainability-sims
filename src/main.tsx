@@ -13,8 +13,8 @@ import { AppTwo } from "./AppTwo"
 window.addEventListener("DOMContentLoaded", () => {
     let canvas = document.getElementById("renderCanvas") as HTMLCanvasElement
     render(
-        <AppTwo />,
-        // <AppOne />,
+        <AppOne />,
+        // <AppTwo />,
         // <SceneWithSpinningBoxes />,
         // <Provider store={get_store({ load_state_from_storage: false })}>
         // </Provider>,

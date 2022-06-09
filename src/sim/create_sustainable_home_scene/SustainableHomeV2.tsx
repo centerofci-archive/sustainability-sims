@@ -46,19 +46,11 @@ export const SustainableHomeV2 = (props: Props) =>
 
     return <>
         <Sun in_space={false} />
-        <advancedDynamicTexture
+        <adtFullscreenUi
             name="UI"
             isForeground={true}
-            width={1024}
-            height={1024}
         >
-            <rectangle
-                name="test"
-                width={50}
-                height={50}
-                color="white"
-            />
-            {/* <UILandingScreen /> */}
-        </advancedDynamicTexture>
+            <UILandingScreen />
+        </adtFullscreenUi>
     </>
 }
