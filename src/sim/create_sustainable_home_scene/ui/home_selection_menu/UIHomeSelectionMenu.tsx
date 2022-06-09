@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import { FunctionComponent } from "react"
 import { connect, ConnectedProps } from "react-redux"
+import { ACTIONS } from "../../state/actions"
 
 import { SustainableHomeRootState } from "../../state/state"
 import { CustomScrollViewer } from "../CustomScrollViewer"
@@ -15,12 +16,10 @@ const map_state = (state: SustainableHomeRootState) =>
 {
     return {
         modal_content_height_in_pixels: selector_modal_content_height(state),
-        chosen_home: "",
     }
 }
 
 const map_dispatch = {
-    // change_view: ACTIONS.routing.change_view,
 }
 const connector = connect(map_state, map_dispatch)
 type Props = ConnectedProps<typeof connector> & OwnProps
@@ -38,7 +37,7 @@ const _UIHomeSelectionMenu = (props: Props) =>
         "Flat",
     ]
 
-    const is_chosen = (house_name: string) => house_name === props.chosen_home
+    const [chosen_home, set_chosen_home] = useState("")
 
     return <Modal title="Select Your Starting Home">
         <CustomScrollViewer
@@ -50,18 +49,27 @@ const _UIHomeSelectionMenu = (props: Props) =>
             <stackPanel
                 name="homes"
             >
-                {house_names.map(house_name => <rectangle
-                    key={house_name}
-                    widthInPixels={OPTION_SIZE}
-                    heightInPixels={OPTION_SIZE}
-                    cornerRadius={12}
-                    color={is_chosen(house_name) ? "lightorange" : "lightblue"}
-                    thickness={is_chosen(house_name) ? 6 : 2}
-                    background="white"
-                    paddingTopInPixels={10}
-                    paddingBottomInPixels={10}
-                />
-                )}
+                {house_names.map(house_name =>
+                {
+                    const is_chosen = house_name === chosen_home
+
+                    return <rectangle
+                        key={house_name}
+                        widthInPixels={OPTION_SIZE + (is_chosen ? 8 : 0)}
+                        heightInPixels={OPTION_SIZE + (is_chosen ? 8 : 0)}
+                        cornerRadius={12}
+                        color={is_chosen ? "orange" : "blue"}
+                        thickness={is_chosen ? 6 : 2}
+                        background="white"
+                        paddingTopInPixels={10 + (is_chosen ? -4 : 0)}
+                        paddingBottomInPixels={10 + (is_chosen ? -4 : 0)}
+                        onPointerDownObservable={() =>
+                        {
+                            console.log(house_name)
+                            set_chosen_home(house_name)
+                        }}
+                    />
+                })}
             </stackPanel>
         </CustomScrollViewer>
     </Modal>

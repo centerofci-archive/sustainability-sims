@@ -65,22 +65,6 @@ const _SustainableHomeV2 = (props: Props) =>
         >
             {props.view === VIEWS.landing_screen && <UILandingScreen />}
             {props.view === VIEWS.home_selection_menu && <UIHomeSelectionMenu />}
-            {/* <babylon-button
-                        name="cancel-button"
-                        background="#6c757d"
-                        width="290px"
-                        height="60px"
-                        cornerRadius={10}
-                        onPointerDownObservable={() => console.log("yo")}
-                      >
-                        <textBlock
-                          name="cancel-text"
-                          text={"Cancel"}
-                          fontSize={28}
-                          fontStyle="bold"
-                          color="white"
-                        />
-                      </babylon-button> */}
 
         </adtFullscreenUi>
     </>
