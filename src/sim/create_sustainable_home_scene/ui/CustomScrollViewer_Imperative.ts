@@ -10,7 +10,7 @@ import { ContentCommonArgs } from "../../content"
 // fingers down+move gester to scroll the scrollViewer
 // On mobile, it allows the one (or two) finger(s) down+move gester to scroll the scrollViewer
 // https://forum.babylonjs.com/t/prevent-scrollviewer-onwheel-event-from-propagating-to-camera-zoom/30969/9
-export class CustomScrollViewer extends ScrollViewer
+export class CustomScrollViewer_Imperative extends ScrollViewer
 {
     wheel_precision: number
     camera: Camera

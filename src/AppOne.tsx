@@ -4,18 +4,19 @@ import "@babylonjs/inspector" // Injects a local ES6 version of the inspector to
 import * as GUI from "@babylonjs/gui"
 
 import { Vector3, Scene as BabylonCoreScene, Color4 } from "@babylonjs/core"
-import React, { Component } from "react"
+import React, { Component, FunctionComponent } from "react"
 import { Engine, Scene, useScene } from "react-babylonjs"
 import { connect, ConnectedProps, Provider } from "react-redux"
 
 import { Sun } from "./components/Sun"
 import { RoutingPath1 } from "./state/routes"
-import { CustomScene } from "./utils/CustomScene"
+import { CustomScene, mutate_scene } from "./utils/CustomScene"
 import { get_store } from "./state/store"
 import { add_toggle_show_debug } from "./utils/add_toggle_show_debug"
 import { SustainableHomeV2 } from "./sim/create_sustainable_home_scene/SustainableHomeV2"
 import { AppRootState } from "./state/state"
 import { SustainableHomeStoreType } from "./sim/create_sustainable_home_scene/state/store"
+import { SustainableHomeRootState } from "./sim/create_sustainable_home_scene/state/state"
 
 
 
@@ -61,6 +62,7 @@ export class AppOne extends Component<{}, State>
                 onSceneMount={e =>
                 {
                     add_toggle_show_debug(e.scene)
+                    mutate_scene(e.scene)
                 }}
                 // onMeshPicked={mesh => this.meshPicked(mesh)}
             >
@@ -118,17 +120,21 @@ export class AppOne extends Component<{}, State>
 
 interface OwnProps {}
 
+const map_state = (state: SustainableHomeRootState) =>
+{
+    return {}
+}
+
 const map_dispatch = {
     // change_view: ACTIONS.routing.change_view,
 }
-
-
-const connector = connect(null, map_dispatch)
+const connector = connect(map_state, map_dispatch)
 type Props = ConnectedProps<typeof connector> & OwnProps
+
 
 const _Demo = (props: Props) =>
 {
     return <sphere name="demo" diameter={3} />
 }
 
-const Demo = connector(_Demo)
+export const Demo = connector(_Demo) as FunctionComponent<OwnProps>

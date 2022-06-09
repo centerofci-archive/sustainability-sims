@@ -1,25 +1,33 @@
 import React from "react"
 
-import { create_sky } from "../../components/create_sky"
 import { Sun } from "../../components/Sun"
-import { URLParams } from "../../utils/url_params_parser"
-import { ContentCommonArgs } from "../content"
-import { ACTIONS } from "./state/actions"
-import { connect } from "./state/connected_component"
-import { get_store } from "../../state/store"
-import { setup_UI_home_selection_menu } from "./ui/home_selection_menu/setup_UI_home_selection_menu"
-import { setup_UI_landing_screen } from "./ui/landing_screen/setup_UI_landing_screen"
 import { UILandingScreen } from "./ui/landing_screen/UILandingScreen"
+import { connect, ConnectedProps } from "react-redux"
+import { SustainableHomeRootState } from "./state/state"
+import { FunctionComponent } from "react"
+import { VIEWS } from "./state/routing/state"
+import { UIHomeSelectionMenu } from "./ui/home_selection_menu/UIHomeSelectionMenu"
 
 
 
-interface Props
+interface OwnProps {}
+
+const map_state = (state: SustainableHomeRootState) =>
 {
-
+    return {
+        view: state.routing.view,
+    }
 }
 
+const map_dispatch = {
+    // change_view: ACTIONS.routing.change_view,
+}
+const connector = connect(map_state, map_dispatch)
+type Props = ConnectedProps<typeof connector> & OwnProps
 
-export const SustainableHomeV2 = (props: Props) =>
+
+
+const _SustainableHomeV2 = (props: Props) =>
 {
     // connect(setup_UI_landing_screen(args))
     // connect(setup_UI_home_selection_menu(args))
@@ -49,8 +57,33 @@ export const SustainableHomeV2 = (props: Props) =>
         <adtFullscreenUi
             name="UI"
             isForeground={true}
+            onCreated={ui_layer =>
+            {
+                // Quick hack
+                ;(window as any).ui_layer = ui_layer
+            }}
         >
-            <UILandingScreen />
+            {props.view === VIEWS.landing_screen && <UILandingScreen />}
+            {props.view === VIEWS.home_selection_menu && <UIHomeSelectionMenu />}
+            {/* <babylon-button
+                        name="cancel-button"
+                        background="#6c757d"
+                        width="290px"
+                        height="60px"
+                        cornerRadius={10}
+                        onPointerDownObservable={() => console.log("yo")}
+                      >
+                        <textBlock
+                          name="cancel-text"
+                          text={"Cancel"}
+                          fontSize={28}
+                          fontStyle="bold"
+                          color="white"
+                        />
+                      </babylon-button> */}
+
         </adtFullscreenUi>
     </>
 }
+
+export const SustainableHomeV2 = connector(_SustainableHomeV2) as FunctionComponent<OwnProps>

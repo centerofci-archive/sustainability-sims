@@ -1,8 +1,14 @@
-import { Container, Control, Rectangle, TextBlock } from "@babylonjs/gui"
-import React, { ReactElement } from "react"
+import { Control } from "@babylonjs/gui"
+import React, { FunctionComponent, ReactElement } from "react"
+import { connect, ConnectedProps } from "react-redux"
 
-import { ContentCommonArgs } from "../../../content"
-import { get_store } from "../../../../state/store"
+import { SustainableHomeRootState } from "../../state/state"
+import { selector_on_mobile } from "../../state/device_info/selectors"
+import {
+    selector_modal_height,
+    selector_modal_content_height,
+    MODAL_HEADER_HEIGHT,
+} from "./selector_modal_height"
 
 
 
@@ -12,19 +18,30 @@ interface OwnProps
     children: ReactElement
 }
 
-export function Modal (props: OwnProps)
+
+const map_state = (state: SustainableHomeRootState) =>
 {
-    // const store = get_store()
-    // const state = store.getState().sustainable_home
+    return {
+        on_mobile: selector_on_mobile(state),
+        height_in_pixels: selector_modal_height(state),
+        content_height_in_pixels: selector_modal_content_height(state),
+    }
+}
 
-    const on_mobile = false // state.device_info.screen_width < 600
+const map_dispatch = {
+    // change_view: ACTIONS.routing.change_view,
+}
+const connector = connect(map_state, map_dispatch)
+type Props = ConnectedProps<typeof connector> & OwnProps
 
-    const header_height = 50
 
+
+function _Modal (props: Props)
+{
     return <rectangle
         name="outer modal window"
-        width={on_mobile ? 0.8 : 0.6}
-        heightInPixels={on_mobile ? 500 : 350}
+        width={props.on_mobile ? 0.8 : 0.6}
+        heightInPixels={props.height_in_pixels}
         cornerRadius={20}
         color="white"
         thickness={2}
@@ -33,7 +50,7 @@ export function Modal (props: OwnProps)
         <rectangle
             name="header"
             width={1}
-            height={`${header_height}px`}
+            height={`${MODAL_HEADER_HEIGHT}px`}
             thickness={0}
             background="rgb(56,115,151)"
             verticalAlignment={Control.VERTICAL_ALIGNMENT_TOP}
@@ -41,15 +58,15 @@ export function Modal (props: OwnProps)
             <textBlock
                 name="title text"
                 text={props.title}
-                fontSize={24}
+                fontSize={48}
                 fontWeight="bold"
                 color="white"
             />
         </rectangle>
         <rectangle
             name="inner content"
-            // heightInPixels={outer_window.heightInPixels - header_height}
-            top={header_height}
+            heightInPixels={props.content_height_in_pixels}
+            top={MODAL_HEADER_HEIGHT}
             verticalAlignment={Control.VERTICAL_ALIGNMENT_TOP}
             thickness={0}
             background="rgba(0, 0, 0, 0)"
@@ -58,3 +75,5 @@ export function Modal (props: OwnProps)
         </rectangle>
     </rectangle>
 }
+
+export const Modal = connector(_Modal) as FunctionComponent<OwnProps>

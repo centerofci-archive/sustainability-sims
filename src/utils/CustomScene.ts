@@ -36,22 +36,37 @@ export class CustomScene extends Scene
     {
         super(engine, options)
 
+        // ++ silence the type errors
         this.onPointerDownObservable = new Observable()
-        this.onPointerDown = (evt, pickInfo, type) =>
-        {
-            this.onPointerDownObservable.notifyObservers({ evt, pickInfo, type })
-        }
-
         this.onPointerMoveObservable = new Observable()
-        this.onPointerMove = (evt, pickInfo, type) =>
-        {
-            this.onPointerMoveObservable.notifyObservers({ evt, pickInfo, type })
-        }
-
         this.onPointerUpObservable = new Observable()
-        this.onPointerUp = (evt, pickInfo, type) =>
-        {
-            this.onPointerUpObservable.notifyObservers({ evt, pickInfo, type })
-        }
+        // -- silence the type errors
+
+        mutate_scene(this)
+    }
+}
+
+
+
+export function mutate_scene (scene: Scene)
+{
+    const mutated_scene: CustomScene = scene as CustomScene
+
+    mutated_scene.onPointerDownObservable = new Observable()
+    mutated_scene.onPointerDown = (evt, pickInfo, type) =>
+    {
+        mutated_scene.onPointerDownObservable.notifyObservers({ evt, pickInfo, type })
+    }
+
+    mutated_scene.onPointerMoveObservable = new Observable()
+    mutated_scene.onPointerMove = (evt, pickInfo, type) =>
+    {
+        mutated_scene.onPointerMoveObservable.notifyObservers({ evt, pickInfo, type })
+    }
+
+    mutated_scene.onPointerUpObservable = new Observable()
+    mutated_scene.onPointerUp = (evt, pickInfo, type) =>
+    {
+        mutated_scene.onPointerUpObservable.notifyObservers({ evt, pickInfo, type })
     }
 }
