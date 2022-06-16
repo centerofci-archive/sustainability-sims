@@ -7,6 +7,7 @@ import { SustainableHomeRootState } from "./state/state"
 import { FunctionComponent } from "react"
 import { VIEWS } from "./state/routing/state"
 import { UIHomeSelectionMenu } from "./ui/home_selection_menu/UIHomeSelectionMenu"
+import { InternalGenerateOptionPreviewImages } from "./internal/InternalGenerateOptionPreviewImages"
 
 
 
@@ -65,6 +66,7 @@ const _SustainableHomeV2 = (props: Props) =>
         >
             {props.view === VIEWS.landing_screen && <UILandingScreen />}
             {props.view === VIEWS.home_selection_menu && <UIHomeSelectionMenu />}
+            {props.view === VIEWS.__internal_generate_option_preview_images && <InternalGenerateOptionPreviewImages />}
 
         </adtFullscreenUi>
     </>
