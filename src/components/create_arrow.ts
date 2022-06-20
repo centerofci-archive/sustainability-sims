@@ -26,7 +26,7 @@ export interface CreateArrowArgs
     hard?: boolean
 }
 
-export function create_arrow (scene: Scene, name: string, args: CreateArrowArgs)
+export function create_arrow (scene: Scene, new_mesh_name: string, args: CreateArrowArgs)
 {
     const {
         color,
@@ -44,9 +44,10 @@ export function create_arrow (scene: Scene, name: string, args: CreateArrowArgs)
     rotation = rotation ? vec3(rotation) : rotation
 
     const mesh_name = hard ? mesh_name_low_poly_arrows_1_hard : mesh_name_low_poly_arrows_1_soft
-    name = "arrow_" + (hard ? "hard_" : "soft_") + name
+    new_mesh_name = "arrow_" + (hard ? "hard_" : "soft_") + new_mesh_name
 
-    const arrow = get_mesh(scene, mesh_name, name, {
+    const arrow = get_mesh(scene, mesh_name, {
+        new_mesh_name,
         position,
         receive_shadows: true,
         shadow_generator: undefined,

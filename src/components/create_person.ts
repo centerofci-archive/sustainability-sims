@@ -20,7 +20,8 @@ export function create_person (scene: Scene, shadow_generator: ShadowGenerator, 
     const height = 1.7
 
     person_mesh_name = person_mesh_name || random_selection(person_mesh_names)
-    const person = get_mesh(scene, person_mesh_name, "person" + name, {
+    const person = get_mesh(scene, person_mesh_name, {
+        new_mesh_name: "person" + name,
         position,
         receive_shadows: true,
         shadow_generator,

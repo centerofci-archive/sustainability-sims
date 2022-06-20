@@ -1,3 +1,5 @@
+import "./utils/monkey_patch"
+
 import { Vector3, Color3, Mesh } from "@babylonjs/core"
 import React, { useRef, useState } from "react"
 
