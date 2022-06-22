@@ -5,6 +5,9 @@ import { vec3 } from "../../../utils/vector"
 
 
 
+export const HEIGHT_OF_ONE_STORY = 2.5
+export const THICKNESS_OF_ONE_WALL = 0.095
+
 interface DrawWallArgs
 {
     scene: Scene
@@ -12,6 +15,8 @@ interface DrawWallArgs
     position: Vector3
     width: number
     depth: number
+    height?: number
+    y_m: number
 }
 
 export function draw_walls (args: DrawWallArgs)
@@ -21,10 +26,15 @@ export function draw_walls (args: DrawWallArgs)
     front_wall_parent.position = args.position.clone()
     const wall = get_mesh(args.scene, "wall", {
         parent_node: front_wall_parent,
-        // Have to offset the wall by 1 in x direction due to strange rotation and scaling on import
-        // https://forum.babylonjs.com/t/setparent-null-versus-parent-null-of-model-to-remove-mirroring-inverse-scaling/31525
-        position: vec3([0, 0, 0]),
+        position: vec3([0, args.y_m, 0]),
     })
+
+    if (args.height !== undefined)
+    {
+        // Do not understand but apparently y scale is in opposite direction?!
+        wall.scaling = vec3([1, -args.height / HEIGHT_OF_ONE_STORY, 1])
+    }
+
     draw_wall(wall, args.width)
 
     const back_wall_parent = new TransformNode("back_wall_parent")

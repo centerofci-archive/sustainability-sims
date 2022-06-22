@@ -17,8 +17,8 @@ export function create_ground (scene: Scene, size: number, position?: Vector3)
     ground.position = vec3([0, -height/2, 0])
 
     const ground_container = new AbstractMesh("ground_container")
-    ground_container.position = position
     ground_container.addChild(ground)
+    ground_container.position = position
 
     const semimatt_material = new StandardMaterial("semimatt_material", scene)
     semimatt_material.specularColor = new Color3(0.05, 0.05, 0.05)
