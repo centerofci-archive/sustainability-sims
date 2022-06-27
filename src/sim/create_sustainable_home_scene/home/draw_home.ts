@@ -6,6 +6,7 @@ import { mesh_dispose } from "../../../utils/mesh_dispose"
 import { set_mesh_enabled } from "../../../utils/set_mesh_enabled"
 import { set_mesh_visiblilty } from "../../../utils/set_mesh_visiblilty"
 import { vec3 } from "../../../utils/vector"
+import { draw_floor } from "./draw_floor"
 
 import { draw_walls, HEIGHT_OF_ONE_STORY, THICKNESS_OF_ONE_WALL } from "./draw_walls"
 import { Home } from "./interfaces"
@@ -59,6 +60,18 @@ export function draw_home (args: DrawHomeArgs)
     replace_with_door(args.scene, walls.back_wall.getChildren().last())
     replace_with_window(args.scene, walls.back_wall.getChildren()[2])
     replace_with_window(args.scene, walls.back_wall.getChildren()[1])
+
+
+    // floor
+    draw_floor({
+        scene: args.scene,
+        parent_node: home,
+        position: args.position,
+        width,
+        depth,
+        y_m: HEIGHT_OF_GROUND_FLOOR_FLOOR,
+        material: "concrete",
+    })
 
 
     if (args.home.type !== "detached")
