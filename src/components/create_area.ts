@@ -23,9 +23,9 @@ export function draw_corner_wall (scene: Scene, bounding_area_apex_position: Vec
 export function calculate_corner_wall_points (bounding_area: number, bounding_area_apex_position: Vector3)
 {
     const bounding_m = bounding_area ** 0.5
-    const far_apex = bounding_area_apex_position.subtract(vec3([bounding_m, 0, bounding_m]))
-    const x_point = bounding_area_apex_position.subtract(vec3([bounding_m, 0, 0]))
-    const z_point = bounding_area_apex_position.subtract(vec3([0, 0, bounding_m]))
+    const far_apex = bounding_area_apex_position.subtract(vec3(bounding_m, 0, bounding_m))
+    const x_point = bounding_area_apex_position.subtract(vec3(bounding_m, 0, 0))
+    const z_point = bounding_area_apex_position.subtract(vec3(0, 0, bounding_m))
 
     return { far_apex, x_point, z_point }
 }
@@ -73,7 +73,7 @@ export function draw_wall (scene: Scene, { point1, point2, height, color = "red"
     const width = wall_vector.length()
     const wall = MeshBuilder.CreatePlane("wall", { width, height }, scene)
 
-    const bottom_corner = vec3([-width/2, -height/2, 0])
+    const bottom_corner = vec3(-width/2, -height/2, 0)
     wall.setPivotPoint(bottom_corner)
     wall.position = point1.subtract(bottom_corner)
 
@@ -81,7 +81,7 @@ export function draw_wall (scene: Scene, { point1, point2, height, color = "red"
     // created with a vector direction of 1, 0, 0 the calculate the required rotation
     // around the y-axis
     const angle_required = -Math.atan(wall_vector.z / wall_vector.x) + (wall_vector.x < 0 ? Math.PI : 0)
-    wall.rotation = vec3([0, angle_required, 0])
+    wall.rotation = vec3(0, angle_required, 0)
 
     wall.material = color === "red" ? red_a50 : (color === "blue" ? blue_a50 : green_a50)
 
@@ -104,7 +104,7 @@ export function draw_area_base (scene: Scene, { points, height, color = "red" }:
 
     const area_base = MeshBuilder.CreatePolygon("area_base", { shape: points }, scene, earcut)
 
-    const height_offset = vec3([0, height, 0])
+    const height_offset = vec3(0, height, 0)
     area_base.position = height_offset
 
     area_base.material = color === "red" ? red_a50 : (color === "blue" ? blue_a50 : green_a50)

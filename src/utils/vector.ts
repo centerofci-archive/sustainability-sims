@@ -2,19 +2,19 @@ import { Vector3, Vector4 } from "@babylonjs/core"
 
 
 
-export function vec3 (vec: Vector3 | [number, number, number]): Vector3
-export function vec3 (vec: Vector3 | [number, number, number] | undefined): Vector3 | undefined
-export function vec3 (vec: Vector3 | [number, number, number] | undefined): Vector3 | undefined
+export function vec3 (vec: Vector3 | number, arg2: number, arg3: number): Vector3
+export function vec3 (vec: Vector3 | number | undefined, arg2?: number, arg3?: number): Vector3 | undefined
+export function vec3 (vec: Vector3 | number | undefined, arg2?: number, arg3?: number): Vector3 | undefined
 {
-    if (!vec) return vec
+    if (vec === undefined) return vec
 
     if (is_Vector3(vec)) return vec
 
-    return new Vector3(...vec)
+    return new Vector3(vec, arg2 || 0, arg3 || 0)
 }
 
 
-function is_Vector3 (vec: Vector3 | [number, number, number]): vec is Vector3
+function is_Vector3 (vec: Vector3 | number): vec is Vector3
 {
     return !!(vec as Vector3).cross
 }

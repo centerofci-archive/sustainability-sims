@@ -27,7 +27,7 @@ export function draw_home (args: DrawHomeArgs)
     const depth = 10
     const number_of_stories = 1
 
-    const ground = create_ground(args.scene, Math.max(width, depth) + 6, vec3([(width / 2), 0, (-depth / 2)]))
+    const ground = create_ground(args.scene, Math.max(width, depth) + 6, vec3((width / 2), 0, (-depth / 2)))
 
     const home = new AbstractMesh("home")
 
@@ -66,11 +66,11 @@ export function draw_home (args: DrawHomeArgs)
         // set_mesh_visiblilty(wall, 0.3)
 
         // const wall_left = wall.clone("wall", home)!
-        // wall_left.position = args.position.subtract(vec3([-1, 0, 0]))
+        // wall_left.position = args.position.subtract(vec3(-1, 0, 0))
         // set_mesh_visiblilty(wall_left, 0.3)
 
         // const wall_above = wall.clone("wall", home)!
-        // wall_above.position = args.position.subtract(vec3([1, 0, 0]))
+        // wall_above.position = args.position.subtract(vec3(1, 0, 0))
         // set_mesh_visiblilty(wall_above, 0.3)
     }
 
@@ -103,8 +103,8 @@ function replace_with_door (scene: Scene, door_placeholder: Node | undefined)
     if (door_placeholder)
     {
         const depth_of_step = 0.5
-        ;(door_placeholder as AbstractMesh).position.addInPlace(vec3([0, -HEIGHT_OF_GROUND_FLOOR_FLOOR, depth_of_step]))
-        ;(door_placeholder as AbstractMesh).scaling = vec3([1, -HEIGHT_OF_GROUND_FLOOR_FLOOR / HEIGHT_OF_ONE_STORY, depth_of_step / THICKNESS_OF_ONE_WALL])
+        ;(door_placeholder as AbstractMesh).position.addInPlace(vec3(0, -HEIGHT_OF_GROUND_FLOOR_FLOOR, depth_of_step))
+        ;(door_placeholder as AbstractMesh).scaling = vec3(1, -HEIGHT_OF_GROUND_FLOOR_FLOOR / HEIGHT_OF_ONE_STORY, depth_of_step / THICKNESS_OF_ONE_WALL)
     }
 }
 

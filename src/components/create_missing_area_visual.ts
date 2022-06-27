@@ -94,9 +94,9 @@ function create_missing_area_visual_meshes (scene: Scene, bounding_area_apex_pos
 
 function calculate_far_wall_points (bounding_area_apex_position: Vector3, required_m: number)
 {
-    const far_far_apex = bounding_area_apex_position.subtract(vec3([required_m, 0, required_m]))
-    const x_far_point = bounding_area_apex_position.subtract(vec3([required_m, 0, 0]))
-    const z_far_point = bounding_area_apex_position.subtract(vec3([0, 0, required_m]))
+    const far_far_apex = bounding_area_apex_position.subtract(vec3(required_m, 0, required_m))
+    const x_far_point = bounding_area_apex_position.subtract(vec3(required_m, 0, 0))
+    const z_far_point = bounding_area_apex_position.subtract(vec3(0, 0, required_m))
 
     return { x_far_point, far_far_apex, z_far_point }
 }

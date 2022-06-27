@@ -62,7 +62,7 @@ const _InternalGenerateOptionPreviewImages = (props: Props) =>
     // // door.setParent(null)
     // door.parent = null
     // door.rotationQuaternion = null
-    // door.rotation = vec3([0,0,0])
+    // door.rotation = vec3(0, 0, 0)
 
     // chimney.parent?.setEnabled(false) // disable the root which will hide all meshes of the imported model
 

@@ -15,7 +15,7 @@ export function create_forest (scene: Scene, shadow_generator: ShadowGenerator, 
     const growth_direction_near_to_far = true
 
 
-    const tree = create_tree(scene, shadow_generator, vec3([0,0,0]), `thin_tree`)
+    const tree = create_tree(scene, shadow_generator, vec3(0, 0, 0), `thin_tree`)
     const leaves = tree.node.getChildMeshes()[0] as Mesh
     const trunk = tree.node.getChildMeshes()[1] as Mesh
     tree_nodes.push(leaves, trunk)

@@ -133,7 +133,7 @@ export const create_sustainable_home_scene = ({ scene, camera, shadow_generator}
 
 
 
-    const ground_position = vec3([ground_size / 2, -0.5, ground_size / 2])
+    const ground_position = vec3(ground_size / 2, -0.5, ground_size / 2)
     const { ground, resize_ground } = create_ground(scene, ground_size, ground_position)
 
 
