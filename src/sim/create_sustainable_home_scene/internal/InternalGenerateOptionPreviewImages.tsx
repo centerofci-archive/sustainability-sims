@@ -73,7 +73,7 @@ const _InternalGenerateOptionPreviewImages = (props: Props) =>
 
     const home_type_templates: Shape[] = [
         // { name: "Detached", mesh: draw_home({ scene, position: Vector3.Zero(), home: { type: "detached", footprint_m2: 80 } }) },
-        { name: "Flat", mesh: draw_home({ scene, position: Vector3.Zero(), home: { type: "flat", footprint_m2: 80 } }) },
+        { name: "Flat", mesh: draw_home({ scene, position: vec3(-2.5, -2, 2.5), home: { type: "flat", footprint_m2: 80 } }) },
     ]
 
 

@@ -1,4 +1,4 @@
-import { Scene, Node, Vector3, ShadowGenerator, MeshBuilder } from "@babylonjs/core"
+import { Scene, Node, Vector3, ShadowGenerator, MeshBuilder, AbstractMesh } from "@babylonjs/core"
 import { set_mesh_enabled } from "./set_mesh_enabled"
 import { set_mesh_visiblilty } from "./set_mesh_visiblilty"
 
@@ -17,12 +17,15 @@ interface GetMeshOptions
 
 export function get_mesh (scene: Scene, mesh_name: string, options: GetMeshOptions = {})
 {
-    const mesh = scene.getMeshByName(mesh_name)?.clone(options.new_mesh_name || mesh_name, null)!
+    // Have to use `as (AbstractMesh | undefined)` because type of Node incorrectly
+    // does not have a clone function
+    let mesh = scene.getNodeByName(mesh_name) as (AbstractMesh | undefined)
     if (!mesh)
     {
         console.error(`Missing mesh: ${mesh_name}`)
         return MeshBuilder.CreateBox("missing " + mesh_name, {}, scene)
     }
+    mesh = mesh.clone(options.new_mesh_name || mesh_name, null)!
     mesh.setParent(null) // Is required to clear the rotation applied to the meshes... or something
     mesh.setParent(options.parent_node || null)
 
