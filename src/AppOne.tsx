@@ -17,6 +17,7 @@ import { SustainableHomeV2 } from "./sim/create_sustainable_home_scene/Sustainab
 import { AppRootState } from "./state/state"
 import { SustainableHomeStoreType } from "./sim/create_sustainable_home_scene/state/store"
 import { SustainableHomeRootState } from "./sim/create_sustainable_home_scene/state/state"
+import { vec3 } from "./utils/vector"
 
 
 
@@ -71,7 +72,7 @@ export class AppOne extends Component<{}, State>
                     alpha={Math.PI / 3}
                     beta={Math.PI / 3}
                     radius={30}
-                    target={Vector3.Zero()}
+                    target={vec3(0, 2, 0)}
                     wheelPrecision={30}
                     // minZ={0.001}
                     lowerRadiusLimit={3}

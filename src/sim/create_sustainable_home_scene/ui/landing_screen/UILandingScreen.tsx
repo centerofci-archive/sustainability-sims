@@ -6,10 +6,13 @@ import { ACTIONS } from "../../state/actions"
 import { SustainableHomeRootState } from "../../state/state"
 import { Modal } from "../modal/Modal"
 import { selector_modal_content_height } from "../modal/selector_modal_height"
+import { AdvancedDynamicTexture } from "@babylonjs/gui"
 
 
 
-interface OwnProps {}
+interface OwnProps {
+    ui_layer: AdvancedDynamicTexture | undefined
+}
 
 const map_state = (state: SustainableHomeRootState) =>
 {

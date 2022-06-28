@@ -58,6 +58,8 @@ export function draw_roof_walls (args: DrawRoofWallsArgs)
     {
         roof_wall_parent.rotation = vec3(0, args.rotation, 0)
     }
+
+    return roof_wall_parent
 }
 
 
@@ -92,4 +94,6 @@ export function draw_roof_ridge_wall (args: DrawRoofRidgeWallsArgs)
     })
     lower_wall.rotation = vec3(Math.PI, -Math.PI/2, 0)
     lower_wall.scaling = vec3(1, -(y_offset / HEIGHT_OF_ONE_STORY), 1)
+
+    return roof_ridge_wall_parent
 }

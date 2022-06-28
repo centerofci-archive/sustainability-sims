@@ -191,7 +191,7 @@ export function draw_home (args: DrawHomeArgs)
     const slope1_depth = Math.floor(depth / 2)
     const slope2_depth = Math.floor((depth - 1) / 2)
 
-    draw_roof({
+    const main_roof_1 = draw_roof({
         scene: args.scene,
         parent_node: home,
         position: args.position.add(vec3(0, height_of_1st_floor_above_ground, 0)),
@@ -200,7 +200,7 @@ export function draw_home (args: DrawHomeArgs)
         walls: "both"
     })
 
-    draw_roof({
+    const main_roof_2 = draw_roof({
         scene: args.scene,
         parent_node: home,
         position: args.position.add(vec3(slope1_width, height_of_1st_floor_above_ground, -depth)),
@@ -210,7 +210,7 @@ export function draw_home (args: DrawHomeArgs)
         walls: "left"
     })
 
-    draw_roof_ridge({
+    const main_roof_ridge = draw_roof_ridge({
         scene: args.scene,
         parent_node: home,
         position: args.position.add(vec3(0, height_of_1st_floor_above_ground, -slope1_depth)),
@@ -250,6 +250,23 @@ export function draw_home (args: DrawHomeArgs)
     })
 
 
+    ;(window as any).hide_wall = () =>
+    {
+        let vis = 1
+        let timer_id = -1
+        timer_id = setInterval(() =>
+        {
+            vis -= 0.05
+            set_mesh_visiblilty(foundation_walls.side_right_wall, vis)
+            set_mesh_visiblilty(walls.side_right_wall, vis)
+            set_mesh_visiblilty(upper_walls.side_right_wall, vis)
+            set_mesh_visiblilty(main_roof_1.walls_right, vis)
+            set_mesh_visiblilty(main_roof_2.walls_left, vis)
+            set_mesh_visiblilty(main_roof_ridge.wall_right, vis)
+
+            if (vis <= 0) clearTimeout(timer_id)
+        }, 30)
+    }
 
 
 

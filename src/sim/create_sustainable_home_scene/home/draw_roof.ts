@@ -44,12 +44,14 @@ export function draw_roof (args: DrawRoofArgs)
 
     roof_slope.dispose()
 
+
     const { walls = "both" } = args
 
+    let walls_right: TransformNode | undefined
     // roof walls on right
     if (walls === "both" || walls === "right")
     {
-        draw_roof_walls({
+        walls_right = draw_roof_walls({
             scene: args.scene,
             parent_node: roof_parent,
             position: Vector3.Zero(),
@@ -58,10 +60,12 @@ export function draw_roof (args: DrawRoofArgs)
         })
     }
 
+
+    let walls_left: TransformNode | undefined
     // roof walls on left
     if (walls === "both" || walls === "left")
     {
-        draw_roof_walls({
+        walls_left = draw_roof_walls({
             scene: args.scene,
             parent_node: roof_parent,
             position: vec3(args.width, 0, 0),
@@ -70,7 +74,12 @@ export function draw_roof (args: DrawRoofArgs)
         })
     }
 
-    return roof_parent
+
+    return {
+        roof_parent,
+        walls_right,
+        walls_left,
+    }
 }
 
 
@@ -106,7 +115,7 @@ export function draw_roof_ridge (args: DrawRoofRidgeArgs)
 
 
     // roof walls on right
-    draw_roof_ridge_wall({
+    const wall_right = draw_roof_ridge_wall({
         scene: args.scene,
         parent_node: roof_ridge_parent,
         position: Vector3.Zero(),
@@ -115,7 +124,7 @@ export function draw_roof_ridge (args: DrawRoofRidgeArgs)
     })
 
     // roof walls on left
-    draw_roof_ridge_wall({
+    const wall_left = draw_roof_ridge_wall({
         scene: args.scene,
         parent_node: roof_ridge_parent,
         position: vec3(args.width, 0, 0),
@@ -124,5 +133,9 @@ export function draw_roof_ridge (args: DrawRoofRidgeArgs)
     })
 
 
-    return roof_ridge_parent
+    return {
+        roof_ridge_parent,
+        wall_right,
+        wall_left,
+    }
 }

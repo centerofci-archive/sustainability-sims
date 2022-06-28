@@ -6,7 +6,7 @@ import { CustomScene } from "../../../utils/CustomScene"
 
 
 
-type Props = FiberScrollViewerProps & FiberScrollViewerPropsCtor & BabylonNode<ScrollViewer>
+type Props = { ui_layer: AdvancedDynamicTexture } & FiberScrollViewerProps & FiberScrollViewerPropsCtor & BabylonNode<ScrollViewer>
 
 
 // On desktop, prevents the camera zoom from firing when user scrolls the scrollviewer
@@ -32,9 +32,7 @@ export const CustomScrollViewer = (props: Props) =>
     const allow_pointer_events_be_captured_by_scroll_viewer = useRef(false)
     useEffect(() =>
     {
-        // We have to move this into a useEffect to allow for the parent component with the UI layer
-        // to render first
-        ;((window as any).ui_layer as AdvancedDynamicTexture).onControlPickedObservable.add(e => {
+        props.ui_layer.onControlPickedObservable.add(e => {
             if (e.name === "root")
             {
                 // picked non-UI part of scene

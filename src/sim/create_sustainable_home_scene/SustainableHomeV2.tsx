@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 
 import { Sun } from "../../components/Sun"
 import { UILandingScreen } from "./ui/landing_screen/UILandingScreen"
@@ -8,6 +8,7 @@ import { FunctionComponent } from "react"
 import { VIEWS } from "./state/routing/state"
 import { UIHomeSelectionMenu } from "./ui/home_selection_menu/UIHomeSelectionMenu"
 import { InternalGenerateOptionPreviewImages } from "./internal/InternalGenerateOptionPreviewImages"
+import { AdvancedDynamicTexture } from "@babylonjs/gui"
 
 
 
@@ -30,6 +31,8 @@ type Props = ConnectedProps<typeof connector> & OwnProps
 
 const _SustainableHomeV2 = (props: Props) =>
 {
+    const [ui_layer, set_ui_layer] = useState<AdvancedDynamicTexture | undefined>(undefined)
+
     // connect(setup_UI_landing_screen(args))
     // connect(setup_UI_home_selection_menu(args))
 
@@ -58,15 +61,11 @@ const _SustainableHomeV2 = (props: Props) =>
         <adtFullscreenUi
             name="UI"
             isForeground={true}
-            onCreated={ui_layer =>
-            {
-                // Quick hack
-                ;(window as any).ui_layer = ui_layer
-            }}
+            onCreated={ui_layer => set_ui_layer(ui_layer)}
         >
-            {props.view === VIEWS.landing_screen && <UILandingScreen />}
-            {props.view === VIEWS.home_selection_menu && <UIHomeSelectionMenu />}
-            {props.view === VIEWS.__internal_generate_option_preview_images && <InternalGenerateOptionPreviewImages />}
+            {props.view === VIEWS.landing_screen && <UILandingScreen ui_layer={ui_layer} />}
+            {props.view === VIEWS.home_selection_menu && <UIHomeSelectionMenu ui_layer={ui_layer} />}
+            {props.view === VIEWS.__internal_generate_option_preview_images && <InternalGenerateOptionPreviewImages ui_layer={ui_layer} />}
 
         </adtFullscreenUi>
     </>
