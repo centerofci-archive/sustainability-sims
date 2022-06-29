@@ -7,7 +7,7 @@ import { connect, ConnectedProps } from "react-redux"
 import { get_mesh } from "../../../utils/get_mesh"
 import { vec3 } from "../../../utils/vector"
 
-import { draw_home } from "../home/draw_home"
+import { draw_home } from "../home/draw_home/draw_home"
 import { SustainableHomeRootState } from "../state/state"
 import { OPTION_IMAGE_WIDTH, OPTION_IMAGE_HEIGHT } from "../ui/home_selection_menu/UIHomeSelectionMenu"
 
