@@ -105,6 +105,7 @@ export function draw_roof_ridge (args: DrawRoofRidgeArgs)
     {
         const roof_ridge_1_part = roof_ridge_1.clone(`roof_ridge_1_${x}`, roof_ridge_parent)!
         roof_ridge_1_part.position = vec3(x, args.y + ROOF_RIDGE_1_Y_OFFSET, 0)
+        roof_ridge_1_part.scaling = vec3(1.01, -1.01, 1.01)
     }
 
 
