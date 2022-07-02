@@ -51,11 +51,13 @@ export function draw_home (args: DrawHomeArgs)
 
 
     const ground_position = args.position.add(vec3((width / 2), 0, (-depth / 2)))
-    const ground = create_ground(args.scene, Math.max(width, depth) + 6, ground_position)
+    const ground_size = Math.max(width, depth, home_render_result.ground_width || 0) + 6
+    const ground = create_ground(args.scene, ground_size, ground_position)
 
 
     ;(window as any).hide_wall = () =>
     {
+        const target_vis = 0 //0.05
         let vis = 1
         let timer_id = -1
         timer_id = setInterval(() =>
@@ -67,7 +69,7 @@ export function draw_home (args: DrawHomeArgs)
                 set_mesh_visiblilty(value, vis)
             })
 
-            if (vis <= 0) clearTimeout(timer_id)
+            if (vis <= target_vis) clearTimeout(timer_id)
         }, 30)
     }
 

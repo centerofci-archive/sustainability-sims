@@ -24,12 +24,13 @@ export function draw_roof_walls (args: DrawRoofWallsArgs)
     roof_wall_parent.position = args.position.clone()
 
     const x_offset = args.side === "left" ? 0 : THICKNESS_OF_ONE_WALL
+    const rotation = vec3(Math.PI, (args.rotation || 0) - Math.PI, 0)
 
     const roof_slope_wall = get_mesh(args.scene, "roof_slope_wall", {
         parent_node: roof_wall_parent,
         position: vec3(x_offset, 0, 0),
     })
-    roof_slope_wall.rotation = vec3(Math.PI, -Math.PI/2, 0)
+    roof_slope_wall.rotation = rotation
 
 
     if (args.length > 1)
@@ -40,9 +41,9 @@ export function draw_roof_walls (args: DrawRoofWallsArgs)
 
         for (let z = 1; z < args.length; ++z)
         {
-            const wall_part = roof_slope_wall.clone(`roof_slope_wall_${z}`, roof_wall_parent)!
+            const roof_slope_wall_part = roof_slope_wall.clone(`roof_slope_wall_${z}`, roof_wall_parent)!
             const y = z * ROOF_Y_INCREASE
-            wall_part.position = vec3(x_offset, y, -z)
+            roof_slope_wall_part.position = vec3(x_offset, y, -z)
 
             const lower_wall_part = lower_wall_to_clone.clone(`roof_slope_lower_wall_${z}`, roof_wall_parent)!
             lower_wall_part.position = vec3(x_offset, 0, -z)
@@ -86,7 +87,7 @@ export function draw_roof_ridge_wall (args: DrawRoofRidgeWallsArgs)
         parent_node: roof_ridge_wall_parent,
         position: vec3(x_offset, y_offset, 0),
     })
-    roof_ridge_1_wall.rotation = vec3(Math.PI, -Math.PI/2, 0)
+    // roof_ridge_1_wall.rotation = vec3(Math.PI, -Math.PI/2, 0)
 
     const lower_wall = get_mesh(args.scene, "wall", {
         parent_node: roof_ridge_wall_parent,

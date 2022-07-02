@@ -44,13 +44,9 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
 
 
     replace_with_door(args.scene, get_children(walls.front_wall).last())
-    // ;(get_children(walls.front_wall)[3]! as AbstractMesh).scaling = vec3(1.2, -1, 1)
-    // ;(get_children(walls.front_wall)[3]! as AbstractMesh).position.addInPlace(vec3(-0.2, 0, 0))
-    const w1 = replace_with_window(args.scene, get_children(walls.front_wall)[2], "tall")
-    const w2 = replace_with_window(args.scene, get_children(walls.front_wall)[1], "tall")
-    const w3 = replace_with_window(args.scene, get_children(walls.front_wall)[0], "tall")
-    // w1.position.addInPlace(vec3(-0.2, 0, 0))
-    // w2.position.addInPlace(vec3(-0.1, 0, 0))
+    replace_with_window(args.scene, get_children(walls.front_wall)[2], "tall")
+    replace_with_window(args.scene, get_children(walls.front_wall)[1], "tall")
+    replace_with_window(args.scene, get_children(walls.front_wall)[0], "tall")
 
     replace_with_door(args.scene, get_children(walls.back_wall).last())
     replace_with_window(args.scene, get_children(walls.back_wall)[2])
@@ -143,7 +139,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
         depth: 1,
     })
 
-    // 1st floor
+    // attic
 
     const height_of_1st_floor_above_ground = HEIGHT_OF_GROUND_FLOOR_FLOOR + HEIGHT_OF_ONE_STORY * 2
 

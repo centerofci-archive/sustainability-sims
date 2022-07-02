@@ -19,6 +19,7 @@ export interface DrawSpecificHomeReturn
 {
     home: AbstractMesh
     cutthrough_components: (TransformNode | undefined)[]
+    ground_width?: number
 }
 
 

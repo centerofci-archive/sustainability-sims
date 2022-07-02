@@ -13,7 +13,7 @@ interface DrawStairsArgs
 export function draw_stairs (args: DrawStairsArgs)
 {
     const stairs = get_mesh(args.scene, "stairs_21_25", {
-        parent_node: null,
+        parent_node: args.parent_node,
         position: args.position,
     })
 }

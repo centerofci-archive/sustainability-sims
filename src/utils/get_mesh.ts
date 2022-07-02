@@ -43,6 +43,7 @@ export function get_mesh (scene: Scene, mesh_name: string, options: GetMeshOptio
         if (shadow_generator) shadow_generator.addShadowCaster(mesh)
     })
 
+    // clone_mesh_material(mesh)
 
     set_mesh_enabled(mesh, enabled)
     if (visibility !== undefined) set_mesh_visiblilty(mesh, visibility)
@@ -81,4 +82,15 @@ export function get_transform_node (scene: Scene, node_name: string, new_node_na
 
 
     return node
+}
+
+
+
+function clone_mesh_material (mesh: AbstractMesh)
+{
+    if (mesh.material)
+    {
+        mesh.material = mesh.material.clone(mesh.material.name)
+    }
+    mesh.getChildren().forEach(mesh => clone_mesh_material(mesh as AbstractMesh))
 }
