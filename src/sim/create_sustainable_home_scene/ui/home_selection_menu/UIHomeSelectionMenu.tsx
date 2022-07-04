@@ -71,21 +71,25 @@ const _UIHomeSelectionMenu = (props: Props) =>
         >
             <stackPanel
                 name="homes"
+                isVertical={false}
             >
-                {houses.map(({ name: house_name, image_data }) =>
+                {houses.map(({ name: house_name, image_data }, index) =>
                 {
+                    const padding = 30
                     const is_chosen = house_name === chosen_home
+                    const is_first = index === 0 ? 1 : 0
+                    const is_last = index === (houses.length - 1) ? 1 : 0
 
                     return <babylon-button
                         key={house_name}
-                        widthInPixels={OPTION_IMAGE_WIDTH + (is_chosen ? 8 : 0)}
-                        heightInPixels={OPTION_HEIGHT + (is_chosen ? 8 : 0)}
+                        widthInPixels={OPTION_IMAGE_WIDTH + (padding * (2 + is_first + is_last))}
+                        heightInPixels={OPTION_HEIGHT}
                         cornerRadius={12}
                         color={is_chosen ? "orange" : "blue"}
                         thickness={is_chosen ? 6 : 2}
                         background="white"
-                        paddingTopInPixels={10 + (is_chosen ? -4 : 0)}
-                        paddingBottomInPixels={10 + (is_chosen ? -4 : 0)}
+                        paddingLeftInPixels={padding * (1 + is_first)}
+                        paddingRightInPixels={padding * (1 + is_last)}
                         onPointerDownObservable={() =>
                         {
                             set_chosen_home(house_name)
