@@ -49,16 +49,14 @@ export const CustomScrollViewer = (props: Props) =>
 
     useEffect(() =>
     {
-        let x_down: number | undefined = undefined
-        let y_down: number | undefined = undefined
+        let pointer_down_at: { x: number, y: number } | { x?: undefined, y?: undefined } = {}
         let horizontal_scroll_start: number | undefined = undefined
         let vertical_scroll_start: number | undefined = undefined
         scene.onPointerDownObservable.add(({ evt, pickInfo }) =>
         {
             if (!allow_pointer_events_be_captured_by_scroll_viewer) return
             camera.detachControl()
-            x_down = evt.offsetX
-            y_down = evt.offsetY
+            pointer_down_at = { x: evt.offsetX, y: evt.offsetY }
             horizontal_scroll_start = scroll_viewer_ref.current.horizontalBar.value
             vertical_scroll_start = scroll_viewer_ref.current.verticalBar.value
         })
@@ -67,11 +65,25 @@ export const CustomScrollViewer = (props: Props) =>
         scene.onPointerMoveObservable.add(({ evt }) =>
         {
             if (!allow_pointer_events_be_captured_by_scroll_viewer) return
-            if (x_down === undefined || y_down === undefined) return
+            if (pointer_down_at.x === undefined)
+            {
+                // // On Mac (desktop) on Firefox, and Chrome, when a single pointer down is moved over the
+                // // scrollViewer area, the evt.pointerType is "mouse".
+                // // When two fingers down and dragged over the area, the evt.pointerType is undefined
+                // // This will be broken on Safari
+                // This approach does not work as the pointerUp is never triggered
+                // and pointer_down_at is never reset to `{}`
+                // if (evt.pointerType === undefined)
+                // {
+                //     pointer_down_at = { x: evt.offsetX, y: evt.offsetY }
+                // }
+                // else return
+                return
+            }
             if (horizontal_scroll_start === undefined || vertical_scroll_start === undefined) return
 
-            const x_diff = evt.offsetX - x_down
-            const y_diff = evt.offsetY - y_down
+            const x_diff = evt.offsetX - pointer_down_at.x
+            const y_diff = evt.offsetY - pointer_down_at.y
 
             const x_ratio = x_diff / scroll_viewer_ref.current.widthInPixels
             const y_ratio = y_diff / scroll_viewer_ref.current.heightInPixels
@@ -84,8 +96,7 @@ export const CustomScrollViewer = (props: Props) =>
         scene.onPointerUpObservable.add(() =>
         {
             if (!allow_pointer_events_be_captured_by_scroll_viewer) return
-            x_down = undefined
-            y_down = undefined
+            pointer_down_at = {}
             camera.attachControl()
         })
     }, [])
