@@ -20,10 +20,12 @@ const map_state = (state: SustainableHomeRootState) =>
 {
     return {
         modal_content_height_in_pixels: selector_modal_content_height(state),
+        chosen_home: state.home.selected_default_home_type,
     }
 }
 
 const map_dispatch = {
+    select_default_home_type: ACTIONS.home.select_default_home_type,
 }
 const connector = connect(map_state, map_dispatch)
 type Props = ConnectedProps<typeof connector> & OwnProps
@@ -43,26 +45,26 @@ const flat_summary_image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASEAAA
 const detached_summary_image = "data:image/png;base64,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"
 const bungalow_summary_image = detached_summary_image
 
-const houses = [
+const houses: { home_type: string, image_data: string }[] = [
     {
-        "name": "Terrace",
-        "image_data": terrace_summary_image,
+        home_type: "Terrace",
+        image_data: terrace_summary_image,
     },
     {
-        "name": "Semi-Detached",
-        "image_data": semi_detached_summary_image,
+        home_type: "Semi-Detached",
+        image_data: semi_detached_summary_image,
     },
     {
-        "name": "Flat",
-        "image_data": flat_summary_image,
+        home_type: "Flat",
+        image_data: flat_summary_image,
     },
     {
-        "name": "Detached",
-        "image_data": detached_summary_image,
+        home_type: "Detached",
+        image_data: detached_summary_image,
     },
     {
-        "name": "Bungalow",
-        "image_data": bungalow_summary_image,
+        home_type: "Bungalow",
+        image_data: bungalow_summary_image,
     },
 ]
 
@@ -72,7 +74,7 @@ const _UIHomeSelectionMenu = (props: Props) =>
 {
     if (!props.ui_layer) return null
 
-    const [chosen_home, set_chosen_home] = useState("")
+    // const [chosen_home, set_chosen_home] = useState("")
     const padding = 30
 
     return <Modal title="Select Your Starting Home">
@@ -87,17 +89,17 @@ const _UIHomeSelectionMenu = (props: Props) =>
                 name="homes"
                 isVertical={true}
             >
-                {houses.map(({ name: house_name, image_data }, index) =>
+                {houses.map(({ home_type, image_data }, index) =>
                 {
-                    const is_chosen = house_name === chosen_home
+                    const is_chosen = home_type === props.chosen_home
                     const is_first = index === 0 ? 1 : 0
                     const is_last = index === (houses.length - 1) ? 1 : 0
                     // const image_height = OPTION_HEIGHT + padding
                     const text_height = 80
 
                     return <babylon-button
-                        key={house_name}
-                        name={house_name}
+                        key={home_type}
+                        name={home_type}
                         widthInPixels={OPTION_IMAGE_WIDTH + padding * 2}
                         heightInPixels={OPTION_IMAGE_HEIGHT + (padding * 2) + text_height}
                         cornerRadius={12}
@@ -107,7 +109,7 @@ const _UIHomeSelectionMenu = (props: Props) =>
                         paddingTopInPixels={padding}
                         paddingBottomInPixels={padding}
                         verticalAlignment={GUI.Control.VERTICAL_ALIGNMENT_TOP}
-                        onPointerDownObservable={() => set_chosen_home(house_name)}
+                        onPointerDownObservable={() => props.select_default_home_type({ home_type })}
                     >
                         <stackPanel
                             name="homes"
@@ -130,23 +132,10 @@ const _UIHomeSelectionMenu = (props: Props) =>
                                     paddingBottomInPixels={padding}
                                 />
                             </rectangle>
-                            {/* <babylon-button
-                                widthInPixels={OPTION_IMAGE_WIDTH}
-                                heightInPixels={OPTION_IMAGE_HEIGHT}
-                                cornerRadius={12}
-                                color={is_chosen ? "orange" : "blue"}
-                                thickness={is_chosen ? 6 : 2}
-                                background="white"
-                                paddingTopInPixels={padding}
-                                paddingBottomInPixels={padding}
-
-                            > */}
-
-                            {/* </babylon-button> */}
 
                             <textBlock
                                 name="selection-made"
-                                text={house_name}
+                                text={home_type}
                                 color="black"
                                 fontSize={30}
                                 fontStyle="bold"

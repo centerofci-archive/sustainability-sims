@@ -1,5 +1,6 @@
 import { AnyAction } from "redux"
 import { device_info_reducer } from "./device_info/reducer"
+import { home_reducer } from "./home/reducer"
 import { routing_reducer } from "./routing/reducer"
 
 import { SustainableHomeRootState } from "./state"
@@ -12,6 +13,7 @@ export const sustainable_home_root_reducer = (state: SustainableHomeRootState, a
     // const initial_state = state
 
     state = device_info_reducer(state, action)
+    state = home_reducer(state, action)
     state = routing_reducer(state, action)
     state = user_info_reducer(state, action)
 
