@@ -9,7 +9,7 @@ import { vec3 } from "../../../utils/vector"
 
 import { draw_home } from "../home/draw_home/draw_home"
 import { SustainableHomeRootState } from "../state/state"
-import { OPTION_IMAGE_WIDTH, OPTION_IMAGE_HEIGHT } from "../ui/home_selection_menu/UIHomeSelectionMenu"
+import { OPTION_IMAGE_WIDTH, OPTION_IMAGE_HEIGHT } from "../ui/home_selection_menu/constants"
 
 
 

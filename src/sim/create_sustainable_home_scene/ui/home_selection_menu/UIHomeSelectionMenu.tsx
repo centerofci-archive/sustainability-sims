@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { FunctionComponent } from "react"
 import { connect, ConnectedProps } from "react-redux"
-import * as GUI from "@babylonjs/gui"
 import { AdvancedDynamicTexture } from "@babylonjs/gui"
 
 import { ACTIONS } from "../../state/actions"
@@ -9,6 +8,7 @@ import { SustainableHomeRootState } from "../../state/state"
 import { CustomScrollViewer } from "../CustomScrollViewer"
 import { Modal } from "../modal/Modal"
 import { selector_modal_content_height } from "../modal/selector_modal_height"
+import { HomeTitleAndImageButton } from "./HomeTitleAndImageButton"
 
 
 
@@ -30,9 +30,6 @@ const map_dispatch = {
 const connector = connect(map_state, map_dispatch)
 type Props = ConnectedProps<typeof connector> & OwnProps
 
-
-export const OPTION_IMAGE_WIDTH = 400
-export const OPTION_IMAGE_HEIGHT = 400
 
 
 // Images will be generated from copying console output when view === __internal_generate_option_preview_images
@@ -75,7 +72,6 @@ const _UIHomeSelectionMenu = (props: Props) =>
     if (!props.ui_layer) return null
 
     // const [chosen_home, set_chosen_home] = useState("")
-    const padding = 30
 
     return <Modal title="Select Your Starting Home">
         <CustomScrollViewer
@@ -91,65 +87,18 @@ const _UIHomeSelectionMenu = (props: Props) =>
             >
                 {houses.map(({ home_type, image_data }, index) =>
                 {
-                    const is_chosen = home_type === props.chosen_home
+
                     const is_first = index === 0 ? 1 : 0
                     const is_last = index === (houses.length - 1) ? 1 : 0
                     // const image_height = OPTION_HEIGHT + padding
-                    const text_height = 80
 
-                    return <babylon-button
-                        key={home_type}
-                        name={home_type}
-                        widthInPixels={OPTION_IMAGE_WIDTH + padding * 2}
-                        heightInPixels={OPTION_IMAGE_HEIGHT + (padding * 2) + text_height}
-                        cornerRadius={12}
-                        color={is_chosen ? "orange" : "blue"}
-                        thickness={is_chosen ? 6 : 2}
-                        background={is_chosen ? "rgb(240,244,248)" : "rgb(248,248,248)" }
-                        paddingTopInPixels={padding}
-                        paddingBottomInPixels={padding}
-                        verticalAlignment={GUI.Control.VERTICAL_ALIGNMENT_TOP}
-                        onPointerDownObservable={() => props.select_default_home_type({ home_type })}
-                    >
-                        <stackPanel
-                            name="homes"
-                            isVertical={true}
-                            verticalAlignment={GUI.Control.VERTICAL_ALIGNMENT_TOP}
-                        >
-                            <rectangle
-                                width={`${OPTION_IMAGE_WIDTH}px`}
-                                height={`${OPTION_IMAGE_HEIGHT}px`}
-                                cornerRadius={12}
-                                verticalAlignment={GUI.Control.VERTICAL_ALIGNMENT_TOP}
-                                paddingTopInPixels={padding}
-                                paddingBottomInPixels={padding}
-                            >
-                                <babylon-image
-                                    url={image_data}
-                                    width={`${OPTION_IMAGE_WIDTH}px`}
-                                    height={`${OPTION_IMAGE_HEIGHT}px`}
-                                    paddingTopInPixels={padding}
-                                    paddingBottomInPixels={padding}
-                                />
-                            </rectangle>
 
-                            <textBlock
-                                name="selection-made"
-                                text={home_type}
-                                color="black"
-                                fontSize={30}
-                                fontStyle="bold"
-                                heightInPixels={text_height}
-                                textHorizontalAlignment={
-                                    GUI.Control.HORIZONTAL_ALIGNMENT_CENTER
-                                }
-                                textVerticalAlignment={
-                                    GUI.Control.VERTICAL_ALIGNMENT_TOP
-                                }
-                            />
-                        </stackPanel>
-
-                    </babylon-button>
+                    return <HomeTitleAndImageButton
+                        chosen_home={props.chosen_home}
+                        home_type={home_type}
+                        image_data={image_data}
+                        select_default_home_type={props.select_default_home_type}
+                    />
                 })}
             </stackPanel>
         </CustomScrollViewer>
