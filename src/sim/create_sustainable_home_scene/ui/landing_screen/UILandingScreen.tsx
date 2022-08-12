@@ -11,7 +11,8 @@ import { ButtonCallToAction } from "../ButtonCallToAction"
 
 
 
-interface OwnProps {
+interface OwnProps
+{
     ui_layer: AdvancedDynamicTexture | undefined
 }
 
@@ -23,7 +24,8 @@ const map_state = (state: SustainableHomeRootState) =>
 }
 
 
-const map_dispatch = {
+const map_dispatch =
+{
     change_view: ACTIONS.routing.change_view,
 }
 

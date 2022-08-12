@@ -6,6 +6,7 @@ import { TaskType, useAssetManager, useScene } from "react-babylonjs"
 import { connect, ConnectedProps } from "react-redux"
 import { get_mesh } from "../../../utils/get_mesh"
 import { vec3 } from "../../../utils/vector"
+import { load_low_poly_house_3 } from "../home/assets/load_low_poly_house_3"
 
 import { draw_home } from "../home/draw_home/draw_home"
 import { SustainableHomeRootState } from "../state/state"
@@ -36,28 +37,11 @@ const _InternalGenerateOptionPreviewImages = (props: Props) =>
     const home_type_templates = useRef<Shape[]>([])
     const [show_view, set_show_view] = useState<"inside" | "outside">("outside")
 
-    // useEffect(() =>
-    // {
-        try {
-            const asset_manager = useAssetManager([
-                {
-                    taskType: TaskType.Mesh,
-                    name: "somename",
-                    rootUrl: "/public/models/low_poly_house/",
-                    sceneFilename: "low_poly_house_3.glb",
-                    onSuccess: () => set_ready(true),
-                },
-            ])
-        } catch (e)
-        {
-            // silence the two errors
-        }
-    // }, [])
-
-
+    useEffect(() => load_low_poly_house_3(() => set_ready(true)), [])
     const chimney = scene.getMeshByName("chimney")
-
     if (!chimney) return null
+    chimney.parent?.setEnabled(false) // disable the root which will hide all meshes of the imported model
+
     if (!props.ui_layer) return null
     if (!ready) return null
 
@@ -68,12 +52,10 @@ const _InternalGenerateOptionPreviewImages = (props: Props) =>
     // door.rotationQuaternion = null
     // door.rotation = vec3(0, 0, 0)
 
-    // chimney.parent?.setEnabled(false) // disable the root which will hide all meshes of the imported model
-
     // return <></>
 
 
-    chimney.parent?.setEnabled(false) // disable the root which will hide all meshes of the imported model
+
 
     if (home_type_templates.current.length === 0)
     {

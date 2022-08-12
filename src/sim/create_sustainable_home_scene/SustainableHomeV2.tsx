@@ -9,6 +9,7 @@ import { VIEWS } from "./state/routing/state"
 import { UIHomeSelectionMenu } from "./ui/home_selection_menu/UIHomeSelectionMenu"
 import { InternalGenerateOptionPreviewImages } from "./internal/InternalGenerateOptionPreviewImages"
 import { AdvancedDynamicTexture } from "@babylonjs/gui"
+import { HomeHomePage } from "./home/HomeHomePage"
 
 
 
@@ -65,7 +66,7 @@ const _SustainableHomeV2 = (props: Props) =>
         >
             {props.view === VIEWS.landing_screen && <UILandingScreen ui_layer={ui_layer} />}
             {props.view === VIEWS.home_selection_menu && <UIHomeSelectionMenu ui_layer={ui_layer} />}
-            {/* {props.view === VIEWS.home_home_page && <UIHomeHomePage ui_layer={ui_layer} />} */}
+            {props.view === VIEWS.home_home_page && <HomeHomePage ui_layer={ui_layer} />}
             {props.view === VIEWS.__internal_generate_option_preview_images && <InternalGenerateOptionPreviewImages ui_layer={ui_layer} />}
 
         </adtFullscreenUi>
