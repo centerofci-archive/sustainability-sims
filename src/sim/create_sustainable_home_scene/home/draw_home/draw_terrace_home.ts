@@ -1,4 +1,5 @@
 import { AbstractMesh, Color3, Material, StandardMaterial } from "@babylonjs/core"
+import { grey_out } from "../../../../3d_models/grey_out"
 
 import { vec3 } from "../../../../utils/vector"
 import { draw_chimney } from "../draw_chimney"
@@ -240,21 +241,4 @@ function draw_single_simple_terrace_home (args: DrawSpecificHomeArgs, homes_cont
             main_roof_ridge.wall_right,
         ]
     }
-}
-
-
-
-let grey_material: StandardMaterial
-function grey_out (mesh: AbstractMesh)
-{
-    if (!grey_material)
-    {
-        grey_material = new StandardMaterial("grey_material", mesh.getScene())
-        grey_material.diffuseColor = Color3.Gray()
-        grey_material.backFaceCulling = false
-        grey_material.specularColor = Color3.Gray()
-    }
-
-    mesh.material = grey_material
-    mesh.getChildMeshes().forEach(mesh => mesh.material = grey_material)
 }

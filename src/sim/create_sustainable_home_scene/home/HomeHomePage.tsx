@@ -2,6 +2,7 @@ import { Vector3 } from "@babylonjs/core"
 import { AdvancedDynamicTexture } from "@babylonjs/gui"
 import React, { useEffect, useRef, useState } from "react"
 import { useScene } from "react-babylonjs"
+
 import { load_low_poly_house_3 } from "./assets/load_low_poly_house_3"
 import { draw_home } from "./draw_home/draw_home"
 
