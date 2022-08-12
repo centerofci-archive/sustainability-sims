@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, useMemo } from "react"
 import * as GUI from "@babylonjs/gui"
 import { connect, ConnectedProps } from "react-redux"
 
@@ -7,6 +7,7 @@ import { SustainableHomeRootState } from "../../state/state"
 import { Modal } from "../modal/Modal"
 import { selector_modal_content_height } from "../modal/selector_modal_height"
 import { AdvancedDynamicTexture } from "@babylonjs/gui"
+import { ButtonCallToAction } from "../ButtonCallToAction"
 
 
 
@@ -40,6 +41,12 @@ const _UILandingScreen = (props: Props) =>
     const paddingLeftRightInPixels = 5
 
 
+    const button_start_on_pointer_down = useMemo(() => () =>
+    {
+        props.change_view({ view: "home_selection_menu" })
+    }, [])
+
+
     return <Modal title="Welcome!">
         <scrollViewer
             name="welcome screen"
@@ -63,27 +70,10 @@ const _UILandingScreen = (props: Props) =>
                     paddingBottomInPixels={5}
                 />
 
-                <babylon-button
-                    name="start"
-                    width={0.7}
-                    height="70px"
-                    color="#777"
-                    thickness={4}
-                    background="orange"
-                    cornerRadius={20}
-                    onPointerDownObservable={() =>
-                    {
-                        props.change_view({ view: "home_selection_menu" })
-                    }}
-                >
-                    <textBlock
-                        text="Start"
-                        fontStyle="bold"
-                        fontSize={50}
-                        color="white"
-                        resizeToFit={true}
-                    />
-                </babylon-button>
+                <ButtonCallToAction
+                    text="START"
+                    on_pointer_down={button_start_on_pointer_down}
+                />
 
             </stackPanel>
         </scrollViewer>

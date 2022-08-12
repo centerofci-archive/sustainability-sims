@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { FunctionComponent } from "react"
 import { connect, ConnectedProps } from "react-redux"
 import { AdvancedDynamicTexture } from "@babylonjs/gui"
@@ -9,6 +9,10 @@ import { CustomScrollViewer } from "../CustomScrollViewer"
 import { Modal } from "../modal/Modal"
 import { selector_modal_content_height } from "../modal/selector_modal_height"
 import { HomeTitleAndImageButton } from "./HomeTitleAndImageButton"
+import { HomeExtraInfo } from "./HomeExtraInfo"
+import { ChooseHomeButton } from "./ChooseHomeButton"
+import { HomeStats } from "../../home/interfaces"
+import { VIEWS } from "../../state/routing/state"
 
 
 
@@ -26,6 +30,7 @@ const map_state = (state: SustainableHomeRootState) =>
 
 const map_dispatch = {
     select_default_home_type: ACTIONS.home.select_default_home_type,
+    change_view: ACTIONS.routing.change_view,
 }
 const connector = connect(map_state, map_dispatch)
 type Props = ConnectedProps<typeof connector> & OwnProps
@@ -71,7 +76,21 @@ const _UIHomeSelectionMenu = (props: Props) =>
 {
     if (!props.ui_layer) return null
 
-    // const [chosen_home, set_chosen_home] = useState("")
+    const [current_home_type, set_current_home_type] = useState(props.chosen_home || "")
+
+
+    const choose_home_type = useMemo(() => (home_type: string) =>
+    {
+        props.select_default_home_type({ home_type })
+        props.change_view({ view: VIEWS.home_home_page })
+    }, [props.select_default_home_type, props.change_view])
+
+
+    const cancel_choosing_home_type = useMemo(() => () =>
+    {
+        set_current_home_type("")
+    }, [set_current_home_type])
+
 
     return <Modal title="Select Your Starting Home">
         <CustomScrollViewer
@@ -87,18 +106,36 @@ const _UIHomeSelectionMenu = (props: Props) =>
             >
                 {houses.map(({ home_type, image_data }, index) =>
                 {
+                    const is_chosen = home_type === current_home_type
 
                     const is_first = index === 0 ? 1 : 0
                     const is_last = index === (houses.length - 1) ? 1 : 0
                     // const image_height = OPTION_HEIGHT + padding
 
 
-                    return <HomeTitleAndImageButton
-                        chosen_home={props.chosen_home}
-                        home_type={home_type}
-                        image_data={image_data}
-                        select_default_home_type={props.select_default_home_type}
-                    />
+                    return <stackPanel
+                        name={`home-${home_type}`}
+                        key={home_type}
+                        isVertical={true}
+                    >
+                        <HomeTitleAndImageButton
+                            home_type={home_type}
+                            image_data={image_data}
+                            is_chosen={is_chosen}
+                            set_current_home_type={set_current_home_type}
+                        />
+
+                        {/* {is_chosen && <HomeExtraInfo
+                            home_stats={home_stats}
+                        />} */}
+
+                        {is_chosen && <ChooseHomeButton
+                            home_type={home_type}
+                            choose_home_type={choose_home_type}
+                            cancel_choosing_home_type={cancel_choosing_home_type}
+                        />}
+
+                    </stackPanel>
                 })}
             </stackPanel>
         </CustomScrollViewer>

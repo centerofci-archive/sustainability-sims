@@ -9,3 +9,10 @@ export interface Home
     // openings
     // heating
 }
+
+
+
+export interface HomeStats
+{
+
+}

@@ -6,10 +6,10 @@ import * as GUI from "@babylonjs/gui"
 
 interface OwnProps
 {
-    chosen_home: string
     home_type: string
     image_data: string
-    select_default_home_type: (args: { home_type: string }) => void
+    is_chosen: boolean
+    set_current_home_type: (home_type: string) => void
 }
 
 
@@ -20,13 +20,14 @@ const text_height = 80
 
 export const HomeTitleAndImageButton = (props: OwnProps) =>
 {
-    const { home_type } = props
-    const is_chosen = home_type === props.chosen_home
+    const { home_type, is_chosen } = props
 
-    const select_default_home_type = useMemo(() =>
-        () => props.select_default_home_type({ home_type }),
-        [props.select_default_home_type, home_type]
-    )
+
+    const set_current_home_type = useMemo(() => () =>
+    {
+        props.set_current_home_type(home_type)
+    }, [props.set_current_home_type, home_type])
+
 
     return <babylon-button
         name={home_type}
@@ -39,7 +40,7 @@ export const HomeTitleAndImageButton = (props: OwnProps) =>
         paddingTopInPixels={padding}
         paddingBottomInPixels={padding}
         verticalAlignment={GUI.Control.VERTICAL_ALIGNMENT_TOP}
-        onPointerDownObservable={select_default_home_type}
+        onPointerDownObservable={set_current_home_type}
     >
         <stackPanel
             name="home title and image"
@@ -64,7 +65,7 @@ export const HomeTitleAndImageButton = (props: OwnProps) =>
             </rectangle>
 
             <textBlock
-                name="selection-made"
+                name="home-title"
                 text={home_type}
                 color="black"
                 fontSize={30}

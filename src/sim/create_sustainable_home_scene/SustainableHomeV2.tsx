@@ -65,6 +65,7 @@ const _SustainableHomeV2 = (props: Props) =>
         >
             {props.view === VIEWS.landing_screen && <UILandingScreen ui_layer={ui_layer} />}
             {props.view === VIEWS.home_selection_menu && <UIHomeSelectionMenu ui_layer={ui_layer} />}
+            {/* {props.view === VIEWS.home_home_page && <UIHomeHomePage ui_layer={ui_layer} />} */}
             {props.view === VIEWS.__internal_generate_option_preview_images && <InternalGenerateOptionPreviewImages ui_layer={ui_layer} />}
 
         </adtFullscreenUi>
