@@ -23,6 +23,26 @@ export const is_change_view = (action: AnyAction): action is ActionChangeView =>
 
 
 
+interface ChangeCurrentFutureArgs
+{
+    is_current: boolean
+}
+
+interface ActionChangeCurrentFuture extends Action, ChangeCurrentFutureArgs {}
+
+const change_current_future_type = "change_current_future"
+
+const change_current_future = (args: ChangeCurrentFutureArgs): ActionChangeCurrentFuture =>
+{
+    return { type: change_current_future_type, ...args }
+}
+
+export const is_change_current_future = (action: AnyAction): action is ActionChangeCurrentFuture => {
+    return action.type === change_current_future_type
+}
+
+
 export const routing_actions = {
     change_view,
+    change_current_future,
 }

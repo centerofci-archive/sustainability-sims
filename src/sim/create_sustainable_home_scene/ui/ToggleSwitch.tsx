@@ -26,6 +26,7 @@ export function ToggleSwitch (props: Props)
 
 
     return <rectangle
+        name="toggle-switch"
         background="#CCC"
         thickness={0}
         heightInPixels={total_height + (props.paddingTopInPixels ?? 0)}
@@ -35,6 +36,7 @@ export function ToggleSwitch (props: Props)
         verticalAlignment={props.verticalAlignment ?? Control.VERTICAL_ALIGNMENT_TOP}
     >
         <rectangle
+            name="toggle-switch-highlight"
             background="#39F"
             thickness={0}
             heightInPixels={total_height}
@@ -45,6 +47,7 @@ export function ToggleSwitch (props: Props)
         ></rectangle>
 
         <textBlock
+            name="toggle-switch-text1"
             text={props.text1}
             fontStyle="bold"
             fontSize={50}
@@ -61,6 +64,7 @@ export function ToggleSwitch (props: Props)
         />
 
         <textBlock
+            name="toggle-switch-text2"
             text={props.text2}
             fontStyle="bold"
             fontSize={50}

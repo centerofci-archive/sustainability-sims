@@ -19,4 +19,5 @@ export const VIEWS: {[P in ViewTypes]: P} = {
 export interface RoutingState
 {
     view: ViewTypes
+    is_current_not_future: boolean
 }

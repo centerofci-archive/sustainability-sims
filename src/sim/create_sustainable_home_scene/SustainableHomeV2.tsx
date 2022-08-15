@@ -10,6 +10,9 @@ import { UIHomeSelectionMenu } from "./ui/home_selection_menu/UIHomeSelectionMen
 import { InternalGenerateOptionPreviewImages } from "./internal/InternalGenerateOptionPreviewImages"
 import { AdvancedDynamicTexture } from "@babylonjs/gui"
 import { HomeHomePage } from "./home/HomeHomePage"
+import { useScene } from "react-babylonjs"
+import { vec3 } from "../../utils/vector"
+import { ArcRotateCamera } from "@babylonjs/core"
 
 
 
@@ -33,6 +36,10 @@ type Props = ConnectedProps<typeof connector> & OwnProps
 const _SustainableHomeV2 = (props: Props) =>
 {
     const [ui_layer, set_ui_layer] = useState<AdvancedDynamicTexture | undefined>(undefined)
+
+    const scene = useScene()
+    if (!scene) return null
+    ;(scene.activeCamera as ArcRotateCamera)?.setTarget(vec3(0, 5, 0))
 
     // connect(setup_UI_landing_screen(args))
     // connect(setup_UI_home_selection_menu(args))

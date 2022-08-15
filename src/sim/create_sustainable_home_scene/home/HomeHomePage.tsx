@@ -8,7 +8,7 @@ import { SustainableHomeRootState } from "../state/state"
 import { ToggleSwitch } from "../ui/ToggleSwitch"
 import { load_low_poly_house_3 } from "./assets/load_low_poly_house_3"
 import { draw_home } from "./draw_home/draw_home"
-import { MetricsUI } from "./MetricsUI"
+import { MetricsUI } from "./ui/MetricsUI"
 
 
 
