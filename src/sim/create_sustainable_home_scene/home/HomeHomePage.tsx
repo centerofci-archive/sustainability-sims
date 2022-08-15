@@ -29,7 +29,7 @@ const map_dispatch = {
 const connector = connect(map_state, map_dispatch)
 type Props = ConnectedProps<typeof connector> & OwnProps
 
-type LOADING_STATE = "NOT STARTED" | "LOADING" | "LOADED"
+type LOADING_STATE = "NOT STARTED" | "LOADING" | "LOADED" | "FAILED"
 
 
 const _HomeHomePage = (props: Props) =>
@@ -43,18 +43,22 @@ const _HomeHomePage = (props: Props) =>
     if (loaded_assets === "NOT STARTED")
     {
         set_loaded_assets("LOADING")
-        load_low_poly_house_3(() => set_loaded_assets("LOADED"))
+        load_low_poly_house_3(scene)
+            .then(() => set_loaded_assets("LOADED"))
+            .catch(err =>
+            {
+                set_loaded_assets("FAILED")
+                console.error(`Error loading low_poly_house_3`, err)
+            })
     }
 
-    const chimney = scene.getMeshByName("chimney")
-    if (!chimney) return null
-    chimney.parent?.setEnabled(false) // disable the root which will hide all meshes of the imported model
-
+    if (loaded_assets !== "LOADED") return null
 
     if (first_render.current)
     {
         first_render.current = false
         draw_home({ scene, position: Vector3.Zero(), home: { type: props.home_type || "semidetached" } })
+        // draw_metrics_ui()
     }
 
     return null

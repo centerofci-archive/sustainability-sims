@@ -37,10 +37,10 @@ const _InternalGenerateOptionPreviewImages = (props: Props) =>
     const home_type_templates = useRef<Shape[]>([])
     const [show_view, set_show_view] = useState<"inside" | "outside">("outside")
 
-    useEffect(() => load_low_poly_house_3(() => set_ready(true)), [])
-    const chimney = scene.getMeshByName("chimney")
-    if (!chimney) return null
-    chimney.parent?.setEnabled(false) // disable the root which will hide all meshes of the imported model
+    useEffect(() =>
+    {
+        load_low_poly_house_3(scene).then(() => set_ready(true))
+    }, [])
 
     if (!props.ui_layer) return null
     if (!ready) return null
