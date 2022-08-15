@@ -2,7 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@babylonjs/core': 5.1.0
-  '@babylonjs/gui': 5.1.0
+  '@babylonjs/gui': 5.19.0
   '@babylonjs/inspector': 5.1.0
   '@babylonjs/loaders': 5.1.0
   '@babylonjs/materials': 5.1.0
@@ -23,13 +23,13 @@ specifiers:
 
 dependencies:
   '@babylonjs/core': 5.1.0
-  '@babylonjs/gui': 5.1.0
+  '@babylonjs/gui': 5.19.0_@babylonjs+core@5.1.0
   '@babylonjs/loaders': 5.1.0
   '@babylonjs/materials': 5.1.0
   '@reduxjs/toolkit': 1.8.2_react-redux@8.0.2+react@17.0.1
   earcut: 2.2.3
   react: 17.0.1
-  react-babylonjs: 3.1.3_03bbf5a995f417bd183408f906df7f3e
+  react-babylonjs: 3.1.3_0fd9feafa26c8c11f4f46c1023126462
   react-dom: 17.0.1_react@17.0.1
   react-redux: 8.0.2_1e9a7b6a5a5f5a50b820059ee17aee6e
   redux: 4.2.0
@@ -58,11 +58,13 @@ packages:
     dependencies:
       tslib: 2.3.1
 
-  /@babylonjs/gui/5.1.0:
-    resolution: {integrity: sha512-iIhEdgyM+fdV0Auo2Jzxjb/Ds0xu51ZKafPpE/qV02YKYjNKvmvOcuPeALMuUGYTik24VS9MWTobaorauaifrw==}
+  /@babylonjs/gui/5.19.0_@babylonjs+core@5.1.0:
+    resolution: {integrity: sha512-ArTWqfdykeVXDRm3NwTxGchjImwV4nieBr9F2WBvv4PNwwy6wAkIYrbglqeocHCyz3xM0+/1BfAa7Th9BE/cng==}
+    peerDependencies:
+      '@babylonjs/core': ^5.0.0
     dependencies:
       '@babylonjs/core': 5.1.0
-      tslib: 2.3.1
+      tslib: 2.4.0
 
   /@babylonjs/inspector/5.1.0_4540a17354e3d697323af62100ff0136:
     resolution: {integrity: sha512-h8Dy4NQZOPnM7AYzSgDBQRv3e+xBpK2DAZIlpqH93MNBk0WWVKQiVauPLmaCThAOnXKl8lKBzLWyMKOtUN5Xag==}
@@ -71,7 +73,7 @@ packages:
       '@types/react-dom': '>=16.0.9'
     dependencies:
       '@babylonjs/core': 5.1.0
-      '@babylonjs/gui': 5.1.0
+      '@babylonjs/gui': 5.19.0_@babylonjs+core@5.1.0
       '@babylonjs/loaders': 5.1.0
       '@babylonjs/materials': 5.1.0
       '@babylonjs/serializers': 5.1.0
@@ -100,7 +102,7 @@ packages:
     dependencies:
       '@babylonjs/core': 5.1.0
       babylonjs-gltf2interface: 5.1.0
-      tslib: 2.3.1
+      tslib: 2.4.0
     dev: true
 
   /@fortawesome/fontawesome-common-types/6.1.1:
@@ -718,7 +720,7 @@ packages:
       source-map-js: 1.0.2
     dev: true
 
-  /react-babylonjs/3.1.3_03bbf5a995f417bd183408f906df7f3e:
+  /react-babylonjs/3.1.3_0fd9feafa26c8c11f4f46c1023126462:
     resolution: {integrity: sha512-rf+76EHYbr8FTme8n+HLok/HqOr7Tq83vmy8CS/ReIb51s5UmI9ucGzplnOf/irig+uIV0SnsZglSOchpbWfhw==}
     engines: {node: '>=6.0.0'}
     peerDependencies:
@@ -728,7 +730,7 @@ packages:
       react-dom: '>=17'
     dependencies:
       '@babylonjs/core': 5.1.0
-      '@babylonjs/gui': 5.1.0
+      '@babylonjs/gui': 5.19.0_@babylonjs+core@5.1.0
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       react-reconciler: 0.26.2_react@17.0.1
@@ -884,6 +886,9 @@ packages:
 
   /tslib/2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
+
+  /tslib/2.4.0:
+    resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
 
   /typescript/4.6.2:
     resolution: {integrity: sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==}

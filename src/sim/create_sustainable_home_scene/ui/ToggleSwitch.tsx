@@ -44,46 +44,36 @@ export function ToggleSwitch (props: Props)
             horizontalAlignment={Control.HORIZONTAL_ALIGNMENT_LEFT}
         ></rectangle>
 
-        <babylon-button
+        <textBlock
+            text={props.text1}
+            fontStyle="bold"
+            fontSize={50}
+            color="white"
             widthInPixels={props.width1}
             heightInPixels={total_height}
-            thickness={0}
+            resizeToFit={true}
             paddingLeftInPixels={corner_radius / 2}
             horizontalAlignment={Control.HORIZONTAL_ALIGNMENT_LEFT}
             onPointerDownObservable={() =>
             {
                 if (props.option_selected === 2) props.changed_selection(1)
             }}
-        >
-            <textBlock
-                text={props.text1}
-                fontStyle="bold"
-                fontSize={50}
-                color="white"
-                resizeToFit={true}
-                horizontalAlignment={Control.HORIZONTAL_ALIGNMENT_LEFT}
-            />
-        </babylon-button>
+        />
 
-        <babylon-button
+        <textBlock
+            text={props.text2}
+            fontStyle="bold"
+            fontSize={50}
+            color="white"
             widthInPixels={props.width1}
             heightInPixels={total_height}
-            thickness={0}
+            resizeToFit={true}
             paddingRightInPixels={corner_radius / 2}
             horizontalAlignment={Control.HORIZONTAL_ALIGNMENT_RIGHT}
             onPointerDownObservable={() =>
             {
                 if (props.option_selected === 1) props.changed_selection(2)
             }}
-        >
-            <textBlock
-                text={props.text2}
-                fontStyle="bold"
-                fontSize={50}
-                color="white"
-                resizeToFit={true}
-                horizontalAlignment={Control.HORIZONTAL_ALIGNMENT_RIGHT}
-            />
-        </babylon-button>
+        />
     </rectangle>
 }

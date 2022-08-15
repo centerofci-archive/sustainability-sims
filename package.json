@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "@babylonjs/core": "5.1.0",
-    "@babylonjs/gui": "5.1.0",
+    "@babylonjs/gui": "5.19.0",
     "@babylonjs/loaders": "5.1.0",
     "@babylonjs/materials": "5.1.0",
     "@reduxjs/toolkit": "1.8.2",
