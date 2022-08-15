@@ -24,17 +24,19 @@ const height_of_1st_floor_above_ground = HEIGHT_OF_GROUND_FLOOR_FLOOR + HEIGHT_O
 
 export function draw_terrace_home (args: DrawSpecificHomeArgs): DrawSpecificHomeReturn
 {
+    const position = args.position.add(vec3(-args.width / 2, 0, args.depth / 2))
+
     const homes_container = new AbstractMesh("homes_container")
 
-    const main_home = draw_single_terrace_home(args, homes_container)
+    const main_home = draw_single_terrace_home({ ...args, position }, homes_container)
     // Neighbours
     const neighbour_home_left = draw_single_simple_terrace_home({
         ...args,
-        position: args.position.add(vec3(args.width, 0, 0)),
+        position: position.add(vec3(args.width, 0, 0)),
     }, homes_container)
     const neighbour_home_right = draw_single_simple_terrace_home({
         ...args,
-        position: args.position.add(vec3(-args.width, 0, 0)),
+        position: position.add(vec3(-args.width, 0, 0)),
     }, homes_container)
 
     grey_out(neighbour_home_left.home)

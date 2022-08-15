@@ -20,13 +20,14 @@ import {
 export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecificHomeReturn
 {
     const { width, depth } = args
+    const position = args.position.add(vec3(-width / 2, 0, depth / 2))
 
     const home = new AbstractMesh("home")
 
     const foundation_walls = draw_walls({
         scene: args.scene,
         parent_node: home,
-        position: args.position,
+        position,
         width,
         depth,
         height: HEIGHT_OF_GROUND_FLOOR_FLOOR,
@@ -36,7 +37,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     const walls = draw_walls({
         scene: args.scene,
         parent_node: home,
-        position: args.position,
+        position,
         width,
         depth,
         y_m: HEIGHT_OF_GROUND_FLOOR_FLOOR,
@@ -57,7 +58,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     draw_floor({
         scene: args.scene,
         parent_node: home,
-        position: args.position,
+        position,
         width,
         depth,
         y_m: HEIGHT_OF_GROUND_FLOOR_FLOOR,
@@ -68,7 +69,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     draw_stairs({
         scene: args.scene,
         parent_node: home,
-        position: args.position.add(vec3(width - 0.01, HEIGHT_OF_GROUND_FLOOR_FLOOR, -1)),
+        position: position.add(vec3(width - 0.01, HEIGHT_OF_GROUND_FLOOR_FLOOR, -1)),
     })
 
 
@@ -76,7 +77,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     draw_floor({
         scene: args.scene,
         parent_node: home,
-        position: args.position,
+        position,
         width: width - 1,
         depth,
         y_m: HEIGHT_OF_GROUND_FLOOR_FLOOR + HEIGHT_OF_ONE_STORY + 0.01,
@@ -87,7 +88,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     draw_floor({
         scene: args.scene,
         parent_node: home,
-        position: args.position.add(vec3(width - 1, 0, -length_of_stairs)),
+        position: position.add(vec3(width - 1, 0, -length_of_stairs)),
         width: 1,
         depth: depth - length_of_stairs,
         y_m: HEIGHT_OF_GROUND_FLOOR_FLOOR + HEIGHT_OF_ONE_STORY + 0.01,
@@ -99,7 +100,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     const upper_walls = draw_walls({
         scene: args.scene,
         parent_node: home,
-        position: args.position,
+        position,
         width,
         depth,
         y_m: HEIGHT_OF_GROUND_FLOOR_FLOOR + HEIGHT_OF_ONE_STORY,
@@ -134,7 +135,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     draw_roof({
         scene: args.scene,
         parent_node: home,
-        position: args.position.add(vec3(width - 2, HEIGHT_OF_GROUND_FLOOR_FLOOR + HEIGHT_OF_ONE_STORY, 0)),
+        position: position.add(vec3(width - 2, HEIGHT_OF_GROUND_FLOOR_FLOOR + HEIGHT_OF_ONE_STORY, 0)),
         width: 2,
         depth: 1,
     })
@@ -148,7 +149,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     const floor_1st_to_attic_part1 = draw_floor({
         scene: args.scene,
         parent_node: home,
-        position: args.position.add(vec3(0, 0, -1)),
+        position: position.add(vec3(0, 0, -1)),
         width,
         depth: depth - 1,
         y_m: height_of_1st_floor_above_ground + 0.01,
@@ -158,7 +159,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     const floor_1st_to_attic_part2 = draw_floor({
         scene: args.scene,
         parent_node: home,
-        position: args.position,
+        position,
         width: width - 2,
         depth: 1,
         y_m: height_of_1st_floor_above_ground + 0.01,
@@ -176,7 +177,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     const main_roof_1 = draw_roof({
         scene: args.scene,
         parent_node: home,
-        position: args.position.add(vec3(0, height_of_1st_floor_above_ground, 0)),
+        position: position.add(vec3(0, height_of_1st_floor_above_ground, 0)),
         width: slope1_width,
         depth: slope1_depth,
         walls: "both"
@@ -185,7 +186,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     const main_roof_2 = draw_roof({
         scene: args.scene,
         parent_node: home,
-        position: args.position.add(vec3(slope1_width, height_of_1st_floor_above_ground, -depth)),
+        position: position.add(vec3(slope1_width, height_of_1st_floor_above_ground, -depth)),
         width: slope1_width,
         depth: slope1_depth,
         rotation: Math.PI,
@@ -195,7 +196,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     const main_roof_ridge = draw_roof_ridge({
         scene: args.scene,
         parent_node: home,
-        position: args.position.add(vec3(0, height_of_1st_floor_above_ground, -slope1_depth)),
+        position: position.add(vec3(0, height_of_1st_floor_above_ground, -slope1_depth)),
         width: slope1_width,
         y: 3,
     })
@@ -205,7 +206,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     draw_roof({
         scene: args.scene,
         parent_node: home,
-        position: args.position.add(vec3(slope1_width, height_of_1st_floor_above_ground, -1)),
+        position: position.add(vec3(slope1_width, height_of_1st_floor_above_ground, -1)),
         width: slope2_width,
         depth: slope2_depth,
         walls: "left",
@@ -214,7 +215,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     draw_roof({
         scene: args.scene,
         parent_node: home,
-        position: args.position.add(vec3(width, height_of_1st_floor_above_ground, -depth)),
+        position: position.add(vec3(width, height_of_1st_floor_above_ground, -depth)),
         width: slope2_width,
         depth: slope2_depth,
         walls: "right",
@@ -227,7 +228,7 @@ export function draw_semidetached_home (args: DrawSpecificHomeArgs): DrawSpecifi
     draw_chimney({
         scene: args.scene,
         parent_node: home,
-        position: args.position.add(vec3(-0.01, height_of_1st_floor_above_ground, -slope1_depth)),
+        position: position.add(vec3(-0.01, height_of_1st_floor_above_ground, -slope1_depth)),
         rotation: -Math.PI / 2,
     })
 

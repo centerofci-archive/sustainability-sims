@@ -22,8 +22,8 @@ interface DrawHomeArgs
 
 export function draw_home (args: DrawHomeArgs)
 {
-    let width = 5
-    let depth = 7
+    const width = 5
+    const depth = 7
 
 
     const draw_home_args: DrawSpecificHomeArgs = { ...args, width, depth }
@@ -55,9 +55,8 @@ export function draw_home (args: DrawHomeArgs)
     }
 
 
-    const ground_position = args.position.add(vec3((width / 2), 0, (-depth / 2)))
     const ground_size = Math.max(width, depth, home_render_result.ground_width || 0) + 6
-    const ground = create_ground(args.scene, ground_size, ground_position)
+    const ground = create_ground(args.scene, ground_size, args.position)
 
 
     ;(window as any).hide_wall = () =>

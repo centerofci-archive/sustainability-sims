@@ -54,7 +54,7 @@ const _HomeHomePage = (props: Props) =>
     if (first_render.current)
     {
         first_render.current = false
-        draw_home({ scene, position: Vector3.Zero(), home: { type: props.home_type || "terrace" } })
+        draw_home({ scene, position: Vector3.Zero(), home: { type: props.home_type || "semidetached" } })
     }
 
     return null
