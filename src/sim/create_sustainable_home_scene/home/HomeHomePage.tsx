@@ -8,6 +8,7 @@ import { SustainableHomeRootState } from "../state/state"
 import { ToggleSwitch } from "../ui/ToggleSwitch"
 import { load_low_poly_house_3 } from "./assets/load_low_poly_house_3"
 import { draw_home } from "./draw_home/draw_home"
+import { MetricsUI } from "./MetricsUI"
 
 
 
@@ -67,27 +68,3 @@ const _HomeHomePage = (props: Props) =>
 }
 
 export const HomeHomePage = connector(_HomeHomePage) as FunctionComponent<OwnProps>
-
-
-
-function MetricsUI ()
-{
-    const [cf, set_cf] = useState<1 | 2>(2)
-
-    const on_change_toggle_current_future = useMemo(() =>
-    {
-        return (new_cf: 1 | 2) =>
-        {
-            set_cf(new_cf)
-        }
-    }, [])
-
-    return <ToggleSwitch
-        text1="Current"
-        text2="Future"
-        width1={210}
-        width2={190}
-        option_selected={cf}
-        changed_selection={on_change_toggle_current_future}
-    />
-}

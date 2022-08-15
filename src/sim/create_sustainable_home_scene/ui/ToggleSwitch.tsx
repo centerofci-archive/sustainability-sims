@@ -1,5 +1,5 @@
 import { Control } from "@babylonjs/gui"
-import React, { useRef } from "react"
+import React from "react"
 
 
 
@@ -11,6 +11,9 @@ interface Props
     width2: number
     option_selected: 1 | 2
     changed_selection: (selected: 1 | 2) => void
+
+    paddingTopInPixels?: number
+    verticalAlignment?: number
 }
 
 export function ToggleSwitch (props: Props)
@@ -20,15 +23,16 @@ export function ToggleSwitch (props: Props)
     const corner_radius = total_height / 2
     const width = props.width1 + props.width2
     const opt1_selected = props.option_selected === 1
-    const target_option_selected = useRef(props.option_selected)
 
 
     return <rectangle
         background="#CCC"
         thickness={0}
-        heightInPixels={total_height}
+        heightInPixels={total_height + (props.paddingTopInPixels ?? 0)}
         widthInPixels={width}
         cornerRadius={corner_radius}
+        paddingTopInPixels={props.paddingTopInPixels ?? 0}
+        verticalAlignment={props.verticalAlignment ?? Control.VERTICAL_ALIGNMENT_TOP}
     >
         <rectangle
             background="#39F"
