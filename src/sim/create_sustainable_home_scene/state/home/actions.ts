@@ -1,10 +1,11 @@
 import type { Action, AnyAction } from "redux"
+import { HOME_TYPE } from "../../home/interfaces"
 
 
 
 interface SelectDefaultHomeTypeArgs
 {
-    home_type: string
+    home_type: HOME_TYPE
 }
 
 interface ActionSelectDefaultHomeType extends Action, SelectDefaultHomeTypeArgs {}

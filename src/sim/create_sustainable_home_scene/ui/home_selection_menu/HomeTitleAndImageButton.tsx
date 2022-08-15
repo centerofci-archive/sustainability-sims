@@ -1,13 +1,14 @@
 import React, { useMemo } from "react"
 import { OPTION_IMAGE_HEIGHT, OPTION_IMAGE_WIDTH } from "./constants"
 import * as GUI from "@babylonjs/gui"
+import { HOME_TYPE } from "../../home/interfaces"
+import { home_type_to_image_data, home_type_to_text } from "./home_type_data"
 
 
 
 interface OwnProps
 {
-    home_type: string
-    image_data: string
+    home_type: HOME_TYPE
     is_chosen: boolean
     set_current_home_type: (home_type: string) => void
 }
@@ -18,9 +19,13 @@ const padding = 30
 const text_height = 80
 
 
+
 export const HomeTitleAndImageButton = (props: OwnProps) =>
 {
     const { home_type, is_chosen } = props
+
+    const home_type_title = home_type_to_text[home_type]
+    const home_type_image_data = home_type_to_image_data[home_type]
 
 
     const set_current_home_type = useMemo(() => () =>
@@ -56,7 +61,7 @@ export const HomeTitleAndImageButton = (props: OwnProps) =>
                 paddingBottomInPixels={padding}
             >
                 <babylon-image
-                    url={props.image_data}
+                    url={home_type_image_data}
                     width={`${OPTION_IMAGE_WIDTH}px`}
                     height={`${OPTION_IMAGE_HEIGHT}px`}
                     paddingTopInPixels={padding}
@@ -66,7 +71,7 @@ export const HomeTitleAndImageButton = (props: OwnProps) =>
 
             <textBlock
                 name="home-title"
-                text={home_type}
+                text={home_type_title}
                 color="black"
                 fontSize={30}
                 fontStyle="bold"

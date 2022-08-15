@@ -1,4 +1,5 @@
 import React from "react"
+import { HOME_TYPE } from "../../home/interfaces"
 import { ButtonCallToAction } from "../ButtonCallToAction"
 import { OPTION_IMAGE_WIDTH } from "./constants"
 
@@ -6,8 +7,8 @@ import { OPTION_IMAGE_WIDTH } from "./constants"
 
 interface OwnProps
 {
-    home_type: string
-    choose_home_type: (home_type: string) => void
+    home_type: HOME_TYPE
+    choose_home_type: (home_type: HOME_TYPE) => void
     cancel_choosing_home_type: () => void
 }
 

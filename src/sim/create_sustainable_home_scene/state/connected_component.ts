@@ -1,3 +1,4 @@
+// Deprecated
 import { SustainableHomeRootState } from "./state"
 import { get_store } from "../../../state/store"
 

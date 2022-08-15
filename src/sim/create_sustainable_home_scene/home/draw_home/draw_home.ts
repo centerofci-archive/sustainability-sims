@@ -5,6 +5,7 @@ import { set_mesh_visiblilty } from "../../../../utils/set_mesh_visiblilty"
 import { vec3 } from "../../../../utils/vector"
 import { Home } from "../interfaces"
 import { DrawSpecificHomeArgs, DrawSpecificHomeReturn } from "./common"
+import { draw_bungalow } from "./draw_bungalow"
 import { draw_detached_home } from "./draw_detached_home"
 import { draw_flat_home } from "./draw_flat_home"
 import { draw_semidetached_home } from "./draw_semidetached_home"
@@ -42,6 +43,10 @@ export function draw_home (args: DrawHomeArgs)
     else if (args.home.type === "flat")
     {
         home_render_result = draw_flat_home(draw_home_args)
+    }
+    else if (args.home.type === "bungalow")
+    {
+        home_render_result = draw_bungalow(draw_home_args)
     }
     else
     {

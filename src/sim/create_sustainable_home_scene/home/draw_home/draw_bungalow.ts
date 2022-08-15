@@ -5,7 +5,7 @@ import { DrawSpecificHomeArgs, DrawSpecificHomeReturn, get_children, HEIGHT_OF_G
 
 
 
-export function draw_detached_home (args: DrawSpecificHomeArgs): DrawSpecificHomeReturn
+export function draw_bungalow (args: DrawSpecificHomeArgs): DrawSpecificHomeReturn
 {
     const { width, depth } = args
 

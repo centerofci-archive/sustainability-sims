@@ -8,7 +8,7 @@ export function get_routing_starting_state (): RoutingState
         view:
             // VIEWS.__internal_generate_option_preview_images,
             // VIEWS.landing_screen,
-            // VIEWS.home_selection_menu,
-            VIEWS.home_home_page,
+            VIEWS.home_selection_menu,
+            // VIEWS.home_home_page,
     }
 }
