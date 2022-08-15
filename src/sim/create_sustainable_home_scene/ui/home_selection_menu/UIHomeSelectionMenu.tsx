@@ -9,9 +9,8 @@ import { CustomScrollViewer } from "../CustomScrollViewer"
 import { Modal } from "../modal/Modal"
 import { selector_modal_content_height } from "../modal/selector_modal_height"
 import { HomeTitleAndImageButton } from "./HomeTitleAndImageButton"
-import { HomeExtraInfo } from "./HomeExtraInfo"
 import { ChooseHomeButton } from "./ChooseHomeButton"
-import { HomeStats, HOME_TYPE } from "../../home/interfaces"
+import { HOME_TYPE } from "../../home/interfaces"
 import { VIEWS } from "../../state/routing/state"
 
 

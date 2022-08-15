@@ -52,7 +52,7 @@ export const CustomScrollViewer = (props: Props) =>
         let pointer_down_at: { x: number, y: number } | { x?: undefined, y?: undefined } = {}
         let horizontal_scroll_start: number | undefined = undefined
         let vertical_scroll_start: number | undefined = undefined
-        scene.onPointerDownObservable.add(({ evt, pickInfo }) =>
+        const on_pointer_down_observer = scene.onPointerDownObservable.add(({ evt, pickInfo }) =>
         {
             if (!allow_pointer_events_be_captured_by_scroll_viewer) return
             camera.detachControl()
@@ -62,7 +62,7 @@ export const CustomScrollViewer = (props: Props) =>
         })
 
 
-        scene.onPointerMoveObservable.add(({ evt }) =>
+        const on_pointer_move_observer = scene.onPointerMoveObservable.add(({ evt }) =>
         {
             if (!allow_pointer_events_be_captured_by_scroll_viewer) return
             if (pointer_down_at.x === undefined)
@@ -93,12 +93,20 @@ export const CustomScrollViewer = (props: Props) =>
         })
 
 
-        scene.onPointerUpObservable.add(() =>
+        const on_pointer_up_observer = scene.onPointerUpObservable.add(() =>
         {
             if (!allow_pointer_events_be_captured_by_scroll_viewer) return
             pointer_down_at = {}
             camera.attachControl()
         })
+
+
+        return () =>
+        {
+            scene.onPointerDownObservable.remove(on_pointer_down_observer)
+            scene.onPointerMoveObservable.remove(on_pointer_move_observer)
+            scene.onPointerUpObservable.remove(on_pointer_up_observer)
+        }
     }, [])
 
 
