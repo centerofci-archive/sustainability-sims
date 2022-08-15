@@ -1,10 +1,11 @@
 import { Vector3 } from "@babylonjs/core"
 import { AdvancedDynamicTexture } from "@babylonjs/gui"
-import React, { FunctionComponent, useEffect, useRef, useState } from "react"
+import React, { FunctionComponent, useMemo, useRef, useState } from "react"
 import { useScene } from "react-babylonjs"
 import { connect, ConnectedProps } from "react-redux"
 
 import { SustainableHomeRootState } from "../state/state"
+import { ToggleSwitch } from "../ui/ToggleSwitch"
 import { load_low_poly_house_3 } from "./assets/load_low_poly_house_3"
 import { draw_home } from "./draw_home/draw_home"
 
@@ -58,10 +59,35 @@ const _HomeHomePage = (props: Props) =>
     {
         first_render.current = false
         draw_home({ scene, position: Vector3.Zero(), home: { type: props.home_type || "semidetached" } })
-        // draw_metrics_ui()
     }
 
-    return null
+    return <>
+        <MetricsUI />
+    </>
 }
 
 export const HomeHomePage = connector(_HomeHomePage) as FunctionComponent<OwnProps>
+
+
+
+function MetricsUI ()
+{
+    const [cf, set_cf] = useState<1 | 2>(2)
+
+    const on_change_toggle_current_future = useMemo(() =>
+    {
+        return (new_cf: 1 | 2) =>
+        {
+            set_cf(new_cf)
+        }
+    }, [])
+
+    return <ToggleSwitch
+        text1="Current"
+        text2="Future"
+        width1={210}
+        width2={190}
+        option_selected={cf}
+        changed_selection={on_change_toggle_current_future}
+    />
+}
