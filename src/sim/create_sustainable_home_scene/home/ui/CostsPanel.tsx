@@ -75,7 +75,7 @@ function _CostsPanel (props: Props)
                 />
 
                 <textBlock
-                    text="  tCO2e"
+                    text="  tCO₂e"
                     fontSize={20}
                     // color="white"
                     resizeToFit={true}

@@ -1,13 +1,14 @@
-import { Vector3 } from "@babylonjs/core"
+import { Color3, GlowLayer, Nullable, StandardMaterial, Vector3 } from "@babylonjs/core"
 import { AdvancedDynamicTexture } from "@babylonjs/gui"
-import React, { FunctionComponent, useMemo, useRef, useState } from "react"
+import React, { FunctionComponent, useEffect, useState } from "react"
 import { useScene } from "react-babylonjs"
 import { connect, ConnectedProps } from "react-redux"
+import { CustomScene } from "../../../utils/CustomScene"
 
 import { SustainableHomeRootState } from "../state/state"
-import { ToggleSwitch } from "../ui/ToggleSwitch"
 import { load_low_poly_house_3 } from "./assets/load_low_poly_house_3"
 import { draw_home } from "./draw_home/draw_home"
+import { HOME_TYPE } from "./interfaces"
 import { MetricsUI } from "./ui/MetricsUI"
 
 
@@ -36,11 +37,10 @@ type LOADING_STATE = "NOT STARTED" | "LOADING" | "LOADED" | "FAILED"
 
 const _HomeHomePage = (props: Props) =>
 {
-    const scene = useScene()
+    const scene = useScene() as Nullable<CustomScene>
     if (!scene) return null // type guard
 
     const [loaded_assets, set_loaded_assets] = useState<LOADING_STATE>("NOT STARTED")
-    const first_render = useRef(true)
 
     if (loaded_assets === "NOT STARTED")
     {
@@ -56,15 +56,44 @@ const _HomeHomePage = (props: Props) =>
 
     if (loaded_assets !== "LOADED") return null
 
-    if (first_render.current)
+    return <RenderHomeHomePage scene={scene} home_type={props.home_type} />
+}
+
+export const HomeHomePage = connector(_HomeHomePage) as FunctionComponent<OwnProps>
+
+
+
+function RenderHomeHomePage (props: { scene: CustomScene, home_type?: HOME_TYPE })
+{
+    const { scene, home_type = "semidetached" } = props
+
+    useEffect(() =>
     {
-        first_render.current = false
-        draw_home({ scene, position: Vector3.Zero(), home: { type: props.home_type || "semidetached" } })
-    }
+        const glow_layer = new GlowLayer("glow", scene)
+        glow_layer.intensity = 0.5
+
+        const home = draw_home({ scene, position: Vector3.Zero(), home: { type: home_type } })
+
+        const pointer_move_observer = scene.onPointerMoveObservable.add(() =>
+        {
+            const pick_result = scene.pick(scene.pointerX, scene.pointerY)
+
+            if (pick_result && pick_result.pickedMesh)
+            {
+                const mat = pick_result.pickedMesh.material as StandardMaterial
+                mat.emissiveColor = new Color3(255, 0, 0)
+            }
+        })
+
+        return () =>
+        {
+            home.dispose()
+            scene.onPointerMoveObservable.remove(pointer_move_observer)
+        }
+    }, [])
+
 
     return <>
         <MetricsUI />
     </>
 }
-
-export const HomeHomePage = connector(_HomeHomePage) as FunctionComponent<OwnProps>

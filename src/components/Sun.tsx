@@ -1,9 +1,10 @@
 import {
     Color3,
     Light,
+    Mesh,
     Vector3,
 } from "@babylonjs/core"
-import React from "react"
+import React, { useState } from "react"
 
 
 
@@ -60,22 +61,31 @@ export function Sun (props: Props)
 
 
 
+const sun_emissive_color = new Color3(1, 1, 0.5)
 function SunGlobe (props: { position: Vector3, scaling?: Vector3 })
 {
+    const [sub_mesh, set_sun_mesh] = useState<Mesh>()
 
-    return <sphere
+    const sun_jsx = <sphere
         name="sun_sphere"
         diameter={1}
         position={props.position}
         scaling={props.scaling}
+        onCreated={set_sun_mesh}
     >
         <standardMaterial
             name="sun_glow_material"
-            emissiveColor={new Color3(1, 1, 0.5)}
+            emissiveColor={sun_emissive_color}
         />
+    </sphere>
+
+
+    return <>
+        {sun_jsx}
         <glowLayer
             name="glow"
             intensity={10}
+            addIncludedOnlyMesh={sub_mesh}
         />
-    </sphere>
+    </>
 }
