@@ -1,6 +1,6 @@
-import { Color3, GlowLayer, Nullable, StandardMaterial, Vector3 } from "@babylonjs/core"
+import { Color3, GlowLayer, Mesh, Nullable, StandardMaterial, Vector3 } from "@babylonjs/core"
 import { AdvancedDynamicTexture } from "@babylonjs/gui"
-import React, { FunctionComponent, useEffect, useState } from "react"
+import React, { FunctionComponent, useEffect, useRef, useState } from "react"
 import { useScene } from "react-babylonjs"
 import { connect, ConnectedProps } from "react-redux"
 import { CustomScene } from "../../../utils/CustomScene"
@@ -63,9 +63,15 @@ export const HomeHomePage = connector(_HomeHomePage) as FunctionComponent<OwnPro
 
 
 
+const COLOR_EMISSIVE_NONE = new Color3(0, 0, 0)
+const COLOR_EMISSIVE_SELECTION = new Color3(0, 30, 255)
+
 function RenderHomeHomePage (props: { scene: CustomScene, home_type?: HOME_TYPE })
 {
     const { scene, home_type = "semidetached" } = props
+
+    const highlighted_mesh = useRef<Mesh>()
+
 
     useEffect(() =>
     {
@@ -78,10 +84,17 @@ function RenderHomeHomePage (props: { scene: CustomScene, home_type?: HOME_TYPE 
         {
             const pick_result = scene.pick(scene.pointerX, scene.pointerY)
 
+            if (highlighted_mesh.current)
+            {
+                glow_layer.removeIncludedOnlyMesh(highlighted_mesh.current)
+                ;(highlighted_mesh.current!.material as StandardMaterial).emissiveColor = COLOR_EMISSIVE_NONE
+            }
+
             if (pick_result && pick_result.pickedMesh)
             {
                 const mat = pick_result.pickedMesh.material as StandardMaterial
-                mat.emissiveColor = new Color3(255, 0, 0)
+                mat.emissiveColor = COLOR_EMISSIVE_SELECTION
+                highlighted_mesh.current = pick_result.pickedMesh as Mesh
             }
         })
 
