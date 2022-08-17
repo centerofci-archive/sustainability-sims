@@ -1,6 +1,6 @@
 import React from "react"
 import * as GUI from "@babylonjs/gui"
-import { HomeStats } from "../../home/interfaces"
+import { HomeStats } from "../../../../data/homes/interfaces"
 
 
 

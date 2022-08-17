@@ -1,5 +1,5 @@
 import type { Action, AnyAction } from "redux"
-import { HOME_TYPE } from "../../home/interfaces"
+import { HOME_TYPE } from "../../../../data/homes/interfaces"
 
 
 

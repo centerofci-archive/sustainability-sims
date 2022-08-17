@@ -10,7 +10,7 @@ import { Modal } from "../modal/Modal"
 import { selector_modal_content_height } from "../modal/selector_modal_height"
 import { HomeTitleAndImageButton } from "./HomeTitleAndImageButton"
 import { ChooseHomeButton } from "./ChooseHomeButton"
-import { HOME_TYPE } from "../../home/interfaces"
+import { HOME_TYPE } from "../../../../data/homes/interfaces"
 import { VIEWS } from "../../state/routing/state"
 
 

@@ -1,5 +1,5 @@
 import React from "react"
-import { HOME_TYPE } from "../../home/interfaces"
+import { HOME_TYPE } from "../../../../data/homes/interfaces"
 import { ButtonCallToAction } from "../ButtonCallToAction"
 import { OPTION_IMAGE_WIDTH } from "./constants"
 

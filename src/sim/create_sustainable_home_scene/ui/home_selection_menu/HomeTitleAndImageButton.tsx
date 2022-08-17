@@ -1,7 +1,7 @@
 import React, { useMemo } from "react"
 import { OPTION_IMAGE_HEIGHT, OPTION_IMAGE_WIDTH } from "./constants"
 import * as GUI from "@babylonjs/gui"
-import { HOME_TYPE } from "../../home/interfaces"
+import { HOME_TYPE } from "../../../../data/homes/interfaces"
 import { home_type_to_image_data, home_type_to_text } from "./home_type_data"
 
 

@@ -8,7 +8,7 @@ import { CustomScene } from "../../../utils/CustomScene"
 import { SustainableHomeRootState } from "../state/state"
 import { load_low_poly_house_3 } from "./assets/load_low_poly_house_3"
 import { draw_home } from "./draw_home/draw_home"
-import { HOME_TYPE } from "./interfaces"
+import { HOME_TYPE } from "../../../data/homes/interfaces"
 import { MetricsUI } from "./ui/MetricsUI"
 
 
