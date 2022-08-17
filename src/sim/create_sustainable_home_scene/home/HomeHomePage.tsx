@@ -75,8 +75,11 @@ function RenderHomeHomePage (props: { scene: CustomScene, home_type?: HOME_TYPE 
 
     useEffect(() =>
     {
+        // const highlight_layer = new HighlightLayer("home highlight layer", scene)
+
         const glow_layer = new GlowLayer("glow", scene)
         glow_layer.intensity = 0.5
+
 
         const home = draw_home({ scene, position: Vector3.Zero(), home: { type: home_type } })
 
@@ -86,12 +89,14 @@ function RenderHomeHomePage (props: { scene: CustomScene, home_type?: HOME_TYPE 
 
             if (highlighted_mesh.current)
             {
+                // highlight_layer.removeMesh(highlighted_mesh.current)
                 glow_layer.removeIncludedOnlyMesh(highlighted_mesh.current)
                 ;(highlighted_mesh.current!.material as StandardMaterial).emissiveColor = COLOR_EMISSIVE_NONE
             }
 
             if (pick_result && pick_result.pickedMesh)
             {
+                // highlight_layer.addMesh(pick_result.pickedMesh as Mesh, COLOR_EMISSIVE_SELECTION)
                 const mat = pick_result.pickedMesh.material as StandardMaterial
                 mat.emissiveColor = COLOR_EMISSIVE_SELECTION
                 highlighted_mesh.current = pick_result.pickedMesh as Mesh
