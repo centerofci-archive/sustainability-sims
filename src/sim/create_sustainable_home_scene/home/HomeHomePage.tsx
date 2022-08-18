@@ -81,7 +81,7 @@ function RenderHomeHomePage (props: { scene: CustomScene, home_type?: HOME_TYPE 
         glow_layer.intensity = 0.5
 
 
-        const home = draw_home({ scene, position: Vector3.Zero(), home: { type: home_type } })
+        const home = draw_home({ scene, position: Vector3.Zero(), home_type })
 
         const pointer_move_observer = scene.onPointerMoveObservable.add(() =>
         {

@@ -61,10 +61,10 @@ const _InternalGenerateOptionPreviewImages = (props: Props) =>
     {
         const position = vec3(-2.5, -2, 2.5)
         home_type_templates.current = [
-            // { name: "Flat", mesh: draw_home({ scene, position, home: { type: "flat" } }) },
-            // { name: "Semi Detached", mesh: draw_home({ scene, position, home: { type: "semidetached" } }) },
-            // { name: "Detached", mesh: draw_home({ scene, position, home: { type: "detached" } }) },
-            { name: "Terrace", mesh: draw_home({ scene, position, home: { type: "terrace" } }) },
+            // { name: "Flat", mesh: draw_home({ scene, position, home_type: "flat" }) },
+            // { name: "Semi Detached", mesh: draw_home({ scene, position, home_type: "semidetached" }) },
+            // { name: "Detached", mesh: draw_home({ scene, position, home_type: "detached" }) },
+            { name: "Terrace", mesh: draw_home({ scene, position, home_type: "terrace" }) },
         ]
     }
 

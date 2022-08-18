@@ -6,6 +6,10 @@ export enum UnitsID
     // undefined
     undefined = "undefined",
 
+    // dimensionless
+    ratio = "ratio",
+    percentage = "percentage",
+
     // time
     time_period_year = "time_period_year",
     time_period_quarter = "time_period_quarter",
@@ -49,6 +53,20 @@ export const UNITS: UnitsMap =
         id: UnitsID.undefined,
         name: "undefined",
         symbol: "?",
+    },
+
+    ratio:
+    {
+        id: UnitsID.ratio,
+        name: "ratio",
+        symbol: "",
+    },
+
+    percentage:
+    {
+        id: UnitsID.percentage,
+        name: "percentage",
+        symbol: "%",
     },
 
     time_period_year:

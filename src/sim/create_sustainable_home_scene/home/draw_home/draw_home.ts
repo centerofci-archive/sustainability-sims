@@ -2,8 +2,7 @@ import { AbstractMesh, Scene, Vector3 } from "@babylonjs/core"
 
 import { create_ground } from "../../../../components/create_ground"
 import { set_mesh_visiblilty } from "../../../../utils/set_mesh_visiblilty"
-import { vec3 } from "../../../../utils/vector"
-import { Home } from "../../../../data/homes/interfaces"
+import { HOME_TYPE } from "../../../../data/homes/interfaces"
 import { DrawSpecificHomeArgs, DrawSpecificHomeReturn } from "./common"
 import { draw_bungalow } from "./draw_bungalow"
 import { draw_detached_home } from "./draw_detached_home"
@@ -17,7 +16,7 @@ interface DrawHomeArgs
 {
     scene: Scene
     position: Vector3
-    home: Home
+    home_type: HOME_TYPE
 }
 
 export function draw_home (args: DrawHomeArgs)
@@ -28,29 +27,29 @@ export function draw_home (args: DrawHomeArgs)
 
     const draw_home_args: DrawSpecificHomeArgs = { ...args, width, depth }
     let home_render_result: DrawSpecificHomeReturn
-    if (args.home.type === "semidetached")
+    if (args.home_type === "semidetached")
     {
         home_render_result = draw_semidetached_home(draw_home_args)
     }
-    else if (args.home.type === "terrace")
+    else if (args.home_type === "terrace")
     {
         home_render_result = draw_terrace_home(draw_home_args)
     }
-    else if (args.home.type === "detached")
+    else if (args.home_type === "detached")
     {
         home_render_result = draw_detached_home(draw_home_args)
     }
-    else if (args.home.type === "flat")
+    else if (args.home_type === "flat")
     {
         home_render_result = draw_flat_home(draw_home_args)
     }
-    else if (args.home.type === "bungalow")
+    else if (args.home_type === "bungalow")
     {
         home_render_result = draw_bungalow(draw_home_args)
     }
     else
     {
-        console.error(`Unsupported home type: "${args.home.type}"`)
+        console.error(`Unsupported home type: "${args.home_type}"`)
         home_render_result = { home: new AbstractMesh(""), cutthrough_components: [] }
     }
 
